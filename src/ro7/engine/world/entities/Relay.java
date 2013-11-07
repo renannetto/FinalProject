@@ -25,6 +25,9 @@ public class Relay extends Entity {
 		enable = false;
 	}
 	
+	/**
+	 * Call its ouptut only when enabled.
+	 */
 	public void runOutput() {
 		if (enable) {
 			outputs.get("onSignal").run();

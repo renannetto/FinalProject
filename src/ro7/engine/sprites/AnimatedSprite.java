@@ -24,6 +24,13 @@ public class AnimatedSprite extends ImageSprite {
 		this.TIME_TO_MOVE = timeToMove;
 	}
 
+	/* (non-Javadoc)
+	 * @see ro7.engine.sprites.Sprite#update(long)
+	 * If the elapsed time is bigger than TIME_TO_MOVE, update the frame
+	 * of the animation. The next frame has to be on the right in the
+	 * sprite sheet.
+	 */
+	@Override
 	public void update(long nanoseconds) {
 		elapsed += nanoseconds / 1000000;
 		if (elapsed > TIME_TO_MOVE) {

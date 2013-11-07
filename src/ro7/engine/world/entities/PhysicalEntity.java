@@ -26,6 +26,11 @@ public abstract class PhysicalEntity extends CollidableEntity {
 		world.addPhysicalEntity(this);
 	}
 
+	/* (non-Javadoc)
+	 * @see ro7.engine.world.entities.Entity#update(long)
+	 * Update the Entity velocity, then translate its shape
+	 * by the correct distance.
+	 */
 	@Override
 	public void update(long nanoseconds) {
 		float seconds = nanoseconds / 1000000000.0f;
@@ -47,16 +52,6 @@ public abstract class PhysicalEntity extends CollidableEntity {
 		this.impulse = this.impulse.plus(impulse);
 	}
 
-	protected Vec2f randomDirection() {
-		float dirX = -1 + (float) (Math.random() * 2);
-		float dirY = (float) Math.sqrt(1 - (dirX * dirX));
-		int up = (int) (Math.random() * 2);
-		if (up == 0) {
-			dirY = -dirY;
-		}
-		return new Vec2f(dirX, dirY);
-	}
-
 	@Override
 	public abstract void onCollision(Collision collision);
 	
@@ -68,6 +63,10 @@ public abstract class PhysicalEntity extends CollidableEntity {
 		return (float) Math.sqrt(restitution * other.restitution);
 	}
 	
+	/* (non-Javadoc)
+	 * @see ro7.engine.world.entities.Entity#remove()
+	 * Remove this entity from the world. This method is called automatically in GameWorld.
+	 */
 	@Override
 	public void remove() {
 		super.remove();

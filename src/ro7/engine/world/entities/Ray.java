@@ -13,8 +13,11 @@ import ro7.engine.world.GameWorld;
 import ro7.engine.world.RayCollision;
 import cs195n.Vec2f;
 
-public abstract class Ray extends GroupEntity {
+public abstract class Ray extends CollidableEntity {
 
+	/*
+	 * TIME_LIMIT is the time that the Ray will be drawn on the screen
+	 */
 	private final Color COLOR = Color.RED;
 	private final float TIME_LIMIT = 0.1f;
 
@@ -31,6 +34,11 @@ public abstract class Ray extends GroupEntity {
 		elapsedTime = 0;
 	}
 
+	/* (non-Javadoc)
+	 * @see ro7.engine.world.entities.Entity#update(long)
+	 * If the elapsed time is bigger than TIME_LIMIT, the Ray does not
+	 * need to be drawn anymore, so it can be removed from the world.
+	 */
 	@Override
 	public void update(long nanoseconds) {
 		elapsedTime += nanoseconds / 1000000000.0f;
@@ -48,6 +56,11 @@ public abstract class Ray extends GroupEntity {
 		sprite.draw(g);
 	}
 
+	/**
+	 * @param circle
+	 * Find the point of intersection between the Ray and a Circle.
+	 * @return the point of intersection or null, if there is not one
+	 */
 	public Vec2f collidesCircle(Circle circle) {
 		Vec2f center = circle.center();
 
@@ -70,14 +83,29 @@ public abstract class Ray extends GroupEntity {
 		return intersection;
 	}
 
+	/**
+	 * @param polygon
+	 * Find the point of intersection between the Ray and a Polygon.
+	 * @return the point of intersection or null, if there is not one
+	 */
 	public Vec2f collidesPolygon(Polygon polygon) {
 		return collidesEdges(polygon.edges());
 	}
 
+	/**
+	 * @param aab
+	 * Find the point of intersection between the Ray and an AAB.
+	 * @return the point of intersection or null, if there is not one
+	 */
 	public Vec2f collidesAAB(AAB aab) {
 		return collidesEdges(aab.edges());
 	}
 
+	/**
+	 * @param edges
+	 * Find the point of intersection between the Ray and a set of Edges.
+	 * @return the point of intersection or null, if there is not one
+	 */
 	public Vec2f collidesEdges(Set<Edge> edges) {
 		float minT = Float.MAX_VALUE;
 		Vec2f closest = null;
@@ -100,6 +128,10 @@ public abstract class Ray extends GroupEntity {
 		return point.dist2(position);
 	}
 
+	/**
+	 * @param collision
+	 * Do somethign when a collision happens.
+	 */
 	public abstract void onCollision(RayCollision collision);
 	
 	@Override

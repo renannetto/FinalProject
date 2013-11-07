@@ -36,6 +36,9 @@ import cs195n.Vec2i;
 
 public abstract class GameWorld {
 
+	/*
+	 * Map used to associate each Color name with the correct object
+	 */
 	private final static Map<String, Color> COLORS;
 	static {
 		COLORS = new HashMap<String, Color>();
@@ -60,15 +63,20 @@ public abstract class GameWorld {
 	protected Map<String, SpriteSheet> spriteSheets;
 
 	protected Vec2f dimensions;
-	protected List<CollidableEntity> collidables;
+	protected Set<CollidableEntity> collidables;
 	protected Set<PhysicalEntity> physEntities;
 	protected Set<Ray> rays;
 
 	protected Set<String> removeEntities;
 
+	/**
+	 * @param dimensions
+	 * Initialize the sets of collidable entities, physical entities, rays
+	 * and the map of classes, entities and spriteSheets.
+	 */
 	protected GameWorld(Vec2f dimensions) {
 		this.dimensions = dimensions;
-		collidables = new ArrayList<CollidableEntity>();
+		collidables = new HashSet<CollidableEntity>();
 		physEntities = new HashSet<PhysicalEntity>();
 		rays = new HashSet<Ray>();
 
@@ -82,10 +90,22 @@ public abstract class GameWorld {
 		loadSpriteSheets();
 	}
 
+	/**
+	 * Initialize the mapping from String to Class with all the game entities
+	 */
 	public abstract void setGameClasses();
 
+	/**
+	 * Initialize the mapping from String to SpriteSheet with all the game
+	 * sprite sheets
+	 */
 	public abstract void loadSpriteSheets();
 
+	/**
+	 * @param level
+	 * Iterate through all entities described on the level, initialize them
+	 * and their connections.
+	 */
 	public void initLevel(LevelData level) {
 		List<? extends EntityData> entitiesDatas = level.getEntities();
 		for (EntityData entityData : entitiesDatas) {
@@ -155,6 +175,13 @@ public abstract class GameWorld {
 		}
 	}
 
+	/**
+	 * @param shapeData
+	 * Using the shapeData from the level editor create the CollidingShape
+	 * of the Entity. If there are properties representing a CollidingSprite,
+	 * returns the appropriate object.
+	 * @return a CollidingShape object
+	 */
 	private CollidingShape createShape(ShapeData shapeData) {
 		CollidingShape shape = null;
 
@@ -217,14 +244,10 @@ public abstract class GameWorld {
 	 * 
 	 * @param g
 	 *            Graphics object used to draw
-	 * @param min
-	 *            minimum game coordinate that will appear on the viewport
-	 * @param max
-	 *            maximum game coordinate that will appear on the viewport
 	 * @param viewport
 	 *            the current viewport
 	 */
-	public void draw(Graphics2D g, Vec2f min, Vec2f max, Viewport viewport) {
+	public void draw(Graphics2D g, Viewport viewport) {
 		for (Entity entity : entities.values()) {
 			entity.draw(g);
 		}
@@ -233,10 +256,17 @@ public abstract class GameWorld {
 		}
 	}
 
+	/**
+	 * @param nanoseconds
+	 * Call the update method from each Entity, check for collisions
+	 * and check for ray collisions. At the end remove from the
+	 * world all Entities in removeEntities.
+	 */
 	public void update(long nanoseconds) {
 		for (Entity entity : entities.values()) {
 			entity.update(nanoseconds);
 		}
+		
 		for (CollidableEntity collidableA : collidables) {
 			for (CollidableEntity collidableB : collidables) {
 				if (!(collidableA.equals(collidableB))
@@ -248,6 +278,7 @@ public abstract class GameWorld {
 				}
 			}
 		}
+		
 		for (Ray ray : rays) {
 			RayCollision closest = getCollided(ray);
 			if (closest != null) {
@@ -263,6 +294,12 @@ public abstract class GameWorld {
 		removeEntities.clear();
 	}
 
+	/**
+	 * @param ray
+	 * Find the closest Entity that collided with the ray and return
+	 * an object which represents this collision
+	 * @return a RayCollision object
+	 */
 	public RayCollision getCollided(Ray ray) {
 		RayCollision closest = null;
 		float minDistance = Float.MAX_VALUE;
@@ -286,6 +323,11 @@ public abstract class GameWorld {
 		return dimensions;
 	}
 
+	/**
+	 * @param ray
+	 * Add the ray in a list to be removed at the end of the
+	 * update method
+	 */
 	public void removeRay(Ray ray) {
 		removeEntities.add(ray.toString());
 	}
@@ -294,6 +336,12 @@ public abstract class GameWorld {
 		collidables.add(entity);
 	}
 	
+	/**
+	 * @param entity
+	 * Remove a collidableEntity from the world. This method is called
+	 * in the remove method from collidableEntity and should not be called
+	 * from the update method of any Entity.
+	 */
 	public void removeCollidableEntity(CollidableEntity entity) {
 		collidables.remove(entity);
 	}
@@ -302,6 +350,12 @@ public abstract class GameWorld {
 		physEntities.add(entity);
 	}
 	
+	/**
+	 * @param entity
+	 * Remove a physicalEntity from the world. This method is called
+	 * in the remove method from physicalEntity and should not be called
+	 * from the update method of any Entity.
+	 */
 	public void removePhysicalEntity(PhysicalEntity entity) {
 		physEntities.remove(entity);
 	}
@@ -310,6 +364,12 @@ public abstract class GameWorld {
 		return spriteSheets.get(sheet);
 	}
 	
+	
+	/**
+	 * @param entityName
+	 * Add the entity in a list to be deleted at the end of the update
+	 * method.
+	 */
 	public void removeEntity(String entityName) {
 		removeEntities.add(entityName);
 	}

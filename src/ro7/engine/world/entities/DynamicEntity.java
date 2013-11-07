@@ -19,6 +19,11 @@ public abstract class DynamicEntity extends PhysicalEntity {
 		this.force = this.force.plus(force);
 	}
 
+	/* (non-Javadoc)
+	 * @see ro7.engine.world.entities.PhysicalEntity#onCollision(ro7.engine.world.Collision)
+	 * Get the collision mtv and, if the other Entity is also a PhysicalEntity, call the
+	 * correct collision response method by double dispatch.
+	 */
 	@Override
 	public void onCollision(Collision collision) {
 		assert collision.validCollision();
@@ -38,6 +43,10 @@ public abstract class DynamicEntity extends PhysicalEntity {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see ro7.engine.world.entities.PhysicalEntity#onCollisionDynamic(ro7.engine.world.Collision)
+	 * Apply a translation and an impulse proportional to the mtv on both shapes
+	 */
 	@Override
 	public void onCollisionDynamic(Collision collision) {
 		Vec2f mtv = collision.mtv;
@@ -63,6 +72,10 @@ public abstract class DynamicEntity extends PhysicalEntity {
 		other.applyImpulse(mtv.smult(-impulse).sdiv(2.0f));
 	}
 
+	/* (non-Javadoc)
+	 * @see ro7.engine.world.entities.PhysicalEntity#onCollisionDynamic(ro7.engine.world.Collision)
+	 * Apply a translation and an impulse proportional to the mtv only on this shape
+	 */
 	@Override
 	public void onCollisionStatic(Collision collision) {
 		Vec2f mtv = collision.mtv;

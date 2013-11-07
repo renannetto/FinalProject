@@ -131,10 +131,7 @@ public class Viewport {
 		g.setClip(viewport.getShape());
 		doTransform(g);
 
-		Vec2f min = screenToGame(position);
-		Vec2f max = screenToGame(dimensions);
-
-		gameSpace.draw(g, min, max, this);
+		gameSpace.draw(g, this);
 		undoTransform(g);
 		g.setClip(clip);
 	}

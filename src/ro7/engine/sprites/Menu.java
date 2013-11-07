@@ -25,6 +25,11 @@ public class Menu extends Sprite {
 		options.add(message);
 	}
 
+	/* (non-Javadoc)
+	 * @see ro7.engine.sprites.Sprite#draw(java.awt.Graphics2D)
+	 * Draw a list of messages on the screen with their
+	 * respective number.
+	 */
 	@Override
 	public void draw(Graphics2D g) {
 		g.translate(position.x, position.y);

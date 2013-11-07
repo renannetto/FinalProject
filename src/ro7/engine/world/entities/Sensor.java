@@ -15,6 +15,10 @@ public class Sensor extends CollidableEntity {
 		outputs.put("onCollision", new Output());
 	}
 
+	/* (non-Javadoc)
+	 * @see ro7.engine.world.entities.CollidableEntity#onCollision(ro7.engine.world.Collision)
+	 * Call its ouptut when a collision happens.
+	 */
 	@Override
 	public void onCollision(Collision collision) {
 		outputs.get("onCollision").run();

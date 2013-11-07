@@ -30,6 +30,10 @@ public class Message extends Sprite {
 		this.fontColor = message.fontColor;
 	}
 
+	/* (non-Javadoc)
+	 * @see ro7.engine.sprites.Sprite#draw(java.awt.Graphics2D)
+	 * Draw a text message on the screen.
+	 */
 	@Override
 	public void draw(Graphics2D g) {
 		g.setFont(new Font("Arial", Font.PLAIN, fontSize));

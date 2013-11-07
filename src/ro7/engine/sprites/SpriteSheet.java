@@ -16,10 +16,10 @@ public class SpriteSheet {
 	private Vec2i frameDimensions;
 	private Vec2i padding;
 	
-	public SpriteSheet(String sheetFile, Vec2i dimensions, Vec2i padding) {
+	public SpriteSheet(String sheetFile, Vec2i frameDimensions, Vec2i padding) {
 		try {
 			sheet = ImageIO.read(new File(sheetFile));
-			this.frameDimensions = dimensions;
+			this.frameDimensions = frameDimensions;
 			this.padding = padding;
 		} catch (IOException e) {
 			System.out.println("Invalid sprite sheet file");
