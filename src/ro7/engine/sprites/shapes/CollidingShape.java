@@ -34,8 +34,6 @@ public abstract class CollidingShape extends Sprite {
 
 	public abstract void changeFillColor(Color color);
 
-	public abstract Range projectTo(SeparatingAxis axis);
-
 	/**
 	 * @param axes
 	 * @param shape
@@ -48,8 +46,8 @@ public abstract class CollidingShape extends Sprite {
 		Vec2f mtv = null;
 		for (SeparatingAxis axis : axes) {
 			axis = axis.normalized();
-			Range range1 = this.projectTo(axis);
-			Range range2 = shape.projectTo(axis);
+			Range range1 = axis.project(this);
+			Range range2 = axis.project(shape);
 			if (!range1.overlaps(range2)) {
 				return null;
 			} else {

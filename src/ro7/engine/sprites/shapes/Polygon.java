@@ -95,11 +95,6 @@ public class Polygon extends EdgeShape {
 		}
 		return axes;
 	}
-	
-	@Override
-	public Range projectTo(SeparatingAxis axis) {
-		return axis.project(this);
-	}
 
 	@Override
 	public Vec2f collidesCompoundShape(CompoundShape compound) {

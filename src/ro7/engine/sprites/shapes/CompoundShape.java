@@ -120,12 +120,6 @@ public class CompoundShape extends CollidingShape {
 	}
 
 	@Override
-	public Range projectTo(SeparatingAxis axis) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Vec2f center() {
 		float xCenter = 0;
 		float yCenter = 0;

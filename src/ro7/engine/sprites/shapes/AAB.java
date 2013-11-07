@@ -129,11 +129,6 @@ public class AAB extends EdgeShape {
 		axes.add(new SeparatingAxis(new Vec2f(0.0f, 1.0f)));
 		return axes;
 	}
-
-	@Override
-	public Range projectTo(SeparatingAxis axis) {
-		return axis.project(this);
-	}
 	
 	@Override
 	public Vec2f collidesRay(Ray ray) {

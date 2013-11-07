@@ -68,11 +68,6 @@ public class CollidingSprite extends CollidingShape {
 	}
 
 	@Override
-	public Range projectTo(SeparatingAxis axis) {
-		return this.shape.projectTo(axis);
-	}
-
-	@Override
 	public Vec2f center() {
 		return this.shape.center();
 	}

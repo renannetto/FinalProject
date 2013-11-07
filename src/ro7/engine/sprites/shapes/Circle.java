@@ -153,11 +153,6 @@ public class Circle extends SingleShape {
 
 		return axes;
 	}
-
-	@Override
-	public Range projectTo(SeparatingAxis axis) {
-		return axis.project(this);
-	}
 	
 	@Override
 	public Vec2f collidesRay(Ray ray) {
