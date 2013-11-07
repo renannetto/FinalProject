@@ -4,6 +4,10 @@ import java.awt.Color;
 
 import cs195n.Vec2f;
 
+/**
+ * @author ro7
+ * Class for a non CompoundShape
+ */
 public abstract class SingleShape extends CollidingShape {
 
 	protected Color borderColor;

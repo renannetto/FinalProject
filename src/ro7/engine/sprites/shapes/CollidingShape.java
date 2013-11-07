@@ -36,6 +36,13 @@ public abstract class CollidingShape extends Sprite {
 
 	public abstract Range projectTo(SeparatingAxis axis);
 
+	/**
+	 * @param axes
+	 * @param shape
+	 * Find the mtv of this and shape on the set of separating axes.
+	 * @return a vector representing the mtv, or null if there is no
+	 * collision
+	 */
 	public Vec2f mtv(Set<SeparatingAxis> axes, CollidingShape shape) {
 		float minMagnitude = Float.MAX_VALUE;
 		Vec2f mtv = null;
@@ -63,6 +70,11 @@ public abstract class CollidingShape extends Sprite {
 
 	public abstract List<Vec2f> getPoints();
 
+	/* (non-Javadoc)
+	 * @see ro7.engine.sprites.Sprite#move(cs195n.Vec2f)
+	 * Move the collidingShape and update its points. 
+	 */
+	@Override
 	public void move(Vec2f translation) {
 		this.position = this.position.plus(translation);
 		updatePoints(translation);

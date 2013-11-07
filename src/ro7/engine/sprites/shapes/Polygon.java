@@ -74,6 +74,11 @@ public class Polygon extends EdgeShape {
 		return shapeMtv;
 	}
 	
+	/**
+	 * @return
+	 * Get the set of separating axes of the polygon
+	 * by taking the vectors perpendicular to the edges
+	 */
 	public Set<SeparatingAxis> getAxes() {
 		Set<SeparatingAxis> axes = new HashSet<SeparatingAxis>();
 		for (int i=0; i<points.size(); i++) {

@@ -9,6 +9,10 @@ import java.util.Set;
 import ro7.engine.world.Edge;
 import cs195n.Vec2f;
 
+/**
+ * @author ro7
+ * A shape bounded by edges (AAB or Polygon)
+ */
 public abstract class EdgeShape extends SingleShape {
 	
 	protected List<Vec2f> points;
@@ -29,6 +33,9 @@ public abstract class EdgeShape extends SingleShape {
 		}
 	}
 	
+	/**
+	 * @return the set of Edges of the shape
+	 */
 	public Set<Edge> edges() {
 		Set<Edge> edges = new HashSet<Edge>();
 		for (int i=0; i<points.size(); i++) {

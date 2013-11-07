@@ -119,6 +119,10 @@ public class AAB extends EdgeShape {
 		return null;
 	}
 
+	/**
+	 * Get the AAB separating axes (1, 0) and (0, 1).
+	 * @return
+	 */
 	public Set<SeparatingAxis> getAxes() {
 		Set<SeparatingAxis> axes = new HashSet<SeparatingAxis>();
 		axes.add(new SeparatingAxis(new Vec2f(1.0f, 0.0f)));

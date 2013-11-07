@@ -12,44 +12,18 @@ public class SeparatingAxis {
 		this.axis = axis;
 	}
 	
-	public Range project(Circle circle) {
+	/**
+	 * @param shape
+	 * Projects a shape on the axis by projecting all its points
+	 * and getting the min and the max projection.
+	 * @return
+	 */
+	public Range project(CollidingShape shape) {
 		float min = Float.MAX_VALUE;
 		float max = -Float.MAX_VALUE;
-		List<Vec2f> points = circle.getPoints();
+		List<Vec2f> points = shape.getPoints();
 		for (Vec2f point : points) {
 			float projection = point.dot(axis)/axis.mag();;
-			if (projection < min) {
-				min = projection;
-			}
-			if (projection > max) {
-				max = projection;
-			}
-		}
-		return new Range(min, max);
-	}
-	
-	public Range project(AAB aab) {
-		float min = Float.MAX_VALUE;
-		float max = -Float.MAX_VALUE;
-		List<Vec2f> points = aab.getPoints();
-		for (Vec2f point : points) {
-			float projection = point.dot(axis)/axis.mag();;
-			if (projection < min) {
-				min = projection;
-			}
-			if (projection > max) {
-				max = projection;
-			}
-		}
-		return new Range(min, max);
-	}
-	
-	public Range project(Polygon polygon) {
-		float min = Float.MAX_VALUE;
-		float max = -Float.MAX_VALUE;
-		List<Vec2f> points = polygon.getPoints();
-		for (Vec2f point : points) {
-			float projection = point.dot(axis)/axis.mag();
 			if (projection < min) {
 				min = projection;
 			}

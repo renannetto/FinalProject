@@ -130,6 +130,11 @@ public class Circle extends SingleShape {
 		return null;
 	}
 
+	/**
+	 * @param polygon
+	 * Get the SeparatingAxis of the circle with a polygon
+	 * @return
+	 */
 	public Set<SeparatingAxis> getAxes(Polygon polygon) {
 		Set<SeparatingAxis> axes = new HashSet<SeparatingAxis>();
 
