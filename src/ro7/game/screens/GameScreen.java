@@ -112,8 +112,7 @@ public class GameScreen extends Screen {
 						1.0f), new Vec2f(0.0f, 0.0f));
 			}
 		} catch (NullPointerException e) {
-			//System.out.println("No window size defined");
-			e.printStackTrace();
+			System.out.println("No window size defined");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
