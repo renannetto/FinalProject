@@ -16,7 +16,7 @@ public class VideoScreen extends Screen {
 	public VideoScreen(Application app, String filename) {
 		super(app);
 		IMediaReader reader = ToolFactory.makeReader(filename);
-		while(reader.readPacket() != null);
+		while (reader.readPacket() == null);
 	}
 
 	@Override
