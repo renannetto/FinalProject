@@ -71,8 +71,8 @@ public abstract class GameWorld {
 
 	/**
 	 * @param dimensions
-	 * Initialize the sets of collidable entities, physical entities, rays
-	 * and the map of classes, entities and spriteSheets.
+	 *            Initialize the sets of collidable entities, physical entities,
+	 *            rays and the map of classes, entities and spriteSheets.
 	 */
 	protected GameWorld(Vec2f dimensions) {
 		this.dimensions = dimensions;
@@ -103,8 +103,8 @@ public abstract class GameWorld {
 
 	/**
 	 * @param level
-	 * Iterate through all entities described on the level, initialize them
-	 * and their connections.
+	 *            Iterate through all entities described on the level,
+	 *            initialize them and their connections.
 	 */
 	public void initLevel(LevelData level) {
 		List<? extends EntityData> entitiesDatas = level.getEntities();
@@ -131,8 +131,8 @@ public abstract class GameWorld {
 			try {
 				constructor = entityClass.getConstructor(GameWorld.class,
 						CollidingShape.class, String.class, Map.class);
-				Entity entity = (Entity) constructor.newInstance(this, shape, entityName,
-						properties);
+				Entity entity = (Entity) constructor.newInstance(this, shape,
+						entityName, properties);
 				entities.put(entityName, entity);
 			} catch (NoSuchMethodException e) {
 				// TODO Auto-generated catch block
@@ -177,9 +177,10 @@ public abstract class GameWorld {
 
 	/**
 	 * @param shapeData
-	 * Using the shapeData from the level editor create the CollidingShape
-	 * of the Entity. If there are properties representing a CollidingSprite,
-	 * returns the appropriate object.
+	 *            Using the shapeData from the level editor create the
+	 *            CollidingShape of the Entity. If there are properties
+	 *            representing a CollidingSprite, returns the appropriate
+	 *            object.
 	 * @return a CollidingShape object
 	 */
 	private CollidingShape createShape(ShapeData shapeData) {
@@ -212,30 +213,30 @@ public abstract class GameWorld {
 			shape = new Polygon(center, color, points);
 			break;
 		}
-		
+
 		if (!properties.containsKey("spriteSheet")) {
 			return shape;
 		}
-		
-		SpriteSheet sheet = spriteSheets.get(properties
-				.get("spriteSheet"));
+
+		SpriteSheet sheet = spriteSheets.get(properties.get("spriteSheet"));
 		Vec2i sheetPosition = new Vec2i(Integer.parseInt(properties
 				.get("spritePosX")), Integer.parseInt(properties
 				.get("spritePosY")));
 		Vec2f position = shape.getPosition();
-		
+
 		ImageSprite sprite;
 		if (properties.containsKey("frames")) {
 			int frames = Integer.parseInt(properties.get("frames"));
 			int timeToMove = Integer.parseInt(properties.get("timeToMove"));
-			sprite = new AnimatedSprite(position, sheet, sheetPosition, frames, timeToMove);
+			sprite = new AnimatedSprite(position, sheet, sheetPosition,
+					sheet.getFrameDimensions(), frames, timeToMove);
 		} else {
-			sprite = new ImageSprite(position, sheet,
-					sheetPosition);
+			sprite = new ImageSprite(position, sheet, sheetPosition,
+					sheet.getFrameDimensions());
 		}
 		CollidingShape colShape = shape;
 		shape = new CollidingSprite(sprite, colShape);
-		
+
 		return shape;
 	}
 
@@ -258,15 +259,15 @@ public abstract class GameWorld {
 
 	/**
 	 * @param nanoseconds
-	 * Call the update method from each Entity, check for collisions
-	 * and check for ray collisions. At the end remove from the
-	 * world all Entities in removeEntities.
+	 *            Call the update method from each Entity, check for collisions
+	 *            and check for ray collisions. At the end remove from the world
+	 *            all Entities in removeEntities.
 	 */
 	public void update(long nanoseconds) {
 		for (Entity entity : entities.values()) {
 			entity.update(nanoseconds);
 		}
-		
+
 		for (CollidableEntity collidableA : collidables) {
 			for (CollidableEntity collidableB : collidables) {
 				if (!(collidableA.equals(collidableB))
@@ -278,7 +279,7 @@ public abstract class GameWorld {
 				}
 			}
 		}
-		
+
 		for (Ray ray : rays) {
 			RayCollision closest = getCollided(ray);
 			if (closest != null) {
@@ -296,8 +297,8 @@ public abstract class GameWorld {
 
 	/**
 	 * @param ray
-	 * Find the closest Entity that collided with the ray and return
-	 * an object which represents this collision
+	 *            Find the closest Entity that collided with the ray and return
+	 *            an object which represents this collision
 	 * @return a RayCollision object
 	 */
 	public RayCollision getCollided(Ray ray) {
@@ -325,8 +326,8 @@ public abstract class GameWorld {
 
 	/**
 	 * @param ray
-	 * Add the ray in a list to be removed at the end of the
-	 * update method
+	 *            Add the ray in a list to be removed at the end of the update
+	 *            method
 	 */
 	public void removeRay(Ray ray) {
 		removeEntities.add(ray.toString());
@@ -335,12 +336,12 @@ public abstract class GameWorld {
 	public void addCollidableEntity(CollidableEntity entity) {
 		collidables.add(entity);
 	}
-	
+
 	/**
 	 * @param entity
-	 * Remove a collidableEntity from the world. This method is called
-	 * in the remove method from collidableEntity and should not be called
-	 * from the update method of any Entity.
+	 *            Remove a collidableEntity from the world. This method is
+	 *            called in the remove method from collidableEntity and should
+	 *            not be called from the update method of any Entity.
 	 */
 	public void removeCollidableEntity(CollidableEntity entity) {
 		collidables.remove(entity);
@@ -349,12 +350,12 @@ public abstract class GameWorld {
 	public void addPhysicalEntity(PhysicalEntity entity) {
 		physEntities.add(entity);
 	}
-	
+
 	/**
 	 * @param entity
-	 * Remove a physicalEntity from the world. This method is called
-	 * in the remove method from physicalEntity and should not be called
-	 * from the update method of any Entity.
+	 *            Remove a physicalEntity from the world. This method is called
+	 *            in the remove method from physicalEntity and should not be
+	 *            called from the update method of any Entity.
 	 */
 	public void removePhysicalEntity(PhysicalEntity entity) {
 		physEntities.remove(entity);
@@ -363,12 +364,11 @@ public abstract class GameWorld {
 	public SpriteSheet getSpriteSheet(String sheet) {
 		return spriteSheets.get(sheet);
 	}
-	
-	
+
 	/**
 	 * @param entityName
-	 * Add the entity in a list to be deleted at the end of the update
-	 * method.
+	 *            Add the entity in a list to be deleted at the end of the
+	 *            update method.
 	 */
 	public void removeEntity(String entityName) {
 		removeEntities.add(entityName);

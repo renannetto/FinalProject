@@ -23,7 +23,6 @@ public class TextCutsceneScreen extends Screen {
 
 	private final float TEXT_BOX_HEIGHT = 100.0f;
 	private final Color TEXT_BOX_COLOR = Color.BLUE;
-	private final int FONT_SIZE = 20;
 	private final Color FONT_COLOR = Color.WHITE;
 
 	private List<String> texts;
@@ -134,7 +133,7 @@ public class TextCutsceneScreen extends Screen {
 			textBoxes.clear();
 			for (String text : texts) {
 				textBoxes.add(new TextBox(boxPosition, boxDimensions,
-						TEXT_BOX_COLOR, text, FONT_SIZE, FONT_COLOR));
+						TEXT_BOX_COLOR, text, FONT_COLOR));
 			}
 		} catch (NullPointerException e) {
 			System.out.println("No window size defined");

@@ -15,8 +15,8 @@ public class AnimatedSprite extends ImageSprite {
 	protected int elapsed;
 
 	public AnimatedSprite(Vec2f position, SpriteSheet sheet,
-			Vec2i sheetPosition, int frames, int timeToMove) {
-		super(position, sheet, sheetPosition);
+			Vec2i sheetPosition, Vec2f dimensions, int frames, int timeToMove) {
+		super(position, sheet, sheetPosition, dimensions);
 		this.initPosition = sheetPosition;
 		this.currentFrame = 0;
 		this.frames = frames;

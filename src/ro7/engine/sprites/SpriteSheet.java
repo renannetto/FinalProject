@@ -49,4 +49,8 @@ public class SpriteSheet {
 		g.drawImage(subImage, topLeft.x, topLeft.y, (int)dimensions.x, (int)dimensions.y, null);
 	}
 
+	public Vec2f getFrameDimensions() {
+		return new Vec2f(frameDimensions.x, frameDimensions.y);
+	}
+
 }
