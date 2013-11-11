@@ -1,0 +1,20 @@
+puzzles:
+ - sewers: you lose control of the player when standing onto the water stream
+ - castle: the scenario will change according to some actions (some tiles may disappear, go higher, etc...)
+ - tower: hidden rooms that you can reach only if fall in a hole
+
+bosses:
+ - prison: the prison guard (only a tougher enemy)
+ - sewers: a giant immovable monster that tries to bring you closer using water streams
+ - castle: a mage that spawns minions and uses area of effect attacks
+ - tower: the final boss, which is immovable, but has a barrier that you have to disable before hitting him. 
+	He may spawn minions and use magic to attack you.
+
+combat skills:
+ - fire: area explosion
+ - lightning: stun
+ - water: push enemies
+
+key skills (to reach new areas): 
+ - time slow: make the player faster than everything
+ - teleport: create a light that go ahead and teleports the player to the closest wall

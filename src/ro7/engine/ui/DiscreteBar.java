@@ -5,12 +5,12 @@ import java.awt.Graphics2D;
 import ro7.engine.sprites.ImageSprite;
 import cs195n.Vec2f;
 
-public class Lifebar extends HudElement {
+public class DiscreteBar extends HudElement {
 	
 	private ImageSprite lifeSprite;
 	private int lives;
 
-	public Lifebar(ImageSprite lifeSprite, int lives) {
+	public DiscreteBar(ImageSprite lifeSprite, int lives) {
 		super();
 		this.lifeSprite = lifeSprite;
 		this.lives = lives;
