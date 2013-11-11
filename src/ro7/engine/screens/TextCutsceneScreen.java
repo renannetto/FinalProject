@@ -21,7 +21,6 @@ import ro7.engine.sprites.TextBox;
 
 public class TextCutsceneScreen extends Screen {
 
-	private final float TEXT_BOX_HEIGHT = 100.0f;
 	private final Color TEXT_BOX_COLOR = Color.BLUE;
 	private final Color FONT_COLOR = Color.WHITE;
 
@@ -126,10 +125,11 @@ public class TextCutsceneScreen extends Screen {
 	@Override
 	public void onResize(Vec2i newSize) {
 		super.onResize(newSize);
+		previousScreen.onResize(newSize);
 		try {
+			Vec2f boxDimensions = new Vec2f(newSize.x, newSize.y/5);
 			Vec2f boxPosition = new Vec2f(((float) newSize.x) / 2.0f, newSize.y
-					- (TEXT_BOX_HEIGHT / 2.0f));
-			Vec2f boxDimensions = new Vec2f(newSize.x, TEXT_BOX_HEIGHT);
+					- (boxDimensions.y / 2.0f));
 
 			textBoxes.clear();
 			for (String text : texts) {

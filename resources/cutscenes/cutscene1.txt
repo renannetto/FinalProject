@@ -1,0 +1,2 @@
+This is an example cutscene. <n>Press enter to go to the next text box.
+Press enter again to go back to the game.
