@@ -45,7 +45,7 @@ public class Message extends Sprite {
 	}
 	
 	public void draw(Graphics2D g, Vec2f dimensions) {
-		String[] texts = text.split("\n");
+		String[] texts = text.split("<n>");
 		for (int i=0; i<texts.length; i++) {
 			String t = texts[i];
 			
@@ -56,7 +56,7 @@ public class Message extends Sprite {
 			int height = metrics.getHeight();
 			int width = metrics.stringWidth(t);
 			
-			while (height > (dimensions.y + OFFSET)) {
+			while (height*texts.length > (dimensions.y + OFFSET)) {
 				fontSize = fontSize/2.0f;
 				g.setFont(g.getFont().deriveFont(fontSize));
 				metrics = g.getFontMetrics();

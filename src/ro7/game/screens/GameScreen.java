@@ -9,13 +9,14 @@ import java.util.Set;
 
 import ro7.engine.Application;
 import ro7.engine.Screen;
+import ro7.engine.screens.TextCutsceneScreen;
 import ro7.engine.world.Viewport;
 import ro7.game.world.FinalWorld;
 import cs195n.Vec2f;
 import cs195n.Vec2i;
 
 public class GameScreen extends Screen {
-	
+
 	private Viewport viewport;
 	private FinalWorld world;
 
@@ -28,7 +29,7 @@ public class GameScreen extends Screen {
 
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
-		
+		world.update(nanosSincePreviousTick);
 	}
 
 	@Override
@@ -46,14 +47,45 @@ public class GameScreen extends Screen {
 	public void onKeyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		switch (keyCode) {
-		
+		case 65:
+			world.movePlayer(new Vec2f(-1.0f, 0.0f));
+			break;
+		case 68:
+			world.movePlayer(new Vec2f(1.0f, 0.0f));
+			break;
+		case 83:
+			world.movePlayer(new Vec2f(0.0f, 1.0f));
+			break;
+		case 84:
+			world.stopPlayer();
+			app.pushScreen(new TextCutsceneScreen(app, this,
+					"resources/cutscenes/cutscene1.txt"));
+			break;
+		case 87:
+			world.movePlayer(new Vec2f(0.0f, -1.0f));
+			break;
 		}
 		pressedKeys.add(keyCode);
 	}
 
 	@Override
 	public void onKeyReleased(KeyEvent e) {
-		pressedKeys.remove(e.getKeyCode());
+		int keyCode = e.getKeyCode();
+		switch (keyCode) {
+		case 65:
+			world.stopPlayer();
+			break;
+		case 68:
+			world.stopPlayer();
+			break;
+		case 83:
+			world.stopPlayer();
+			break;
+		case 87:
+			world.stopPlayer();
+			break;
+		}
+		pressedKeys.remove(keyCode);
 	}
 
 	@Override
@@ -87,7 +119,7 @@ public class GameScreen extends Screen {
 
 	@Override
 	public void onMouseWheelMoved(MouseWheelEvent e) {
-		
+
 	}
 
 	@Override
@@ -102,7 +134,8 @@ public class GameScreen extends Screen {
 
 			if (viewport != null) {
 				Vec2f gamePosition = viewport.getGamePosition();
-				Vec2f proportion = new Vec2f((float)newSize.x/oldSize.x, (float)newSize.y/oldSize.y);
+				Vec2f proportion = new Vec2f((float) newSize.x / oldSize.x,
+						(float) newSize.y / oldSize.y);
 				Vec2f scale = viewport.getScale().pmult(proportion);
 				viewport = new Viewport(new Vec2f(0.0f, 0.0f), new Vec2f(
 						newSize.x, newSize.y), world, scale, gamePosition);

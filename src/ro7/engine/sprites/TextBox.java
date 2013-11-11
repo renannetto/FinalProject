@@ -8,7 +8,7 @@ import cs195n.Vec2f;
 
 public class TextBox extends Sprite {
 	
-	private final int INITIAL_FONT_SIZE = 36;
+	private final int INITIAL_FONT_SIZE = 20;
 	
 	private Message text;
 	private AAB box;

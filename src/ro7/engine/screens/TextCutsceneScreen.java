@@ -21,20 +21,21 @@ import ro7.engine.sprites.TextBox;
 
 public class TextCutsceneScreen extends Screen {
 
-	private final float TEXT_BOX_HEIGHT = 100.0f;
 	private final Color TEXT_BOX_COLOR = Color.BLUE;
 	private final Color FONT_COLOR = Color.WHITE;
 
+	private Screen previousScreen;
 	private List<String> texts;
 	private List<TextBox> textBoxes;
 	private int currentBox;
 
-	public TextCutsceneScreen(Application app, String textFilename) {
+	public TextCutsceneScreen(Application app, Screen previousScreen, String textFilename) {
 		super(app);
+		this.previousScreen = previousScreen;
+		texts = new ArrayList<String>();
+		textBoxes = new ArrayList<TextBox>();
+		currentBox = 0;
 		try {
-			texts = new ArrayList<String>();
-			textBoxes = new ArrayList<TextBox>();
-			
 			BufferedReader reader = new BufferedReader(new FileReader(new File(
 					textFilename)));
 			String line = reader.readLine();
@@ -43,8 +44,6 @@ public class TextCutsceneScreen extends Screen {
 				line = reader.readLine();
 			}
 			reader.close();
-
-			currentBox = 0;
 		} catch (FileNotFoundException e) {
 			System.out.println("Invalid text file!");
 		} catch (IOException e) {
@@ -61,6 +60,7 @@ public class TextCutsceneScreen extends Screen {
 
 	@Override
 	public void onDraw(Graphics2D g) {
+		previousScreen.onDraw(g);
 		if (currentBox < textBoxes.size()) {
 			textBoxes.get(currentBox).draw(g);
 		}
@@ -125,10 +125,11 @@ public class TextCutsceneScreen extends Screen {
 	@Override
 	public void onResize(Vec2i newSize) {
 		super.onResize(newSize);
+		previousScreen.onResize(newSize);
 		try {
+			Vec2f boxDimensions = new Vec2f(newSize.x, newSize.y/5);
 			Vec2f boxPosition = new Vec2f(((float) newSize.x) / 2.0f, newSize.y
-					- (TEXT_BOX_HEIGHT / 2.0f));
-			Vec2f boxDimensions = new Vec2f(newSize.x, TEXT_BOX_HEIGHT);
+					- (boxDimensions.y / 2.0f));
 
 			textBoxes.clear();
 			for (String text : texts) {

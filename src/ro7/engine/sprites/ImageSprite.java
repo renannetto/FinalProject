@@ -21,6 +21,13 @@ public class ImageSprite extends Sprite {
 		this.sheetPosition = sheetPosition;
 		this.dimensions = dimensions;
 	}
+	
+	public ImageSprite(Vec2f position, SpriteSheet sheet, Vec2i sheetPosition) {
+		super(position);
+		this.sheet = sheet;
+		this.sheetPosition = sheetPosition;
+		this.dimensions = sheet.getFrameDimensions();
+	}
 
 	@Override
 	public void draw(Graphics2D g) {

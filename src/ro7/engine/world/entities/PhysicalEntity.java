@@ -15,21 +15,37 @@ public abstract class PhysicalEntity extends CollidableEntity {
 	protected Vec2f force;
 	protected float restitution;
 
-	protected PhysicalEntity(GameWorld world, CollidingShape shape, String name, Map<String, String> properties) {
+	protected PhysicalEntity(GameWorld world, CollidingShape shape,
+			String name, Map<String, String> properties) {
 		super(world, shape, name, properties);
-		this.mass = Float.parseFloat(properties.get("mass"));
-		this.velocity = new Vec2f(Float.parseFloat(properties.get("velocityX")), Float.parseFloat(properties.get("velocityY")));
+		if (properties.containsKey("mass")) {
+			this.mass = Float.parseFloat(properties.get("mass"));
+		} else {
+			this.mass = 0.0f;
+		}
+		if (properties.containsKey("velocity")) {
+			this.velocity = new Vec2f(Float.parseFloat(properties
+					.get("velocityX")), Float.parseFloat(properties
+					.get("velocityY")));
+		} else {
+			this.velocity = new Vec2f(0.0f, 0.0f);
+		}
 		this.force = new Vec2f(0.0f, 0.0f);
 		this.impulse = new Vec2f(0.0f, 0.0f);
-		this.restitution = Float.parseFloat(properties.get("restitution"));
-		
+		if (properties.containsKey("restitution")) {
+			this.restitution = Float.parseFloat(properties.get("restitution"));
+		} else {
+			this.restitution = 0.0f;
+		}
+
 		world.addPhysicalEntity(this);
 	}
 
-	/* (non-Javadoc)
-	 * @see ro7.engine.world.entities.Entity#update(long)
-	 * Update the Entity velocity, then translate its shape
-	 * by the correct distance.
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ro7.engine.world.entities.Entity#update(long) Update the Entity
+	 * velocity, then translate its shape by the correct distance.
 	 */
 	@Override
 	public void update(long nanoseconds) {
@@ -54,18 +70,20 @@ public abstract class PhysicalEntity extends CollidableEntity {
 
 	@Override
 	public abstract void onCollision(Collision collision);
-	
+
 	public abstract void onCollisionDynamic(Collision collision);
-	
+
 	public abstract void onCollisionStatic(Collision collision);
 
 	public float cor(PhysicalEntity other) {
 		return (float) Math.sqrt(restitution * other.restitution);
 	}
-	
-	/* (non-Javadoc)
-	 * @see ro7.engine.world.entities.Entity#remove()
-	 * Remove this entity from the world. This method is called automatically in GameWorld.
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ro7.engine.world.entities.Entity#remove() Remove this entity from
+	 * the world. This method is called automatically in GameWorld.
 	 */
 	@Override
 	public void remove() {
