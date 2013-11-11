@@ -37,5 +37,9 @@ public abstract class FloatingSprite {
 	}
 	
 	public abstract void drawSprite(Graphics2D g);
+	
+	public void moveTo(Vec2f position) {
+		this.position = position;
+	}
 
 }

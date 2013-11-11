@@ -2,22 +2,27 @@ package ro7.engine.ui;
 
 import java.awt.Graphics2D;
 
-import ro7.engine.sprites.FloatingSprite;
 import ro7.engine.sprites.ImageSprite;
 import cs195n.Vec2f;
 
-public class EntityPicture extends FloatingSprite {
+public class EntityPicture extends HudElement {
 	
 	private ImageSprite sprite;
 
-	public EntityPicture(Vec2f position, ImageSprite sprite) {
-		super(position);
+	public EntityPicture(ImageSprite sprite) {
+		super();
 		this.sprite = sprite;
+		this.sprite.moveTo(position);
 	}
 
 	@Override
 	public void drawSprite(Graphics2D g) {
 		sprite.draw(g);
+	}
+
+	@Override
+	public Vec2f getDimensions() {
+		return sprite.getDimensions();
 	}
 
 }

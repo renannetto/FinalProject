@@ -1,23 +1,21 @@
 package ro7.game.world;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.util.HashMap;
 
 import ro7.engine.sprites.ImageSprite;
 import ro7.engine.sprites.SpriteSheet;
 import ro7.engine.sprites.shapes.AAB;
+import ro7.engine.ui.EntityPicture;
 import ro7.engine.ui.Lifebar;
+import ro7.engine.ui.ScreenPosition;
 import ro7.engine.world.GameWorld;
-import ro7.engine.world.Viewport;
 import cs195n.Vec2f;
 import cs195n.Vec2i;
 
 public class FinalWorld extends GameWorld {
 
 	private Player player;
-	
-	private Lifebar lifebar;
 
 	public FinalWorld(Vec2f dimensions) {
 		super(dimensions);
@@ -27,18 +25,15 @@ public class FinalWorld extends GameWorld {
 				new HashMap<String, String>());
 		entities.put("player", player);
 
-		lifebar = new Lifebar(new Vec2f(50.0f, 0.0f), new ImageSprite(
+		Lifebar lifebar = new Lifebar(new ImageSprite(
 				new Vec2f(0.0f, 0.0f), spriteSheets.get("heart"), new Vec2i(0,
 						0)), 3);
+		hud.addHudElement(ScreenPosition.TOP_LEFT, lifebar);
 		
-	}
-	
-	@Override
-	public void draw(Graphics2D g, Viewport viewport) {
-		// TODO Auto-generated method stub
-		super.draw(g, viewport);
-		
-		lifebar.draw(g, viewport);
+		EntityPicture life = new EntityPicture(new ImageSprite(
+				new Vec2f(0.0f, 0.0f), spriteSheets.get("heart"), new Vec2i(0,
+						0)));
+		hud.addHudElement(ScreenPosition.BOTTOM_RIGHT, life);		
 	}
 
 	@Override

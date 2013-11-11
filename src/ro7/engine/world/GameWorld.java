@@ -20,6 +20,7 @@ import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.sprites.shapes.CollidingSprite;
 import ro7.engine.sprites.shapes.CompoundShape;
 import ro7.engine.sprites.shapes.Polygon;
+import ro7.engine.ui.Hud;
 import ro7.engine.world.entities.CollidableEntity;
 import ro7.engine.world.entities.Entity;
 import ro7.engine.world.entities.PhysicalEntity;
@@ -61,6 +62,8 @@ public abstract class GameWorld {
 	protected Map<String, Entity> entities;
 
 	protected Map<String, SpriteSheet> spriteSheets;
+	
+	protected Hud hud;
 
 	protected Vec2f dimensions;
 	protected Set<CollidableEntity> collidables;
@@ -88,6 +91,8 @@ public abstract class GameWorld {
 
 		spriteSheets = new HashMap<String, SpriteSheet>();
 		loadSpriteSheets();
+		
+		hud = new Hud(dimensions);
 	}
 
 	/**
@@ -255,6 +260,7 @@ public abstract class GameWorld {
 		for (Ray ray : rays) {
 			ray.draw(g);
 		}
+		hud.draw(g, viewport);
 	}
 
 	/**
