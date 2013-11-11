@@ -35,4 +35,14 @@ public class Sensor extends CollidableEntity {
 		
 	}
 
+	@Override
+	public void onCollisionDynamic(Collision collision) {
+		outputs.get("onCollision").run();
+	}
+
+	@Override
+	public void onCollisionStatic(Collision collision) {
+		outputs.get("onCollision").run();
+	}
+
 }
