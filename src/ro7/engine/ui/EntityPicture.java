@@ -12,7 +12,6 @@ public class EntityPicture extends HudElement {
 	public EntityPicture(ImageSprite sprite) {
 		super();
 		this.sprite = sprite;
-		this.sprite.moveTo(position);
 	}
 
 	@Override
@@ -23,6 +22,12 @@ public class EntityPicture extends HudElement {
 	@Override
 	public Vec2f getDimensions() {
 		return sprite.getDimensions();
+	}
+	
+	@Override
+	public void moveTo(Vec2f position) {
+		super.moveTo(position);
+		this.sprite.moveTo(position);
 	}
 
 }
