@@ -24,32 +24,26 @@ public class AudioManager implements LineListener {
 		private AudioInputStream encoded;
 		private AudioInputStream stream;
 
-		public MusicThread(String fileName)
-				throws UnsupportedAudioFileException, IOException,
-				LineUnavailableException {
-			encoded = AudioSystem.getAudioInputStream(new File(fileName)); // Original
-																			// file,
-																			// not
-																			// yet
-																			// decoded
-																			// (decode
-																			// to
-																			// OGG)
-			AudioFormat encodedFormat = encoded.getFormat();
-			AudioFormat decodedFormat = getDecodedFormat(encodedFormat);
-			stream = AudioSystem.getAudioInputStream(decodedFormat, encoded); // New
-																				// Stream,
-																				// decoded
-																				// with
-																				// the
-																				// 3rd
-																				// Party
-																				// SPI
-																				// (jorbis)
+		public MusicThread(String fileName) {
+			try {
+				encoded = AudioSystem.getAudioInputStream(new File(fileName));
+				AudioFormat encodedFormat = encoded.getFormat();
+				AudioFormat decodedFormat = getDecodedFormat(encodedFormat);
+				stream = AudioSystem
+						.getAudioInputStream(decodedFormat, encoded);
 
-			line = AudioSystem.getSourceDataLine(decodedFormat);
-			line.open(decodedFormat);
-			line.start();
+				line = AudioSystem.getSourceDataLine(decodedFormat);
+				line.open(decodedFormat);
+				line.start();
+			} catch (UnsupportedAudioFileException e) {
+				System.out.println("Audio file not supported");
+			} catch (IOException e) {
+				System.out.println("Could not open audio file");
+			} // Original
+			catch (LineUnavailableException e) {
+				System.out.println("Unavailable line");
+			}
+
 		}
 
 		@Override
@@ -86,10 +80,15 @@ public class AudioManager implements LineListener {
 
 		private AudioInputStream audioStream;
 
-		public SongThread(String fileName)
-				throws UnsupportedAudioFileException, IOException,
-				LineUnavailableException {
-			audioStream = AudioSystem.getAudioInputStream(new File(fileName));
+		public SongThread(String fileName) {
+			try {
+				audioStream = AudioSystem
+						.getAudioInputStream(new File(fileName));
+			} catch (UnsupportedAudioFileException e) {
+				System.out.println("Audio file not supported");
+			} catch (IOException e) {
+				System.out.println("Could not open audio file");
+			} // Original
 		}
 
 		@Override
@@ -107,9 +106,7 @@ public class AudioManager implements LineListener {
 	}
 
 	// Method for playing MUSIC ONLY - Music should be on OGG format.
-	public void playMusic(String fileName)
-			throws UnsupportedAudioFileException, IOException,
-			LineUnavailableException, InterruptedException {
+	public void playMusic(String fileName) {
 
 		// Start a thread to open and play the file
 		MusicThread mt = new MusicThread(fileName);
@@ -118,9 +115,7 @@ public class AudioManager implements LineListener {
 	}
 
 	// Method for playing SOUNDS - WAV format
-	public void playSound(String fileName)
-			throws UnsupportedAudioFileException, IOException,
-			LineUnavailableException {
+	public void playSound(String fileName) {
 		SongThread st = new SongThread(fileName);
 		Thread thread = new Thread(st);
 		thread.start();
@@ -147,12 +142,8 @@ public class AudioManager implements LineListener {
 	@Override
 	public void update(LineEvent event) {
 		// TODO Auto-generated method stub
-		//System.out.println(event.toString());
-		if (event.getType().equals(LineEvent.Type.STOP)) // Acho que isso limpa
-															// os resources
-															// usados... not
-															// sure
-		{
+		// System.out.println(event.toString());
+		if (event.getType().equals(LineEvent.Type.STOP)) {
 			event.getLine().close();
 		}
 	}
