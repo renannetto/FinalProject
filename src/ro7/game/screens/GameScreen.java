@@ -4,11 +4,16 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import ro7.engine.Application;
 import ro7.engine.Screen;
+import ro7.engine.audio.AudioManager;
 import ro7.engine.screens.TextCutsceneScreen;
 import ro7.engine.world.Viewport;
 import ro7.game.world.FinalWorld;
@@ -25,6 +30,22 @@ public class GameScreen extends Screen {
 	public GameScreen(Application app) {
 		super(app);
 		pressedKeys = new HashSet<Integer>();
+		
+		try {
+			AudioManager.getInstance().playMusic("resources/musics/music1.wav");
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -52,6 +73,20 @@ public class GameScreen extends Screen {
 			break;
 		case 68:
 			world.movePlayer(new Vec2f(1.0f, 0.0f));
+			break;
+		case 77:
+			try {
+				AudioManager.getInstance().playSound("resources/musics/music2.wav");
+			} catch (UnsupportedAudioFileException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (LineUnavailableException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} 
 			break;
 		case 83:
 			world.movePlayer(new Vec2f(0.0f, 1.0f));
