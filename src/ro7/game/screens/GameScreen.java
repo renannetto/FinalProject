@@ -10,6 +10,7 @@ import java.util.Set;
 import ro7.engine.Application;
 import ro7.engine.Screen;
 import ro7.engine.audio.AudioManager;
+import ro7.engine.screens.SlideShowScreen;
 import ro7.engine.screens.TextCutsceneScreen;
 import ro7.engine.world.Viewport;
 import ro7.game.world.FinalWorld;
@@ -58,6 +59,10 @@ public class GameScreen extends Screen {
 			break;
 		case 77:
 			AudioManager.getInstance().playSound("resources/musics/music2.wav");
+			break;
+		case 80:
+			world.stopPlayer();
+			app.pushScreen(new SlideShowScreen(app, "resources/slideshows/slideshow1.txt"));
 			break;
 		case 83:
 			world.movePlayer(new Vec2f(0.0f, 1.0f));

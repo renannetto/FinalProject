@@ -1,0 +1,4 @@
+resources/slideshows/image1.jpg
+3
+resources/slideshows/image2.jpg
+5
