@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="C:/Users/renan.o.netto/Documents/workspace/FinalProject/lib/jogg-0.0.7.jar"/>
-	<classpathentry kind="lib" path="C:/Users/renan.o.netto/Documents/workspace/FinalProject/lib/jorbis-0.0.15.jar"/>
-	<classpathentry kind="lib" path="C:/Users/renan.o.netto/Documents/workspace/FinalProject/lib/tritonus_share.jar"/>
-	<classpathentry kind="lib" path="C:/Users/renan.o.netto/Documents/workspace/FinalProject/lib/vorbisspi1.0.3.jar"/>
+	<classpathentry kind="lib" path="/gpfs/main/home/ro7/workspace/FinalProject/lib/jogg-0.0.7.jar"/>
+	<classpathentry kind="lib" path="/gpfs/main/home/ro7/workspace/FinalProject/lib/jorbis-0.0.15.jar"/>
+	<classpathentry kind="lib" path="/gpfs/main/home/ro7/workspace/FinalProject/lib/tritonus_share.jar"/>
+	<classpathentry kind="lib" path="/gpfs/main/home/ro7/workspace/FinalProject/lib/vorbisspi1.0.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
