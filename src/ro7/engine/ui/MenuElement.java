@@ -1,12 +1,9 @@
 package ro7.engine.ui;
 
-import java.awt.Graphics2D;
-
+import ro7.engine.sprites.AnimatedSprite;
+import ro7.engine.sprites.SpriteSheet;
 import cs195n.Vec2f;
 import cs195n.Vec2i;
-import ro7.engine.sprites.AnimatedSprite;
-import ro7.engine.sprites.Sprite;
-import ro7.engine.sprites.SpriteSheet;
 
 public class MenuElement extends AnimatedSprite{
 	

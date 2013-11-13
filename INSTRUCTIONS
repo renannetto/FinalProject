@@ -1,5 +1,9 @@
 Final 1 INSTRUCTIONS
 
+In the menu screen:
+	-Use W and S to go through the options
+	-Press Enter to select one 
+
 In the game screen:
 	-You are the black square. The other objects are your HUD and were drawn using the ui API.
 	-Use WASD to move the player

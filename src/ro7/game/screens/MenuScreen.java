@@ -46,6 +46,23 @@ public class MenuScreen extends Screen {
 		{
 			case KeyEvent.VK_W: world.menu.moveIndex(-1); break;
 			case KeyEvent.VK_S: world.menu.moveIndex(1); break;
+			case KeyEvent.VK_ENTER:
+			{
+				switch(world.menu.getSelectedIndex())
+				{
+					case 0:
+					{
+						app.pushScreen(new GameScreen(app));
+					}
+					break;
+					case 2:
+					{
+						System.exit(0);
+					}
+					break;
+				}
+			}
+			break;
 		}
 	}
 

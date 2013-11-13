@@ -2,9 +2,7 @@ package ro7.engine.ui;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import cs195n.Vec2f;
 
@@ -21,6 +19,10 @@ public class Menu {
 		this.spacing = spacing;
 		selectedIndex = 0;
 		elements = new ArrayList<MenuElement>();
+	}
+	
+	public int getSelectedIndex(){
+		return selectedIndex;
 	}
 	
 	public void addElement(MenuElement element)
