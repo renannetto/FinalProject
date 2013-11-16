@@ -35,6 +35,9 @@ public class GameScreen extends Screen {
 	public void onTick(long nanosSincePreviousTick) {
 		try {
 			world.update(nanosSincePreviousTick);
+			if (world.lost()) {
+				app.popScreen();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

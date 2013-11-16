@@ -23,12 +23,14 @@ public class FinalWorld extends GameWorld {
 
 	private Player player;
 	private FinalMap map;
+	private boolean lost;
 
 	public FinalWorld(Vec2f dimensions) {
 		super(dimensions);
 
 		Map<String, String> playerProperties = new HashMap<String, String>();
 		playerProperties.put("targetVelocity", "100");
+		playerProperties.put("lives", "3");
 		playerProperties.put("categoryMask", "1");
 		playerProperties.put("collisionMask", "2");
 		player = new Player(this, new AAB(dimensions.sdiv(2.0f), Color.BLACK,
@@ -57,6 +59,8 @@ public class FinalWorld extends GameWorld {
 		hud.addHudElement(ScreenPosition.TOP_RIGHT, energybar);
 		
 		map = MapParser.parseMap("resources/maps/map1.txt");
+		
+		lost = false;
 	}
 
 	@Override
@@ -102,6 +106,14 @@ public class FinalWorld extends GameWorld {
 		FinalNode startNode = map.getNode(position);
 		FinalNode endNode = map.getNode(player.getPosition());
 		return map.shortestPath(startNode, endNode);
+	}
+
+	public void lose() {
+		lost = true;
+	}
+	
+	public boolean lost() {
+		return lost;
 	}
 
 }

@@ -19,10 +19,14 @@ public abstract class StaticEntity extends PhysicalEntity {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see ro7.engine.world.entities.PhysicalEntity#onCollision(ro7.engine.world.Collision)
-	 * Get the collision mtv and, if the other Entity is also a PhysicalEntity, call the
-	 * correct collision response method by double dispatch.
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * ro7.engine.world.entities.PhysicalEntity#onCollision(ro7.engine.world
+	 * .Collision) Get the collision mtv and, if the other Entity is also a
+	 * PhysicalEntity, call the correct collision response method by double
+	 * dispatch.
 	 */
 	@Override
 	public void onCollision(Collision collision) {
@@ -34,17 +38,17 @@ public abstract class StaticEntity extends PhysicalEntity {
 			mtv = mtv.smult(-1.0f);
 		}
 
-		try {
-			PhysicalEntity other = (PhysicalEntity) collision.other;
-			other.onCollisionStatic(new Collision(this, mtv.smult(-1.0f),
-					other.shape, this.shape));
-		} catch (Exception e) {
-		}
+		collision.other.onCollisionStatic(new Collision(this, mtv.smult(-1.0f),
+				collision.otherShape, this.shape));
 	}
 
-	/* (non-Javadoc)
-	 * @see ro7.engine.world.entities.PhysicalEntity#onCollisionDynamic(ro7.engine.world.Collision)
-	 * Apply a translation and an impulse proportional to the mtv only on the other shape
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * ro7.engine.world.entities.PhysicalEntity#onCollisionDynamic(ro7.engine
+	 * .world.Collision) Apply a translation and an impulse proportional to the
+	 * mtv only on the other shape
 	 */
 	@Override
 	public void onCollisionDynamic(Collision collision) {
@@ -68,9 +72,12 @@ public abstract class StaticEntity extends PhysicalEntity {
 		other.applyImpulse(mtv.smult(impulse).sdiv(2.0f));
 	}
 
-	/* (non-Javadoc)
-	 * @see ro7.engine.world.entities.PhysicalEntity#onCollisionStatic(ro7.engine.world.Collision)
-	 * Do nothing.
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * ro7.engine.world.entities.PhysicalEntity#onCollisionStatic(ro7.engine
+	 * .world.Collision) Do nothing.
 	 */
 	@Override
 	public void onCollisionStatic(Collision collision) {

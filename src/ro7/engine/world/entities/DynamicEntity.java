@@ -19,10 +19,14 @@ public abstract class DynamicEntity extends PhysicalEntity {
 		this.force = this.force.plus(force);
 	}
 
-	/* (non-Javadoc)
-	 * @see ro7.engine.world.entities.PhysicalEntity#onCollision(ro7.engine.world.Collision)
-	 * Get the collision mtv and, if the other Entity is also a PhysicalEntity, call the
-	 * correct collision response method by double dispatch.
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * ro7.engine.world.entities.PhysicalEntity#onCollision(ro7.engine.world
+	 * .Collision) Get the collision mtv and, if the other Entity is also a
+	 * PhysicalEntity, call the correct collision response method by double
+	 * dispatch.
 	 */
 	@Override
 	public void onCollision(Collision collision) {
@@ -34,18 +38,17 @@ public abstract class DynamicEntity extends PhysicalEntity {
 			mtv = mtv.smult(-1.0f);
 		}
 
-		try {
-			PhysicalEntity other = (PhysicalEntity) collision.other;
-			other.onCollisionDynamic(new Collision(this, mtv.smult(-1.0f),
-					other.shape, this.shape));
-		} catch (Exception e) {
-
-		}
+		collision.other.onCollisionDynamic(new Collision(this,
+				mtv.smult(-1.0f), collision.otherShape, this.shape));
 	}
 
-	/* (non-Javadoc)
-	 * @see ro7.engine.world.entities.PhysicalEntity#onCollisionDynamic(ro7.engine.world.Collision)
-	 * Apply a translation and an impulse proportional to the mtv on both shapes
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * ro7.engine.world.entities.PhysicalEntity#onCollisionDynamic(ro7.engine
+	 * .world.Collision) Apply a translation and an impulse proportional to the
+	 * mtv on both shapes
 	 */
 	@Override
 	public void onCollisionDynamic(Collision collision) {
@@ -72,9 +75,13 @@ public abstract class DynamicEntity extends PhysicalEntity {
 		other.applyImpulse(mtv.smult(-impulse).sdiv(2.0f));
 	}
 
-	/* (non-Javadoc)
-	 * @see ro7.engine.world.entities.PhysicalEntity#onCollisionDynamic(ro7.engine.world.Collision)
-	 * Apply a translation and an impulse proportional to the mtv only on this shape
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * ro7.engine.world.entities.PhysicalEntity#onCollisionDynamic(ro7.engine
+	 * .world.Collision) Apply a translation and an impulse proportional to the
+	 * mtv only on this shape
 	 */
 	@Override
 	public void onCollisionStatic(Collision collision) {
