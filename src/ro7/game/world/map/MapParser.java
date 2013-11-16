@@ -8,33 +8,33 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import ro7.game.exceptions.ExpectedTokenException;
 import ro7.game.exceptions.InvalidTokenException;
-import cs195n.Vec2f;
 import cs195n.Vec2i;
 
 public class MapParser {
+	
+	private static FinalMap map;
 
 	public static FinalMap parseMap(String mapFilename) {
-		FinalMap map = new FinalMap();
-		
-		File mapFile = new File(mapFilename);	
+		File mapFile = new File(mapFilename);
 		try {
 			Map<Vec2i, FinalNode> nodes = parseFile(mapFile);
-			
+
 			for (Map.Entry<Vec2i, FinalNode> nodesEntry : nodes.entrySet()) {
 				Vec2i gridPosition = nodesEntry.getKey();
 				FinalNode node = nodesEntry.getValue();
-				
+
 				connectNeighbor(nodes, node, gridPosition.plus(1, 0));
 				connectNeighbor(nodes, node, gridPosition.plus(-1, 0));
 				connectNeighbor(nodes, node, gridPosition.plus(0, 1));
 				connectNeighbor(nodes, node, gridPosition.plus(0, -1));
-				
+
 				map.addNode(node);
 			}
-			
+
 		} catch (FileNotFoundException e) {
 			System.out.println(mapFilename + " not found");
 			return null;
@@ -51,19 +51,21 @@ public class MapParser {
 		return map;
 	}
 
-	private static void connectNeighbor(Map<Vec2i, FinalNode> nodes, FinalNode node, Vec2i gridPosition) {
+	private static void connectNeighbor(Map<Vec2i, FinalNode> nodes,
+			FinalNode node, Vec2i gridPosition) {
 		if (nodes.containsKey(gridPosition)) {
 			node.connect(nodes.get(gridPosition), 1);
 		}
 	}
 
-	private static Map<Vec2i, FinalNode> parseFile(File mapFile) throws FileNotFoundException,
-			IOException, ExpectedTokenException, InvalidTokenException {
+	private static Map<Vec2i, FinalNode> parseFile(File mapFile)
+			throws FileNotFoundException, IOException, ExpectedTokenException,
+			InvalidTokenException {
 		Map<Vec2i, FinalNode> nodes = new HashMap<Vec2i, FinalNode>();
-		
+
 		BufferedReader reader;
 		Scanner scanner;
-		
+
 		reader = new BufferedReader(new FileReader(mapFile));
 		String line = reader.readLine();
 		scanner = new Scanner(line);
@@ -73,14 +75,16 @@ public class MapParser {
 			scanner.close();
 			throw new ExpectedTokenException("<width>", line);
 		}
-		int gridX = scanner.nextInt();
+		int tileX = scanner.nextInt();
 
 		if (!scanner.hasNextInt()) {
 			reader.close();
 			scanner.close();
 			throw new ExpectedTokenException("<height>", line);
 		}
-		int gridY = scanner.nextInt();
+		int tileY = scanner.nextInt();
+		Vec2i tileDimensions = new Vec2i(tileX, tileY);
+		map = new FinalMap(tileDimensions);
 
 		scanner.close();
 
@@ -103,29 +107,31 @@ public class MapParser {
 
 		scanner.close();
 
-		for (int i = 0; i < mapWidth; i++) {
+		for (int j = 0; j < mapHeight; j++) {
 			line = reader.readLine();
+			if (line == null) {
+				reader.close();
+				throw new ExpectedTokenException("X or -", line);
+			}
 			scanner = new Scanner(line);
-			for (int j = 0; j < mapHeight; j++) {
-				if (!scanner.hasNext("X|-")) {
+			for (int i = 0; i < mapWidth; i++) {
+				String tile = scanner.findInLine(Pattern.compile("X|-"));
+				if (tile == null) {
 					reader.close();
 					scanner.close();
-					throw new InvalidTokenException(
-							"Invalid token on line " + line);
+					throw new InvalidTokenException("Invalid token on line "
+							+ line);
 				}
-				String tile = scanner.next("X|-");
 				if (tile.equals("-")) {
 					Vec2i gridPosition = new Vec2i(i, j);
-					Vec2f position = new Vec2f(i*gridX, j*gridY);
-					nodes.put(gridPosition, new FinalNode(position));
+					nodes.put(gridPosition, new FinalNode(gridPosition));
 				}
 			}
 			scanner.close();
 		}
 
 		reader.close();
-		scanner.close();
-		
+
 		return nodes;
 	}
 

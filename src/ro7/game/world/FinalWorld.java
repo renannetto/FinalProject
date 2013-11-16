@@ -15,6 +15,7 @@ import ro7.engine.world.GameWorld;
 import ro7.game.world.enemies.Enemy;
 import ro7.game.world.map.FinalMap;
 import ro7.game.world.map.FinalNode;
+import ro7.game.world.map.MapParser;
 import cs195n.Vec2f;
 import cs195n.Vec2i;
 
@@ -36,6 +37,7 @@ public class FinalWorld extends GameWorld {
 		entities.put("player", player);
 
 		Map<String, String> enemyProperties = new HashMap<String, String>();
+		enemyProperties.put("targetVelocity", "100");
 		playerProperties.put("categoryMask", "2");
 		playerProperties.put("collisionMask", "3");
 		Enemy enemy = new Enemy(this, new AAB(new Vec2f(dimensions.x / 2.0f,
@@ -54,7 +56,7 @@ public class FinalWorld extends GameWorld {
 		ContinuousBar energybar = new ContinuousBar(barSprite, fillSprite);
 		hud.addHudElement(ScreenPosition.TOP_RIGHT, energybar);
 		
-		map = new FinalMap();
+		map = MapParser.parseMap("resources/maps/map1.txt");
 	}
 
 	@Override
@@ -97,8 +99,8 @@ public class FinalWorld extends GameWorld {
 	}
 
 	public List<FinalNode> pathToPlayer(Vec2f position) {
-		FinalNode startNode = new FinalNode(position);
-		FinalNode endNode = new FinalNode(player.getPosition());
+		FinalNode startNode = map.getNode(position);
+		FinalNode endNode = map.getNode(player.getPosition());
 		return map.shortestPath(startNode, endNode);
 	}
 

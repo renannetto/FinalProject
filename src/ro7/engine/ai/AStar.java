@@ -121,7 +121,7 @@ public abstract class AStar<T extends Node> {
 	 * @param end target node
 	 * @return the cost from node to end
 	 */
-	public abstract float heuristic(Node node, Node end);
+	public abstract float heuristic(T node, T end);
 
 	private class PathNode<PathT extends Node> implements Comparable<PathNode<PathT>> {
 

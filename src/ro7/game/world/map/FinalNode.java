@@ -1,19 +1,21 @@
 package ro7.game.world.map;
 
 import ro7.engine.util.Node;
-import cs195n.Vec2f;
+import cs195n.Vec2i;
 
 public class FinalNode extends Node {
 	
-	public final Vec2f position;
+	public final Vec2i position;
 	
-	public FinalNode(Vec2f position) {
+	public FinalNode(Vec2i position) {
 		super();
 		this.position = position;
 	}
 	
 	public float distance(FinalNode other) {
-		return this.position.dist(other.position);
+		float distX = this.position.x*other.position.x;
+		float distY = this.position.y*other.position.y;
+		return (float)Math.sqrt(distX + distY);
 	}
 
 	@Override
@@ -35,8 +37,10 @@ public class FinalNode extends Node {
 		if (position == null) {
 			if (other.position != null)
 				return false;
-		} else if (!position.equals(other.position))
-			return false;
+		} else {
+			if (!this.position.equals(other.position))
+				return false;
+		}
 		return true;
 	}
 

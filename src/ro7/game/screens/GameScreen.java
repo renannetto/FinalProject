@@ -33,7 +33,11 @@ public class GameScreen extends Screen {
 
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
-		world.update(nanosSincePreviousTick);
+		try {
+			world.update(nanosSincePreviousTick);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -173,6 +177,7 @@ public class GameScreen extends Screen {
 			}
 		} catch (NullPointerException e) {
 			System.out.println("No window size defined");
+			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
