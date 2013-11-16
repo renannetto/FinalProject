@@ -4,9 +4,9 @@ import ro7.engine.ai.AStar;
 import ro7.engine.util.Graph;
 import ro7.engine.util.Node;
 
-public class FinalAStar extends AStar {
+public class FinalAStar extends AStar<FinalNode> {
 
-	public FinalAStar(Graph graph) {
+	public FinalAStar(Graph<FinalNode> graph) {
 		super(graph);
 	}
 

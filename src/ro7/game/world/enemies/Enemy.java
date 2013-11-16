@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import ro7.engine.sprites.shapes.CollidingShape;
-import ro7.engine.util.Node;
 import ro7.engine.world.GameWorld;
 import ro7.game.world.Character;
 import ro7.game.world.FinalWorld;
@@ -27,10 +26,9 @@ public class Enemy extends Character {
 	public void update(long nanoseconds) {
 		super.update(nanoseconds);
 		if (path.isEmpty()) {
-			List<Node> nodePath = ((FinalWorld)world).pathToPlayer(shape.getPosition());
-			for (Node node : nodePath) {
-				FinalNode finalNode = (FinalNode) node;
-				path.add(finalNode.position);
+			List<FinalNode> nodePath = ((FinalWorld)world).pathToPlayer(shape.getPosition());
+			for (FinalNode node : nodePath) {
+				path.add(node.position);
 			}
 		} else {
 			Vec2f currentPosition = shape.getPosition();

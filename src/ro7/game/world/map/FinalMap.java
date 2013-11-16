@@ -3,9 +3,8 @@ package ro7.game.world.map;
 import java.util.List;
 
 import ro7.engine.util.Graph;
-import ro7.engine.util.Node;
 
-public class FinalMap extends Graph {
+public class FinalMap extends Graph<FinalNode> {
 	
 	private FinalAStar astar;
 	
@@ -13,7 +12,7 @@ public class FinalMap extends Graph {
 		astar = new FinalAStar(this);
 	}
 	
-	public List<Node> shortestPath(FinalNode start, FinalNode end) {
+	public List<FinalNode> shortestPath(FinalNode start, FinalNode end) {
 		return astar.shortestPath(start, end);
 	}
 

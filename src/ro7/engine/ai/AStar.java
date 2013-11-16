@@ -12,11 +12,11 @@ import java.util.Set;
 import ro7.engine.util.Graph;
 import ro7.engine.util.Node;
 
-public abstract class AStar {
+public abstract class AStar<T extends Node> {
 
-	protected Graph graph;
+	protected Graph<T> graph;
 
-	protected AStar(Graph graph) {
+	protected AStar(Graph<T> graph) {
 		this.graph = graph;
 	}
 
@@ -27,16 +27,16 @@ public abstract class AStar {
 	 * @return a list of nodes with the shortest path or null
 	 * if there is no path
 	 */
-	public List<Node> shortestPath(Node start, Node end) {
-		Map<Node, Node> predecessor = new HashMap<Node, Node>();
-		Set<Node> visited = new HashSet<Node>();
+	public List<T> shortestPath(T start, T end) {
+		Map<T, T> predecessor = new HashMap<T, T>();
+		Set<T> visited = new HashSet<T>();
 
-		Map<Node, Float> nodesCost = new HashMap<Node, Float>();
+		Map<T, Float> nodesCost = new HashMap<T, Float>();
 
-		Queue<PathNode> queue = new PriorityQueue<PathNode>();
-		queue.add(new PathNode(start, heuristic(start, end)));
+		Queue<PathNode<T>> queue = new PriorityQueue<PathNode<T>>();
+		queue.add(new PathNode<T>(start, heuristic(start, end)));
 
-		PathNode pathNode = queue.remove();
+		PathNode<T> pathNode = queue.remove();
 		visited.add(pathNode.node);
 		queue = expandNode(queue, pathNode, predecessor, visited, nodesCost,
 				end);
@@ -60,12 +60,12 @@ public abstract class AStar {
 	 * @param predecessor predecessor mapping
 	 * @return list of nodes with the path
 	 */
-	private List<Node> reconstructPath(Node start, PathNode pathNode,
-			Map<Node, Node> predecessor) {
-		List<Node> path = new ArrayList<Node>();
+	private List<T> reconstructPath(T start, PathNode<T> pathNode,
+			Map<T, T> predecessor) {
+		List<T> path = new ArrayList<T>();
 		path.add(0, pathNode.node);
 
-		Node pre = predecessor.get(pathNode.node);
+		T pre = predecessor.get(pathNode.node);
 		while (!pre.equals(start)) {
 			path.add(0, pre);
 			pre = predecessor.get(pre);
@@ -85,15 +85,15 @@ public abstract class AStar {
 	 * @param end end node of the path
 	 * @return the resulting queue
 	 */
-	private Queue<PathNode> expandNode(Queue<PathNode> queue,
-			PathNode pathNode, Map<Node, Node> predecessor,
-			Set<Node> visited, Map<Node, Float> nodesCost, Node end) {
-		Map<Node, Integer> neighbors = pathNode.node.getNeighbors();
-		for (Map.Entry<Node, Integer> neighbor : neighbors.entrySet()) {
-			Node neighborNode = neighbor.getKey();
+	private Queue<PathNode<T>> expandNode(Queue<PathNode<T>> queue,
+			PathNode<T> pathNode, Map<T, T> predecessor,
+			Set<T> visited, Map<T, Float> nodesCost, T end) {
+		Map<T, Integer> neighbors = (Map<T, Integer>)pathNode.node.getNeighbors();
+		for (Map.Entry<T, Integer> neighbor : neighbors.entrySet()) {
+			T neighborNode = neighbor.getKey();
 			float cost = pathNode.cost + neighbor.getValue()
 					- heuristic(pathNode.node, end);
-			PathNode newPathNode = new PathNode(neighborNode, cost
+			PathNode<T> newPathNode = new PathNode<T>(neighborNode, cost
 					+ heuristic(neighborNode, end));
 
 			if (!visited.contains(newPathNode.node)) {
@@ -123,18 +123,18 @@ public abstract class AStar {
 	 */
 	public abstract float heuristic(Node node, Node end);
 
-	private class PathNode implements Comparable<PathNode> {
+	private class PathNode<PathT extends Node> implements Comparable<PathNode<PathT>> {
 
-		private Node node;
+		private PathT node;
 		private float cost;
 
-		public PathNode(Node node, float cost) {
+		public PathNode(PathT node, float cost) {
 			this.node = node;
 			this.cost = cost;
 		}
 
 		@Override
-		public int compareTo(PathNode o) {
+		public int compareTo(PathNode<PathT> o) {
 			if (cost < o.cost)
 				return -1;
 			if (cost > o.cost)
@@ -147,7 +147,7 @@ public abstract class AStar {
 			if (!obj.getClass().equals(this.getClass())) {
 				return false;
 			}
-			PathNode other = (PathNode) obj;
+			PathNode<PathT> other = (PathNode<PathT>) obj;
 			return this.node.equals(other.node);
 		}
 

@@ -11,7 +11,6 @@ import ro7.engine.sprites.shapes.AAB;
 import ro7.engine.ui.ContinuousBar;
 import ro7.engine.ui.DiscreteBar;
 import ro7.engine.ui.ScreenPosition;
-import ro7.engine.util.Node;
 import ro7.engine.world.GameWorld;
 import ro7.game.world.enemies.Enemy;
 import ro7.game.world.map.FinalMap;
@@ -97,7 +96,7 @@ public class FinalWorld extends GameWorld {
 		entities.put(attack.getName(), attack);
 	}
 
-	public List<Node> pathToPlayer(Vec2f position) {
+	public List<FinalNode> pathToPlayer(Vec2f position) {
 		FinalNode startNode = new FinalNode(position);
 		FinalNode endNode = new FinalNode(player.getPosition());
 		return map.shortestPath(startNode, endNode);
