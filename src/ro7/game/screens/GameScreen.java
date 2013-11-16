@@ -28,7 +28,7 @@ public class GameScreen extends Screen {
 		super(app);
 		pressedKeys = new HashSet<Integer>();
 
-		AudioManager.getInstance().playMusic("resources/musics/surf.ogg");
+		// AudioManager.getInstance().playMusic("resources/musics/surf.ogg");
 	}
 
 	@Override
@@ -51,29 +51,45 @@ public class GameScreen extends Screen {
 	public void onKeyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		switch (keyCode) {
-		case 65:
-			world.movePlayer(new Vec2f(-1.0f, 0.0f));
+		case KeyEvent.VK_W:
+			if (!pressedKeys.contains(keyCode)) {
+				world.stopPlayer(new Vec2f(0.0f, 1.0f));
+				world.movePlayer(new Vec2f(0.0f, -1.0f));
+			}
 			break;
-		case 68:
-			world.movePlayer(new Vec2f(1.0f, 0.0f));
+		case KeyEvent.VK_A:
+			if (!pressedKeys.contains(keyCode)) {
+				world.stopPlayer(new Vec2f(1.0f, 0.0f));
+				world.movePlayer(new Vec2f(-1.0f, 0.0f));
+			}
 			break;
-		case 77:
+		case KeyEvent.VK_S:
+			if (!pressedKeys.contains(keyCode)) {
+				world.stopPlayer(new Vec2f(0.0f, -1.0f));
+				world.movePlayer(new Vec2f(0.0f, 1.0f));
+			}
+			break;
+		case KeyEvent.VK_D:
+			if (!pressedKeys.contains(keyCode)) {
+				world.stopPlayer(new Vec2f(-1.0f, 0.0f));
+				world.movePlayer(new Vec2f(1.0f, 0.0f));
+			}
+			break;
+		case KeyEvent.VK_SPACE:
+			world.attack();
+			break;
+		case KeyEvent.VK_M:
 			AudioManager.getInstance().playSound("resources/musics/music2.wav");
 			break;
-		case 80:
+		case KeyEvent.VK_P:
 			world.stopPlayer();
-			app.pushScreen(new SlideShowScreen(app, "resources/slideshows/slideshow1.txt"));
+			app.pushScreen(new SlideShowScreen(app,
+					"resources/slideshows/slideshow1.txt"));
 			break;
-		case 83:
-			world.movePlayer(new Vec2f(0.0f, 1.0f));
-			break;
-		case 84:
+		case KeyEvent.VK_T:
 			world.stopPlayer();
 			app.pushScreen(new TextCutsceneScreen(app, this,
 					"resources/cutscenes/cutscene1.txt"));
-			break;
-		case 87:
-			world.movePlayer(new Vec2f(0.0f, -1.0f));
 			break;
 		}
 		pressedKeys.add(keyCode);
@@ -83,17 +99,17 @@ public class GameScreen extends Screen {
 	public void onKeyReleased(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		switch (keyCode) {
-		case 65:
-			world.stopPlayer();
+		case KeyEvent.VK_A:
+			world.stopPlayer(new Vec2f(-1.0f, 0.0f));
 			break;
-		case 68:
-			world.stopPlayer();
+		case KeyEvent.VK_D:
+			world.stopPlayer(new Vec2f(1.0f, 0.0f));
 			break;
-		case 83:
-			world.stopPlayer();
+		case KeyEvent.VK_S:
+			world.stopPlayer(new Vec2f(0.0f, 1.0f));
 			break;
-		case 87:
-			world.stopPlayer();
+		case KeyEvent.VK_W:
+			world.stopPlayer(new Vec2f(0.0f, -1.0f));
 			break;
 		}
 		pressedKeys.remove(keyCode);

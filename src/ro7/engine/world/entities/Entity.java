@@ -35,5 +35,9 @@ public abstract class Entity {
 	}
 	
 	public abstract void remove();
+	
+	public String getName() {
+		return name;
+	}
 
 }
