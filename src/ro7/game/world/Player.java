@@ -10,23 +10,10 @@ import ro7.engine.world.GameWorld;
 import cs195n.Vec2f;
 
 public class Player extends Character {
-	
-	private Vec2f direction;
 
 	public Player(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {
 		super(world, shape, name, properties);
-		this.direction = new Vec2f(0.0f, -1.0f);
-	}
-	
-	@Override
-	public void move(Vec2f direction) {
-		super.move(direction);
-		if (this.velocity.mag2() > 0) {
-			this.direction = this.velocity.normalized();
-		} else {
-			this.direction = this.velocity;
-		}
 	}
 
 	public Attack attack() {
@@ -39,6 +26,10 @@ public class Player extends Character {
 		CollidingShape attackShape = new AAB(attackPosition, Color.BLUE, Color.BLUE, new Vec2f(36.0f, 36.0f));
 		Attack attack = new Attack(world, attackShape, "player_attack", attackProperties);
 		return attack;
+	}
+
+	public Vec2f getPosition() {
+		return shape.getPosition();
 	}
 
 }

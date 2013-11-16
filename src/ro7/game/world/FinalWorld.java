@@ -2,6 +2,7 @@ package ro7.game.world;
 
 import java.awt.Color;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ro7.engine.sprites.ImageSprite;
@@ -10,14 +11,18 @@ import ro7.engine.sprites.shapes.AAB;
 import ro7.engine.ui.ContinuousBar;
 import ro7.engine.ui.DiscreteBar;
 import ro7.engine.ui.ScreenPosition;
+import ro7.engine.util.Node;
 import ro7.engine.world.GameWorld;
 import ro7.game.world.enemies.Enemy;
+import ro7.game.world.map.FinalMap;
+import ro7.game.world.map.FinalNode;
 import cs195n.Vec2f;
 import cs195n.Vec2i;
 
 public class FinalWorld extends GameWorld {
 
 	private Player player;
+	private FinalMap map;
 
 	public FinalWorld(Vec2f dimensions) {
 		super(dimensions);
@@ -49,6 +54,8 @@ public class FinalWorld extends GameWorld {
 				spriteSheets.get("energy_fill"), new Vec2i(0, 0));
 		ContinuousBar energybar = new ContinuousBar(barSprite, fillSprite);
 		hud.addHudElement(ScreenPosition.TOP_RIGHT, energybar);
+		
+		map = new FinalMap();
 	}
 
 	@Override
@@ -88,6 +95,12 @@ public class FinalWorld extends GameWorld {
 	public void attack() {
 		Attack attack = player.attack();
 		entities.put(attack.getName(), attack);
+	}
+
+	public List<Node> pathToPlayer(Vec2f position) {
+		FinalNode startNode = new FinalNode(position);
+		FinalNode endNode = new FinalNode(player.getPosition());
+		return map.shortestPath(startNode, endNode);
 	}
 
 }

@@ -39,6 +39,7 @@ public class MovingEntity extends DynamicEntity {
 	}
 
 	public void move(Vec2f direction) {
+		direction = direction.normalized();
 		velocity = velocity.plus(direction.smult(targetVelocity));
 		if (velocity.mag2() != 0) {
 			velocity = velocity.normalized();
