@@ -28,6 +28,13 @@ public abstract class AStar<T extends Node> {
 	 * if there is no path
 	 */
 	public List<T> shortestPath(T start, T end) {
+		if (start==null || end==null) {
+			return null;
+		}
+		if (start.equals(end)) {
+			return null;
+		}
+		
 		Map<T, T> predecessor = new HashMap<T, T>();
 		Set<T> visited = new HashSet<T>();
 

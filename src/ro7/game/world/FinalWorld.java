@@ -20,6 +20,8 @@ import cs195n.Vec2f;
 import cs195n.Vec2i;
 
 public class FinalWorld extends GameWorld {
+	
+	private final String PLAYER_ATTACK = "playerAttack";
 
 	private Player player;
 	private DiscreteBar lifebar;
@@ -33,24 +35,29 @@ public class FinalWorld extends GameWorld {
 		playerProperties.put("targetVelocity", "100");
 		playerProperties.put("lives", "3");
 		playerProperties.put("categoryMask", "1");
-		playerProperties.put("collisionMask", "2");
+		playerProperties.put("collisionMask", "10");
+		playerProperties.put("attackCategory", "4");
+		playerProperties.put("attackCollision", "2");
 		player = new Player(this, new AAB(dimensions.sdiv(2.0f), Color.BLACK,
 				Color.BLACK, new Vec2f(36.0f, 36.0f)), "player",
 				playerProperties);
 		entities.put("player", player);
 
 		Map<String, String> enemyProperties = new HashMap<String, String>();
-		enemyProperties.put("targetVelocity", "100");
+		enemyProperties.put("actionRadius", "500");
+		enemyProperties.put("targetVelocity", "50");
 		enemyProperties.put("lives", "2");
-		playerProperties.put("categoryMask", "2");
-		playerProperties.put("collisionMask", "3");
+		enemyProperties.put("categoryMask", "2");
+		enemyProperties.put("collisionMask", "7");
+		enemyProperties.put("attackCategory", "8");
+		enemyProperties.put("attackCollision", "1");
 		Enemy enemy = new Enemy(this, new AAB(new Vec2f(dimensions.x / 2.0f,
 				dimensions.y / 4.0f), Color.RED, Color.RED, new Vec2f(36.0f,
 				36.0f)), "enemy1", enemyProperties);
 		entities.put("enemy1", enemy);
 
-		lifebar = new DiscreteBar(new ImageSprite(new Vec2f(0.0f,
-				0.0f), spriteSheets.get("heart"), new Vec2i(0, 0)), 3);
+		lifebar = new DiscreteBar(new ImageSprite(new Vec2f(0.0f, 0.0f),
+				spriteSheets.get("heart"), new Vec2i(0, 0)), 3);
 		hud.addHudElement(ScreenPosition.TOP_LEFT, lifebar);
 
 		ImageSprite barSprite = new ImageSprite(new Vec2f(0.0f, 0.0f),
@@ -59,9 +66,9 @@ public class FinalWorld extends GameWorld {
 				spriteSheets.get("energy_fill"), new Vec2i(0, 0));
 		ContinuousBar energybar = new ContinuousBar(barSprite, fillSprite);
 		hud.addHudElement(ScreenPosition.TOP_RIGHT, energybar);
-		
+
 		map = MapParser.parseMap("resources/maps/map1.txt");
-		
+
 		lost = false;
 	}
 
@@ -100,26 +107,54 @@ public class FinalWorld extends GameWorld {
 	}
 
 	public void attack() {
-		Attack attack = player.attack();
+		Attack attack = player.attack(PLAYER_ATTACK);
 		entities.put(attack.getName(), attack);
 	}
 
 	public List<FinalNode> pathToPlayer(Vec2f position) {
 		FinalNode startNode = map.getNode(position);
-		FinalNode endNode = map.getNode(player.getPosition());
+
+		Vec2f playerPosition = player.getPosition();
+		Vec2i tileDimensions = map.getTileDimensions();
+		Vec2f target;
+		if (playerPosition.x > position.x) {
+			target = new Vec2f(playerPosition.x - tileDimensions.x*1.5f, playerPosition.y);
+		} else if (playerPosition.x < position.x) {
+			target = new Vec2f(playerPosition.x + tileDimensions.x*1.5f, playerPosition.y);
+		} else if (playerPosition.y > position.y) {
+			target = new Vec2f(playerPosition.x, playerPosition.y - tileDimensions.y*1.5f);
+		} else {
+			target = new Vec2f(playerPosition.x, playerPosition.y + tileDimensions.y*1.5f);
+		}
+
+		FinalNode endNode = map.getNode(target);
+		return map.shortestPath(startNode, endNode);
+	}
+
+	public List<FinalNode> shortestPath(Vec2f start, Vec2f end) {
+		FinalNode startNode = map.getNode(start);
+		FinalNode endNode = map.getNode(end);
+		if (startNode == null || endNode == null) {
+			return null;
+		}
+
 		return map.shortestPath(startNode, endNode);
 	}
 
 	public void lose() {
 		lost = true;
 	}
-	
+
 	public boolean lost() {
 		return lost;
 	}
 
 	public void decreaseLife() {
 		lifebar.decreaseLife(1);
+	}
+
+	public Vec2f getPlayerPosition() {
+		return player.getPosition();
 	}
 
 }

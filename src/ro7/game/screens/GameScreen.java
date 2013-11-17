@@ -98,6 +98,9 @@ public class GameScreen extends Screen {
 			app.pushScreen(new TextCutsceneScreen(app, this,
 					"resources/cutscenes/cutscene1.txt"));
 			break;
+		case KeyEvent.VK_ESCAPE:
+			app.popScreen();
+			break;
 		}
 		pressedKeys.add(keyCode);
 	}

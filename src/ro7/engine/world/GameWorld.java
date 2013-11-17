@@ -70,6 +70,7 @@ public abstract class GameWorld {
 	protected Set<PhysicalEntity> physEntities;
 	protected Set<Ray> rays;
 
+	protected Set<Entity> newEntities;
 	protected Set<String> removeEntities;
 
 	/**
@@ -83,6 +84,7 @@ public abstract class GameWorld {
 		physEntities = new HashSet<PhysicalEntity>();
 		rays = new HashSet<Ray>();
 
+		newEntities = new HashSet<Entity>();
 		removeEntities = new HashSet<String>();
 
 		classes = new HashMap<String, Class<?>>();
@@ -294,6 +296,11 @@ public abstract class GameWorld {
 			}
 		}
 
+		for (Entity entity : newEntities) {
+			entities.put(entity.getName(), entity);
+		}
+		newEntities.clear();
+		
 		for (String entity : removeEntities) {
 			entities.get(entity).remove();
 			entities.remove(entity);
@@ -369,6 +376,10 @@ public abstract class GameWorld {
 
 	public SpriteSheet getSpriteSheet(String sheet) {
 		return spriteSheets.get(sheet);
+	}
+	
+	public void addEntity(Entity entity) {
+		newEntities.add(entity);
 	}
 
 	/**
