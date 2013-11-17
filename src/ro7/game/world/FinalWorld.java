@@ -44,7 +44,7 @@ public class FinalWorld extends GameWorld {
 		entities.put("player", player);
 
 		Map<String, String> enemyProperties = new HashMap<String, String>();
-		enemyProperties.put("actionRadius", "500");
+		enemyProperties.put("actionRadius", "50");
 		enemyProperties.put("targetVelocity", "50");
 		enemyProperties.put("lives", "2");
 		enemyProperties.put("categoryMask", "2");

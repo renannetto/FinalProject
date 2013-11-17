@@ -23,7 +23,7 @@ import cs195n.Vec2f;
 
 public class Enemy extends Character {
 
-	private final String ATTACK_NAME = "enemyAttack";
+//	private final String ATTACK_NAME = "enemyAttack";
 
 	private float actionRadius;
 	private List<Vec2f> path;
@@ -58,7 +58,7 @@ public class Enemy extends Character {
 		attack.addChild(attackPlayer);
 
 		root.addChild(attack);
-		// root.addChild(walk);
+		root.addChild(walk);
 	}
 
 	@Override
