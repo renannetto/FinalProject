@@ -14,7 +14,6 @@ import ro7.engine.ai.Status;
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
-import ro7.game.world.Attack;
 import ro7.game.world.Character;
 import ro7.game.world.FinalWorld;
 import ro7.game.world.Player;
@@ -123,9 +122,9 @@ public class Enemy extends Character {
 
 	private class AttackPlayer extends Action {
 
-		private final float ATTACK_DELAY = 1.0f;
-
-		private float closeTime = 0.0f;
+//		private final float ATTACK_DELAY = 1.0f;
+//
+//		private float closeTime = 0.0f;
 
 		@Override
 		public void reset() {
@@ -138,27 +137,27 @@ public class Enemy extends Character {
 				return Status.RUNNING;
 			}
 
-			Vec2f playerPosition = ((FinalWorld) world).getPlayerPosition();
-			float distanceX = Math
-					.abs(playerPosition.x - shape.getPosition().x);
-			float distanceY = Math
-					.abs(playerPosition.y - shape.getPosition().y);
-			if ((distanceX < shape.getDimensions().x * 2 && distanceY < shape
-					.getDimensions().y)
-					|| (distanceY < shape.getDimensions().y * 2 && distanceX < shape
-							.getDimensions().x)) {
-				direction = playerPosition.minus(shape.getPosition())
-						.normalized();
-				if (closeTime > ATTACK_DELAY) {
-					closeTime = 0.0f;
-					Attack enemyAttack = attack(ATTACK_NAME);
-					world.addEntity(enemyAttack);
-					return Status.SUCCESS;
-				} else {
-					closeTime += nanoseconds / 1000000000.0f;
-					return Status.RUNNING;
-				}
-			}
+//			Vec2f playerPosition = ((FinalWorld) world).getPlayerPosition();
+//			float distanceX = Math
+//					.abs(playerPosition.x - shape.getPosition().x);
+//			float distanceY = Math
+//					.abs(playerPosition.y - shape.getPosition().y);
+//			if ((distanceX < shape.getDimensions().x * 2 && distanceY < shape
+//					.getDimensions().y)
+//					|| (distanceY < shape.getDimensions().y * 2 && distanceX < shape
+//							.getDimensions().x)) {
+//				direction = playerPosition.minus(shape.getPosition())
+//						.normalized();
+//				if (closeTime > ATTACK_DELAY) {
+//					closeTime = 0.0f;
+//					Attack enemyAttack = attack(ATTACK_NAME);
+//					world.addEntity(enemyAttack);
+//					return Status.SUCCESS;
+//				} else {
+//					closeTime += nanoseconds / 1000000000.0f;
+//					return Status.RUNNING;
+//				}
+//			}
 
 			List<FinalNode> nodePath = ((FinalWorld) world).pathToPlayer(shape
 					.getPosition());

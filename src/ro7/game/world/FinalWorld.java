@@ -114,20 +114,23 @@ public class FinalWorld extends GameWorld {
 	public List<FinalNode> pathToPlayer(Vec2f position) {
 		FinalNode startNode = map.getNode(position);
 
-		Vec2f playerPosition = player.getPosition();
-		Vec2i tileDimensions = map.getTileDimensions();
-		Vec2f target;
-		if (playerPosition.x > position.x) {
-			target = new Vec2f(playerPosition.x - tileDimensions.x*1.5f, playerPosition.y);
-		} else if (playerPosition.x < position.x) {
-			target = new Vec2f(playerPosition.x + tileDimensions.x*1.5f, playerPosition.y);
-		} else if (playerPosition.y > position.y) {
-			target = new Vec2f(playerPosition.x, playerPosition.y - tileDimensions.y*1.5f);
-		} else {
-			target = new Vec2f(playerPosition.x, playerPosition.y + tileDimensions.y*1.5f);
-		}
-
-		FinalNode endNode = map.getNode(target);
+//		Vec2f playerPosition = player.getPosition();
+//		Vec2i tileDimensions = map.getTileDimensions();
+//		Vec2f target;
+//		if (playerPosition.x > position.x) {
+//			target = new Vec2f(playerPosition.x - tileDimensions.x*1.5f, playerPosition.y);
+//		} else if (playerPosition.x < position.x) {
+//			target = new Vec2f(playerPosition.x + tileDimensions.x*1.5f, playerPosition.y);
+//		} else if (playerPosition.y > position.y) {
+//			target = new Vec2f(playerPosition.x, playerPosition.y - tileDimensions.y*1.5f);
+//		} else {
+//			target = new Vec2f(playerPosition.x, playerPosition.y + tileDimensions.y*1.5f);
+//		}
+//
+//		FinalNode endNode = map.getNode(target);
+		
+		FinalNode endNode = map.getNode(player.getPosition());
+		
 		return map.shortestPath(startNode, endNode);
 	}
 
