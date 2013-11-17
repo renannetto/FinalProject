@@ -2,6 +2,7 @@ package ro7.game.world;
 
 import java.util.Map;
 
+import cs195n.Vec2f;
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
@@ -30,6 +31,13 @@ public class Attack extends CollidableEntity {
 	public void onCollision(Collision collision) {
 		Character character = (Character) collision.other;
 		character.receiveDamage(damage);
+		Vec2f mtv = collision.mtv;
+		Vec2f centerDistance = collision.otherShape.center().minus(
+				collision.thisShape.center());
+		if (mtv.dot(centerDistance) < 0) {
+			mtv = mtv.smult(-1.0f);
+		}
+		character.push(mtv);
 	}
 
 	@Override
@@ -50,6 +58,10 @@ public class Attack extends CollidableEntity {
 		if (elapsedTime > TIME_LIMIT) {
 			world.removeEntity(name);
 		}
+	}
+
+	public void move(Vec2f translation) {
+		shape.move(translation);
 	}
 
 }

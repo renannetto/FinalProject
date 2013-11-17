@@ -22,6 +22,7 @@ import cs195n.Vec2i;
 public class FinalWorld extends GameWorld {
 
 	private Player player;
+	private DiscreteBar lifebar;
 	private FinalMap map;
 	private boolean lost;
 
@@ -40,6 +41,7 @@ public class FinalWorld extends GameWorld {
 
 		Map<String, String> enemyProperties = new HashMap<String, String>();
 		enemyProperties.put("targetVelocity", "100");
+		enemyProperties.put("lives", "2");
 		playerProperties.put("categoryMask", "2");
 		playerProperties.put("collisionMask", "3");
 		Enemy enemy = new Enemy(this, new AAB(new Vec2f(dimensions.x / 2.0f,
@@ -47,7 +49,7 @@ public class FinalWorld extends GameWorld {
 				36.0f)), "enemy1", enemyProperties);
 		entities.put("enemy1", enemy);
 
-		DiscreteBar lifebar = new DiscreteBar(new ImageSprite(new Vec2f(0.0f,
+		lifebar = new DiscreteBar(new ImageSprite(new Vec2f(0.0f,
 				0.0f), spriteSheets.get("heart"), new Vec2i(0, 0)), 3);
 		hud.addHudElement(ScreenPosition.TOP_LEFT, lifebar);
 
@@ -114,6 +116,10 @@ public class FinalWorld extends GameWorld {
 	
 	public boolean lost() {
 		return lost;
+	}
+
+	public void decreaseLife() {
+		lifebar.decreaseLife(1);
 	}
 
 }

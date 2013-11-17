@@ -13,9 +13,21 @@ import cs195n.Vec2f;
 
 public class Player extends Character {
 
+	private Attack currentAttack;
+
 	public Player(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {
 		super(world, shape, name, properties);
+	}
+
+	@Override
+	public void update(long nanoseconds) {
+		super.update(nanoseconds);
+		if (currentAttack != null) {
+			float seconds = nanoseconds / 1000000000.0f;
+			Vec2f translation = velocity.smult(seconds);
+			currentAttack.move(translation);
+		}
 	}
 
 	public Attack attack() {
@@ -23,51 +35,45 @@ public class Player extends Character {
 		attackProperties.put("categoryMask", "1");
 		attackProperties.put("collisionMask", "2");
 		attackProperties.put("damage", "1");
-		
-		Vec2f attackPosition = shape.getPosition().plus(shape.getDimensions().pmult(direction));
-		CollidingShape attackShape = new AAB(attackPosition, Color.BLUE, Color.BLUE, new Vec2f(36.0f, 36.0f));
-		Attack attack = new Attack(world, attackShape, "player_attack", attackProperties);
-		return attack;
+
+		Vec2f attackDirection = direction;
+		if (attackDirection.y != 0) {
+			attackDirection = new Vec2f(0.0f, attackDirection.y).normalized();
+		}
+		Vec2f attackPosition = shape.getPosition().plus(
+				shape.getDimensions().pmult(attackDirection));
+		CollidingShape attackShape = new AAB(attackPosition, Color.BLUE,
+				Color.BLUE, new Vec2f(36.0f, 36.0f));
+		currentAttack = new Attack(world, attackShape, "player_attack",
+				attackProperties);
+		return currentAttack;
 	}
 
 	public Vec2f getPosition() {
 		return shape.getPosition();
 	}
-	
+
 	@Override
 	public void onCollision(Collision collision) {
 		super.onCollision(collision);
 		if (collision.other instanceof Enemy) {
-			enemyCollision(collision);
-		}
-	}
-	
-	@Override
-	public void onCollisionDynamic(Collision collision) {
-		super.onCollisionDynamic(collision);
-		if (collision.other instanceof Enemy) {
-			enemyCollision(collision);
+			receiveDamage(1);
+			Vec2f mtv = collision.mtv;
+			Vec2f centerDistance = collision.thisShape.center().minus(
+					collision.otherShape.center());
+			if (mtv.dot(centerDistance) < 0) {
+				mtv = mtv.smult(-1.0f);
+			}
+			push(mtv);
 		}
 	}
 
-	private void enemyCollision(Collision collision) {
-		receiveDamage(1);
-		
-		Vec2f mtv = collision.mtv;
-		Vec2f centerDistance = collision.thisShape.center().minus(
-				collision.otherShape.center());
-		if (mtv.dot(centerDistance) < 0) {
-			mtv = mtv.smult(-1.0f);
-		}
-		Vec2f translation = mtv.normalized().pmult(shape.getDimensions()); 
-		shape.move(translation);
-	}
-	
 	@Override
 	public void receiveDamage(int damage) {
 		super.receiveDamage(damage);
+		((FinalWorld) world).decreaseLife();
 		if (lives <= 0) {
-			((FinalWorld)world).lose();
+			((FinalWorld) world).lose();
 		}
 	}
 

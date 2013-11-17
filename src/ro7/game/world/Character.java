@@ -39,9 +39,22 @@ public class Character extends MovingEntity {
 			this.direction = this.velocity;
 		}
 	}
+	
+	@Override
+	public void stop(Vec2f direction) {
+		super.stop(direction);
+		if (this.velocity.mag2() > 0) {
+			this.direction = this.velocity.normalized();
+		}
+	}
 
 	public void receiveDamage(int damage) {
 		this.lives -= damage;
+	}
+	
+	public void push(Vec2f mtv) {
+		Vec2f translation = mtv.normalized().pmult(shape.getDimensions()); 
+		shape.move(translation);
 	}
 
 }

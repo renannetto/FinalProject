@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import ro7.engine.sprites.shapes.CollidingShape;
+import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.game.world.Character;
 import ro7.game.world.FinalWorld;
+import ro7.game.world.Player;
 import ro7.game.world.map.FinalMap;
 import ro7.game.world.map.FinalNode;
 import cs195n.Vec2f;
@@ -50,6 +52,22 @@ public class Enemy extends Character {
 					move(newDirection.normalized());
 				}
 			}
+		}
+	}
+	
+	@Override
+	public void onCollision(Collision collision) {
+		super.onCollision(collision);
+		if (collision.other instanceof Player) {
+			Vec2f mtv = collision.mtv;
+			Vec2f centerDistance = collision.otherShape.center().minus(
+					collision.thisShape.center());
+			if (mtv.dot(centerDistance) < 0) {
+				mtv = mtv.smult(-1.0f);
+			}
+			Player player = (Player)collision.other;
+			player.receiveDamage(1);
+			player.push(mtv);
 		}
 	}
 

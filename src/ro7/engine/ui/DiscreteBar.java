@@ -45,4 +45,8 @@ public class DiscreteBar extends HudElement {
 		this.lifeSprite.moveTo(position);
 	}
 
+	public void decreaseLife(int decrease) {
+		lives -= decrease;
+	}
+
 }
