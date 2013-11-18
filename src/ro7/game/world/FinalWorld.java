@@ -13,6 +13,7 @@ import ro7.engine.ui.DiscreteBar;
 import ro7.engine.ui.ScreenPosition;
 import ro7.engine.world.GameWorld;
 import ro7.game.world.enemies.Enemy;
+import ro7.game.world.enemies.PrisonGuard;
 import ro7.game.world.map.FinalMap;
 import ro7.game.world.map.FinalNode;
 import ro7.game.world.map.MapParser;
@@ -51,7 +52,7 @@ public class FinalWorld extends GameWorld {
 		enemyProperties.put("collisionMask", "7");
 		enemyProperties.put("attackCategory", "8");
 		enemyProperties.put("attackCollision", "1");
-		Enemy enemy = new Enemy(this, new AAB(new Vec2f(dimensions.x / 2.0f,
+		Enemy enemy = new PrisonGuard(this, new AAB(new Vec2f(dimensions.x / 2.0f,
 				dimensions.y / 4.0f), Color.RED, Color.RED, new Vec2f(36.0f,
 				36.0f)), "enemy1", enemyProperties);
 		entities.put("enemy1", enemy);
