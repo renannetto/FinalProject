@@ -32,6 +32,7 @@ public abstract class Ray extends CollidableEntity {
 		this.position = position;
 		this.direction = direction.normalized();
 		elapsedTime = 0;
+		world.removeCollidableEntity(this);
 	}
 
 	/* (non-Javadoc)

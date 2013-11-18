@@ -4,12 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import ro7.engine.ai.Action;
 import ro7.engine.ai.Composite;
+import ro7.engine.ai.Condition;
+import ro7.engine.ai.Status;
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.game.world.Character;
+import ro7.game.world.FinalWorld;
 import ro7.game.world.Player;
+import ro7.game.world.map.FinalMap;
+import ro7.game.world.map.FinalNode;
 import cs195n.Vec2f;
 
 public abstract class Enemy extends Character {
@@ -48,6 +54,8 @@ public abstract class Enemy extends Character {
 				path.remove(0);
 				if (!path.isEmpty()) {
 					currentTarget = path.get(0);
+				} else {
+					return;
 				}
 			}
 			Vec2f newDirection = currentTarget.minus(currentPosition);
@@ -77,6 +85,55 @@ public abstract class Enemy extends Character {
 		super.receiveDamage(damage);
 		if (lives <= 0) {
 			world.removeEntity(name);
+		}
+	}
+	
+	protected class PlayerClose extends Condition {
+
+		@Override
+		public void reset() {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public boolean checkCondition(float nanoseconds) {
+			Vec2f playerPosition = ((FinalWorld) world).getPlayerPosition();
+			return playerPosition.dist(shape.getPosition()) <= actionRadius;
+		}
+
+	}
+	
+	protected class Walk extends Action {
+
+		@Override
+		public void reset() {
+
+		}
+
+		@Override
+		public Status act(float nanoseconds) {
+			if (!path.isEmpty()) {
+				return Status.RUNNING;
+			}
+			
+			Vec2f newDirection = new Vec2f(direction.y, -direction.x);
+			Vec2f targetPosition = shape.getPosition().plus(newDirection.smult(actionRadius));
+
+			List<FinalNode> nodePath = ((FinalWorld) world).shortestPath(
+					shape.getPosition(), targetPosition);
+			
+			if (nodePath == null) {
+				stop(direction);
+				return Status.FAILURE;
+			} else {
+				path.clear();
+				for (FinalNode node : nodePath) {
+					path.add(FinalMap.toWorldCoordinates(node.position));
+				}
+			}
+
+			return Status.RUNNING;
 		}
 	}
 

@@ -42,13 +42,11 @@ public class Attack extends CollidableEntity {
 
 	@Override
 	public void onCollisionDynamic(Collision collision) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void onCollisionStatic(Collision collision) {
-		// TODO Auto-generated method stub
 
 	}
 

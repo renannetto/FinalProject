@@ -3,11 +3,9 @@ package ro7.game.world.enemies;
 import java.util.List;
 import java.util.Map;
 
-import cs195n.Vec2f;
 import ro7.engine.ai.Action;
 import ro7.engine.ai.BTNode;
 import ro7.engine.ai.Composite;
-import ro7.engine.ai.Condition;
 import ro7.engine.ai.Selector;
 import ro7.engine.ai.Sequence;
 import ro7.engine.ai.Status;
@@ -31,32 +29,16 @@ public class PrisonGuard extends Enemy {
 		root = new Selector();
 		Composite attack = new Sequence();
 
-		BTNode closePlayer = new ClosePlayer();
+		BTNode playerClose = new PlayerClose();
 		BTNode attackPlayer = new AttackPlayer();
 
 		BTNode walk = new Walk();
 
-		attack.addChild(closePlayer);
+		attack.addChild(playerClose);
 		attack.addChild(attackPlayer);
 
 		root.addChild(attack);
 		root.addChild(walk);
-	}
-	
-	private class ClosePlayer extends Condition {
-
-		@Override
-		public void reset() {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public boolean checkCondition(float nanoseconds) {
-			Vec2f playerPosition = ((FinalWorld) world).getPlayerPosition();
-			return playerPosition.dist(shape.getPosition()) <= actionRadius;
-		}
-
 	}
 
 	private class AttackPlayer extends Action {
@@ -75,6 +57,7 @@ public class PrisonGuard extends Enemy {
 			List<FinalNode> nodePath = ((FinalWorld) world).pathToPlayer(shape
 					.getPosition());
 			if (nodePath == null) {
+				stop(direction);
 				return Status.FAILURE;
 			} else {
 				path.clear();
@@ -86,38 +69,6 @@ public class PrisonGuard extends Enemy {
 			return Status.RUNNING;
 		}
 
-	}
-
-	private class Walk extends Action {
-
-		@Override
-		public void reset() {
-
-		}
-
-		@Override
-		public Status act(float nanoseconds) {
-			if (!path.isEmpty()) {
-				return Status.RUNNING;
-			}
-			
-			Vec2f newDirection = new Vec2f(direction.y, -direction.x);
-			Vec2f targetPosition = shape.getPosition().plus(newDirection.smult(actionRadius));
-
-			List<FinalNode> nodePath = ((FinalWorld) world).shortestPath(
-					shape.getPosition(), targetPosition);
-			
-			if (nodePath == null) {
-				return Status.FAILURE;
-			} else {
-				path.clear();
-				for (FinalNode node : nodePath) {
-					path.add(FinalMap.toWorldCoordinates(node.position));
-				}
-			}
-
-			return Status.RUNNING;
-		}
 	}
 
 }
