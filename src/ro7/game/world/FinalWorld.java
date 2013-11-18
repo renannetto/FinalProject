@@ -44,7 +44,7 @@ public class FinalWorld extends GameWorld {
 		entities.put("player", player);
 
 		Map<String, String> enemyProperties = new HashMap<String, String>();
-		enemyProperties.put("actionRadius", "50");
+		enemyProperties.put("actionRadius", "100");
 		enemyProperties.put("targetVelocity", "50");
 		enemyProperties.put("lives", "2");
 		enemyProperties.put("categoryMask", "2");
@@ -112,23 +112,7 @@ public class FinalWorld extends GameWorld {
 	}
 
 	public List<FinalNode> pathToPlayer(Vec2f position) {
-		FinalNode startNode = map.getNode(position);
-
-//		Vec2f playerPosition = player.getPosition();
-//		Vec2i tileDimensions = map.getTileDimensions();
-//		Vec2f target;
-//		if (playerPosition.x > position.x) {
-//			target = new Vec2f(playerPosition.x - tileDimensions.x*1.5f, playerPosition.y);
-//		} else if (playerPosition.x < position.x) {
-//			target = new Vec2f(playerPosition.x + tileDimensions.x*1.5f, playerPosition.y);
-//		} else if (playerPosition.y > position.y) {
-//			target = new Vec2f(playerPosition.x, playerPosition.y - tileDimensions.y*1.5f);
-//		} else {
-//			target = new Vec2f(playerPosition.x, playerPosition.y + tileDimensions.y*1.5f);
-//		}
-//
-//		FinalNode endNode = map.getNode(target);
-		
+		FinalNode startNode = map.getNode(position);		
 		FinalNode endNode = map.getNode(player.getPosition());
 		
 		return map.shortestPath(startNode, endNode);
@@ -137,9 +121,6 @@ public class FinalWorld extends GameWorld {
 	public List<FinalNode> shortestPath(Vec2f start, Vec2f end) {
 		FinalNode startNode = map.getNode(start);
 		FinalNode endNode = map.getNode(end);
-		if (startNode == null || endNode == null) {
-			return null;
-		}
 
 		return map.shortestPath(startNode, endNode);
 	}

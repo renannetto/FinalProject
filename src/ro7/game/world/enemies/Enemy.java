@@ -23,8 +23,6 @@ import cs195n.Vec2f;
 
 public class Enemy extends Character {
 
-//	private final String ATTACK_NAME = "enemyAttack";
-
 	private float actionRadius;
 	private List<Vec2f> path;
 	private Composite root;
@@ -76,6 +74,7 @@ public class Enemy extends Character {
 				}
 			}
 			Vec2f newDirection = currentTarget.minus(currentPosition);
+			stop(this.direction);
 			move(newDirection.normalized());
 		}
 	}
@@ -122,10 +121,6 @@ public class Enemy extends Character {
 
 	private class AttackPlayer extends Action {
 
-//		private final float ATTACK_DELAY = 1.0f;
-//
-//		private float closeTime = 0.0f;
-
 		@Override
 		public void reset() {
 
@@ -136,28 +131,6 @@ public class Enemy extends Character {
 			if (!path.isEmpty()) {
 				return Status.RUNNING;
 			}
-
-//			Vec2f playerPosition = ((FinalWorld) world).getPlayerPosition();
-//			float distanceX = Math
-//					.abs(playerPosition.x - shape.getPosition().x);
-//			float distanceY = Math
-//					.abs(playerPosition.y - shape.getPosition().y);
-//			if ((distanceX < shape.getDimensions().x * 2 && distanceY < shape
-//					.getDimensions().y)
-//					|| (distanceY < shape.getDimensions().y * 2 && distanceX < shape
-//							.getDimensions().x)) {
-//				direction = playerPosition.minus(shape.getPosition())
-//						.normalized();
-//				if (closeTime > ATTACK_DELAY) {
-//					closeTime = 0.0f;
-//					Attack enemyAttack = attack(ATTACK_NAME);
-//					world.addEntity(enemyAttack);
-//					return Status.SUCCESS;
-//				} else {
-//					closeTime += nanoseconds / 1000000000.0f;
-//					return Status.RUNNING;
-//				}
-//			}
 
 			List<FinalNode> nodePath = ((FinalWorld) world).pathToPlayer(shape
 					.getPosition());
@@ -187,21 +160,13 @@ public class Enemy extends Character {
 			if (!path.isEmpty()) {
 				return Status.RUNNING;
 			}
-
-			float minimumX = shape.getPosition().x - actionRadius;
-			float maximumX = shape.getPosition().x + actionRadius;
-			float posX = minimumX + (float) Math.random()
-					* (maximumX - minimumX + 1);
-
-			float minimumY = shape.getPosition().y - actionRadius;
-			float maximumY = shape.getPosition().y + actionRadius;
-			float posY = minimumY + (float) Math.random()
-					* (maximumY - minimumY + 1);
-
-			Vec2f targetPosition = new Vec2f(posX, posY);
+			
+			Vec2f newDirection = new Vec2f(direction.y, -direction.x);
+			Vec2f targetPosition = shape.getPosition().plus(newDirection.smult(actionRadius));
 
 			List<FinalNode> nodePath = ((FinalWorld) world).shortestPath(
 					shape.getPosition(), targetPosition);
+			
 			if (nodePath == null) {
 				return Status.FAILURE;
 			} else {

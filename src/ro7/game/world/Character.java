@@ -61,8 +61,6 @@ public class Character extends MovingEntity {
 		super.move(direction);
 		if (this.velocity.mag2() > 0) {
 			this.direction = this.velocity.normalized();
-		} else {
-			this.direction = this.velocity;
 		}
 	}
 	
