@@ -99,7 +99,7 @@ public class CollidingSprite extends CollidingShape {
 	 */
 	@Override
 	public void draw(Graphics2D g) {
-		this.sprite.draw(g, shape.getDimensions());
+		this.sprite.draw(g);
 	}
 	
 	@Override

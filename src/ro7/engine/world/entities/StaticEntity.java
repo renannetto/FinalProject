@@ -18,6 +18,11 @@ public abstract class StaticEntity extends PhysicalEntity {
 	public void applyForce(Vec2f force) {
 
 	}
+	
+	@Override
+	public void applyImpulse(Vec2f impulse) {
+		
+	}
 
 	/*
 	 * (non-Javadoc)

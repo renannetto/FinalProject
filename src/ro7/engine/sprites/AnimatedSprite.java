@@ -7,16 +7,26 @@ import cs195n.Vec2i;
 
 public class AnimatedSprite extends ImageSprite {
 
-	protected final int TIME_TO_MOVE;
+	protected final float TIME_TO_MOVE;
 
 	protected Vec2i initPosition;
 	protected int currentFrame;
 	protected int frames;
-	protected int elapsed;
+	protected float elapsed;
 
 	public AnimatedSprite(Vec2f position, SpriteSheet sheet,
-			Vec2i sheetPosition, Vec2f dimensions, int frames, int timeToMove) {
+			Vec2i sheetPosition, Vec2f dimensions, int frames, float timeToMove) {
 		super(position, sheet, sheetPosition, dimensions);
+		this.initPosition = sheetPosition;
+		this.currentFrame = 0;
+		this.frames = frames;
+		this.elapsed = 0;
+		this.TIME_TO_MOVE = timeToMove;
+	}
+	
+	public AnimatedSprite(Vec2f position, SpriteSheet sheet,
+			Vec2i sheetPosition, int frames, float timeToMove) {
+		super(position, sheet, sheetPosition);
 		this.initPosition = sheetPosition;
 		this.currentFrame = 0;
 		this.frames = frames;
@@ -32,7 +42,7 @@ public class AnimatedSprite extends ImageSprite {
 	 */
 	@Override
 	public void update(long nanoseconds) {
-		elapsed += nanoseconds / 1000000;
+		elapsed += nanoseconds / 1000000000.0f;
 		if (elapsed > TIME_TO_MOVE) {
 			currentFrame = (currentFrame + 1) % frames;
 			sheetPosition = initPosition.plus(currentFrame, 0);

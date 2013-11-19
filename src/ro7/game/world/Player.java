@@ -4,18 +4,26 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
+import ro7.engine.sprites.AnimatedSprite;
+import ro7.engine.sprites.ImageSprite;
+import ro7.engine.sprites.SpriteSheet;
 import ro7.engine.sprites.shapes.AAB;
 import ro7.engine.sprites.shapes.CollidingShape;
+import ro7.engine.sprites.shapes.CollidingSprite;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.game.world.enemies.Enemy;
 import cs195n.Vec2f;
+import cs195n.Vec2i;
 
 public class Player extends Character {
 	
 	private String attackCategory;
 	private String attackCollision;
 	private Attack currentAttack;
+	
+	private ImageSprite standing;
+	private AnimatedSprite walkingDown;
 
 	public Player(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {
@@ -30,16 +38,43 @@ public class Player extends Character {
 		} else {
 			attackCollision = "-1";
 		}
+		
+		SpriteSheet standingSheet = world.getSpriteSheet(properties
+				.get("standingSheet"));
+		Vec2i standingRightPos = new Vec2i(Integer.parseInt(properties
+				.get("posStandingX")), Integer.parseInt(properties
+				.get("posStandingY")));
+		standing = new ImageSprite(shape.getPosition(), standingSheet,
+				standingRightPos);
+		
+		Vec2i walkingPos = new Vec2i(Integer.parseInt(properties
+				.get("posWalkingX")), Integer.parseInt(properties
+				.get("posWalkingY")));
+		int framesWalking = Integer.parseInt(properties.get("framesWalking"));
+		float timeToMoveWalking = Float.parseFloat(properties
+				.get("timeToMoveWalking"));
+		SpriteSheet walkingDownSheet = world.getSpriteSheet(properties
+				.get("walkingDownSheet"));
+		walkingDown = new AnimatedSprite(shape.getPosition(),
+				walkingDownSheet, walkingPos, framesWalking, timeToMoveWalking);
 	}
 	
 	@Override
 	public void update(long nanoseconds) {
 		super.update(nanoseconds);
+		
+		if (velocity.mag2() > 0) {
+			((CollidingSprite) shape).updateSprite(walkingDown);
+		} else {
+			((CollidingSprite) shape).updateSprite(standing);
+		}
+		
 		if (currentAttack != null) {
 			float seconds = nanoseconds / 1000000000.0f;
 			Vec2f translation = velocity.smult(seconds);
 			currentAttack.move(translation);
 		}
+		this.shape.update(nanoseconds);
 	}
 	
 	public Attack attack(String name) {
