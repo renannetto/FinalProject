@@ -17,13 +17,14 @@ import cs195n.Vec2f;
 import cs195n.Vec2i;
 
 public class Player extends Character {
-	
+
 	private String attackCategory;
 	private String attackCollision;
 	private Attack currentAttack;
-	
-	private ImageSprite standing;
+
+	private Map<Vec2f, ImageSprite> standing;
 	private AnimatedSprite walkingDown;
+	private AnimatedSprite walkingUp;
 
 	public Player(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {
@@ -38,37 +39,62 @@ public class Player extends Character {
 		} else {
 			attackCollision = "-1";
 		}
-		
+
+		standing = new HashMap<Vec2f, ImageSprite>();
 		SpriteSheet standingSheet = world.getSpriteSheet(properties
 				.get("standingSheet"));
+		Vec2i standingDownPos = new Vec2i(Integer.parseInt(properties
+				.get("posStandingDownX")), Integer.parseInt(properties
+				.get("posStandingDownY")));
+		Vec2i standingUpPos = new Vec2i(Integer.parseInt(properties
+				.get("posStandingUpX")), Integer.parseInt(properties
+				.get("posStandingUpY")));
+		Vec2i standingLeftPos = new Vec2i(Integer.parseInt(properties
+				.get("posStandingLeftX")), Integer.parseInt(properties
+				.get("posStandingLeftY")));
 		Vec2i standingRightPos = new Vec2i(Integer.parseInt(properties
-				.get("posStandingX")), Integer.parseInt(properties
-				.get("posStandingY")));
-		standing = new ImageSprite(shape.getPosition(), standingSheet,
-				standingRightPos);
-		
-		Vec2i walkingPos = new Vec2i(Integer.parseInt(properties
-				.get("posWalkingX")), Integer.parseInt(properties
-				.get("posWalkingY")));
+				.get("posStandingRightX")), Integer.parseInt(properties
+				.get("posStandingRightY")));
+		standing.put(new Vec2f(0.0f, 1.0f), new ImageSprite(
+				shape.getPosition(), standingSheet, standingDownPos));
+		standing.put(new Vec2f(0.0f, -1.0f), new ImageSprite(
+				shape.getPosition(), standingSheet, standingUpPos));
+		standing.put(new Vec2f(1.0f, 0.0f), new ImageSprite(
+				shape.getPosition(), standingSheet, standingLeftPos));
+		standing.put(new Vec2f(-1.0f, 0.0f), new ImageSprite(
+				shape.getPosition(), standingSheet, standingRightPos));
+
+		SpriteSheet walkingSheet = world.getSpriteSheet(properties
+				.get("walkingSheet"));
 		int framesWalking = Integer.parseInt(properties.get("framesWalking"));
 		float timeToMoveWalking = Float.parseFloat(properties
 				.get("timeToMoveWalking"));
-		SpriteSheet walkingDownSheet = world.getSpriteSheet(properties
-				.get("walkingDownSheet"));
-		walkingDown = new AnimatedSprite(shape.getPosition(),
-				walkingDownSheet, walkingPos, framesWalking, timeToMoveWalking);
+
+		Vec2i walkingDownPos = new Vec2i(Integer.parseInt(properties
+				.get("posWalkingDownX")), Integer.parseInt(properties
+				.get("posWalkingDownY")));
+		walkingDown = new AnimatedSprite(shape.getPosition(), walkingSheet,
+				walkingDownPos, framesWalking, timeToMoveWalking);
+
+		Vec2i walkingUpPos = new Vec2i(Integer.parseInt(properties
+				.get("posWalkingUpX")), Integer.parseInt(properties
+				.get("posWalkingUpY")));
+		walkingUp = new AnimatedSprite(shape.getPosition(), walkingSheet,
+				walkingUpPos, framesWalking, timeToMoveWalking);
 	}
-	
+
 	@Override
 	public void update(long nanoseconds) {
 		super.update(nanoseconds);
-		
-		if (velocity.mag2() > 0) {
+
+		if (velocity.y > 0) {
 			((CollidingSprite) shape).updateSprite(walkingDown);
+		} else if (velocity.y < 0) {
+			((CollidingSprite) shape).updateSprite(walkingUp);
 		} else {
-			((CollidingSprite) shape).updateSprite(standing);
+			((CollidingSprite) shape).updateSprite(standing.get(direction));
 		}
-		
+
 		if (currentAttack != null) {
 			float seconds = nanoseconds / 1000000000.0f;
 			Vec2f translation = velocity.smult(seconds);
@@ -76,7 +102,7 @@ public class Player extends Character {
 		}
 		this.shape.update(nanoseconds);
 	}
-	
+
 	public Attack attack(String name) {
 		Map<String, String> attackProperties = new HashMap<String, String>();
 		attackProperties.put("categoryMask", attackCategory);
@@ -93,8 +119,7 @@ public class Player extends Character {
 				shape.getDimensions().pmult(attackDirection));
 		CollidingShape attackShape = new AAB(attackPosition, Color.BLUE,
 				Color.BLUE, shape.getDimensions());
-		currentAttack = new Attack(world, attackShape, name,
-				attackProperties);
+		currentAttack = new Attack(world, attackShape, name, attackProperties);
 		return currentAttack;
 	}
 

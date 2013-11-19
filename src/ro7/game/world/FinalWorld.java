@@ -39,17 +39,55 @@ public class FinalWorld extends GameWorld {
 		background = new ImageSprite(dimensions.sdiv(2.0f),
 				spriteSheets.get("prison_room001"), new Vec2i(0, 0));
 
+		Map<String, String> wallProperties = new HashMap<String, String>();
+		wallProperties.put("categoryMask", "-1");
+		wallProperties.put("collisionMask", "-1");
+		entities.put("wall1", new Wall(this, new AAB(new Vec2f(160.0f, 16.0f),
+				Color.BLACK, Color.BLACK, new Vec2f(320.0f, 32.0f)), "wall1", wallProperties));
+		entities.put("wall2", new Wall(this, new AAB(new Vec2f(544.0f, 16.0f),
+				Color.BLACK, Color.BLACK, new Vec2f(320.0f, 32.0f)), "wall2", wallProperties));
+		entities.put("wall3", new Wall(this, new AAB(new Vec2f(16.0f, 240.0f),
+				Color.BLACK, Color.BLACK, new Vec2f(32.0f, 480.0f)), "wall3", wallProperties));
+		entities.put("wall4", new Wall(this, new AAB(new Vec2f(624.0f, 240.0f),
+				Color.BLACK, Color.BLACK, new Vec2f(32.0f, 480.0f)), "wall4", wallProperties));
+		entities.put("wall5", new Wall(this, new AAB(new Vec2f(320.0f, 464.0f),
+				Color.BLACK, Color.BLACK, new Vec2f(640.0f, 32.0f)), "wall5", wallProperties));
+		entities.put("wall6", new Wall(this, new AAB(new Vec2f(192.0f, 270.0f),
+				Color.BLACK, Color.BLACK, new Vec2f(384.0f, 32.0f)), "wall6", wallProperties));
+		entities.put("wall7", new Wall(this, new AAB(new Vec2f(192.0f, 302.0f),
+				Color.BLACK, Color.BLACK, new Vec2f(384.0f, 32.0f)), "wall7", wallProperties));
+		entities.put("wall8", new Wall(this, new AAB(new Vec2f(544.0f, 270.0f),
+				Color.BLACK, Color.BLACK, new Vec2f(192.0f, 32.0f)), "wall8", wallProperties));
+		entities.put("wall9", new Wall(this, new AAB(new Vec2f(544.0f, 302.0f),
+				Color.BLACK, Color.BLACK, new Vec2f(192.0f, 32.0f)), "wall9", wallProperties));
+		entities.put("wall10", new Wall(this, new AAB(new Vec2f(240.0f, 48.0f),
+				Color.BLACK, Color.BLACK, new Vec2f(32.0f, 96.0f)), "wall10", wallProperties));
+		entities.put("wall11", new Wall(this, new AAB(new Vec2f(272.0f, 48.0f),
+				Color.BLACK, Color.BLACK, new Vec2f(32.0f, 96.0f)), "wall11", wallProperties));
+		entities.put("wall12", new Wall(this, new AAB(new Vec2f(240.0f, 208.0f),
+				Color.BLACK, Color.BLACK, new Vec2f(32.0f, 96.0f)), "wall12", wallProperties));
+		entities.put("wall13", new Wall(this, new AAB(new Vec2f(272.0f, 208.0f),
+				Color.BLACK, Color.BLACK, new Vec2f(32.0f, 96.0f)), "wall13", wallProperties));
+
 		Map<String, String> playerProperties = new HashMap<String, String>();
 		playerProperties.put("targetVelocity", "100");
 		playerProperties.put("lives", "3");
 		playerProperties.put("standingSheet", "hero_walk_sheet");
-		playerProperties.put("posStandingX", "0");
-		playerProperties.put("posStandingY", "0");
-		playerProperties.put("walkingDownSheet", "hero_walk_sheet");
-		playerProperties.put("posWalkingX", "0");
-		playerProperties.put("posWalkingY", "0");
+		playerProperties.put("posStandingDownX", "0");
+		playerProperties.put("posStandingDownY", "0");
+		playerProperties.put("posStandingUpX", "0");
+		playerProperties.put("posStandingUpY", "1");
+		playerProperties.put("posStandingLeftX", "0");
+		playerProperties.put("posStandingLeftY", "0");
+		playerProperties.put("posStandingRightX", "0");
+		playerProperties.put("posStandingRightY", "0");
+		playerProperties.put("walkingSheet", "hero_walk_sheet");
 		playerProperties.put("framesWalking", "4");
 		playerProperties.put("timeToMoveWalking", "0.2");
+		playerProperties.put("posWalkingDownX", "0");
+		playerProperties.put("posWalkingDownY", "0");
+		playerProperties.put("posWalkingUpX", "0");
+		playerProperties.put("posWalkingUpY", "1");
 		playerProperties.put("categoryMask", "1");
 		playerProperties.put("collisionMask", "26");
 		playerProperties.put("attackCategory", "4");
@@ -57,7 +95,7 @@ public class FinalWorld extends GameWorld {
 		ImageSprite playerSprite = new ImageSprite(dimensions.sdiv(2.0f),
 				spriteSheets.get("hero_walk_sheet"), new Vec2i(0, 0));
 		CollidingSprite playerShape = new CollidingSprite(playerSprite,
-				new AAB(dimensions.sdiv(2.0f), Color.BLACK, Color.BLACK,
+				new AAB(new Vec2f(80.0f, 368.0f), Color.BLACK, Color.BLACK,
 						new Vec2f(32.0f, 32.0f)));
 		player = new Player(this, playerShape, "player", playerProperties);
 		entities.put("player", player);

@@ -21,7 +21,7 @@ public abstract class PhysicalEntity extends CollidableEntity {
 		if (properties.containsKey("mass")) {
 			this.mass = Float.parseFloat(properties.get("mass"));
 		} else {
-			this.mass = 0.0f;
+			this.mass = 1.0f;
 		}
 		if (properties.containsKey("velocity")) {
 			this.velocity = new Vec2f(Float.parseFloat(properties
