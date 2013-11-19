@@ -67,6 +67,7 @@ public abstract class Enemy extends Character {
 	@Override
 	public void onCollision(Collision collision) {
 		super.onCollision(collision);
+		path.clear();
 		if (collision.other instanceof Player) {
 			Vec2f mtv = collision.mtv;
 			Vec2f centerDistance = collision.otherShape.center().minus(
@@ -79,6 +80,18 @@ public abstract class Enemy extends Character {
 			player.push(mtv);
 		}
 	}
+	
+//	@Override
+//	public void onCollisionDynamic(Collision collision) {
+//		super.onCollisionDynamic(collision);
+//		path.clear();
+//	}
+//	
+//	@Override
+//	public void onCollisionStatic(Collision collision) {
+//		super.onCollisionStatic(collision);
+//		path.clear();
+//	}
 
 	@Override
 	public void receiveDamage(int damage) {

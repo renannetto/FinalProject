@@ -17,6 +17,7 @@ import ro7.engine.world.GameWorld;
 import ro7.engine.world.RayCollision;
 import ro7.engine.world.Viewport;
 import ro7.engine.world.entities.Ray;
+import ro7.game.world.enemies.PrisonGuard;
 import ro7.game.world.map.FinalMap;
 import ro7.game.world.map.FinalNode;
 import ro7.game.world.map.MapParser;
@@ -100,17 +101,16 @@ public class FinalWorld extends GameWorld {
 		player = new Player(this, playerShape, "player", playerProperties);
 		entities.put("player", player);
 
-		// Map<String, String> enemyProperties = new HashMap<String, String>();
-		// enemyProperties.put("actionRadius", "100");
-		// enemyProperties.put("targetVelocity", "50");
-		// enemyProperties.put("lives", "2");
-		// enemyProperties.put("categoryMask", "2");
-		// enemyProperties.put("collisionMask", "23");
-		// PrisonGuard enemy = new PrisonGuard(this, new AAB(new
-		// Vec2f(dimensions.x / 2.0f,
-		// dimensions.y / 4.0f), Color.RED, Color.RED, new Vec2f(36.0f,
-		// 36.0f)), "enemy1", enemyProperties);
-		// entities.put("enemy1", enemy);
+		 Map<String, String> enemyProperties = new HashMap<String, String>();
+		 enemyProperties.put("actionRadius", "96");
+		 enemyProperties.put("targetVelocity", "50");
+		 enemyProperties.put("lives", "2");
+		 enemyProperties.put("categoryMask", "2");
+		 enemyProperties.put("collisionMask", "23");
+		 PrisonGuard enemy = new PrisonGuard(this, new AAB(new
+		 Vec2f(432.0f, 112.0f), Color.RED, Color.RED, new Vec2f(32.0f,
+		 32.0f)), "enemy1", enemyProperties);
+		 entities.put("enemy1", enemy);
 
 		// Map<String, String> archerProperties = new HashMap<String, String>();
 		// archerProperties.put("actionRadius", "100");
