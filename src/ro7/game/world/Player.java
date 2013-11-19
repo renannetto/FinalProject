@@ -12,6 +12,8 @@ import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.sprites.shapes.CollidingSprite;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
+import ro7.engine.world.io.Connection;
+import ro7.engine.world.io.Input;
 import ro7.game.world.enemies.Enemy;
 import cs195n.Vec2f;
 import cs195n.Vec2i;
@@ -39,6 +41,14 @@ public class Player extends Character {
 		} else {
 			attackCollision = "-1";
 		}
+		
+		inputs.put("doStopAttack", new Input() {
+			
+			@Override
+			public void run(Map<String, String> args) {
+				currentAttack = null;
+			}
+		});
 
 		standing = new HashMap<Vec2f, ImageSprite>();
 		SpriteSheet standingSheet = world.getSpriteSheet(properties
@@ -111,6 +121,10 @@ public class Player extends Character {
 		CollidingShape attackShape = new AAB(attackPosition, Color.BLUE,
 				Color.BLUE, shape.getDimensions());
 		currentAttack = new Attack(world, attackShape, name, attackProperties);
+		
+		Connection connection = new Connection(inputs.get("doStopAttack"), new HashMap<String, String>());
+		currentAttack.connect("onFinish", connection);
+		
 		return currentAttack;
 	}
 

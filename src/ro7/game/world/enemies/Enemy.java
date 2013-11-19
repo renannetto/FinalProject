@@ -20,6 +20,10 @@ import cs195n.Vec2f;
 
 public abstract class Enemy extends Character {
 
+	private final float DEATH_DELAY = 0.1f;
+
+	private float deadTime;
+
 	protected float actionRadius;
 	protected List<Vec2f> path;
 	protected Composite root;
@@ -27,6 +31,8 @@ public abstract class Enemy extends Character {
 	protected Enemy(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {
 		super(world, shape, name, properties);
+
+		deadTime = -1.0f;
 
 		if (properties.containsKey("actionRadius")) {
 			this.actionRadius = Float
@@ -36,10 +42,10 @@ public abstract class Enemy extends Character {
 		}
 
 		this.path = new ArrayList<Vec2f>();
-		
+
 		buildBehaviorTree();
 	}
-	
+
 	protected abstract void buildBehaviorTree();
 
 	@Override
@@ -62,6 +68,13 @@ public abstract class Enemy extends Character {
 			stop(this.direction);
 			move(newDirection.normalized());
 		}
+
+		if (deadTime >= 0.0f) {
+			deadTime += nanoseconds / 1000000000.0f;
+			if (deadTime > DEATH_DELAY) {
+				world.removeEntity(name);
+			}
+		}
 	}
 
 	@Override
@@ -80,27 +93,27 @@ public abstract class Enemy extends Character {
 			player.push(mtv);
 		}
 	}
-	
-//	@Override
-//	public void onCollisionDynamic(Collision collision) {
-//		super.onCollisionDynamic(collision);
-//		path.clear();
-//	}
-//	
-//	@Override
-//	public void onCollisionStatic(Collision collision) {
-//		super.onCollisionStatic(collision);
-//		path.clear();
-//	}
+
+	@Override
+	public void onCollisionDynamic(Collision collision) {
+		super.onCollisionDynamic(collision);
+		path.clear();
+	}
+
+	@Override
+	public void onCollisionStatic(Collision collision) {
+		super.onCollisionStatic(collision);
+		path.clear();
+	}
 
 	@Override
 	public void receiveDamage(int damage) {
 		super.receiveDamage(damage);
 		if (lives <= 0) {
-			world.removeEntity(name);
+			deadTime = 0.0f;
 		}
 	}
-	
+
 	protected class PlayerClose extends Condition {
 
 		@Override
@@ -116,7 +129,7 @@ public abstract class Enemy extends Character {
 		}
 
 	}
-	
+
 	protected class Walk extends Action {
 
 		@Override
@@ -129,13 +142,14 @@ public abstract class Enemy extends Character {
 			if (!path.isEmpty()) {
 				return Status.RUNNING;
 			}
-			
+
 			Vec2f newDirection = new Vec2f(direction.y, -direction.x);
-			Vec2f targetPosition = shape.getPosition().plus(newDirection.smult(actionRadius));
+			Vec2f targetPosition = shape.getPosition().plus(
+					newDirection.smult(actionRadius));
 
 			List<FinalNode> nodePath = ((FinalWorld) world).shortestPath(
 					shape.getPosition(), targetPosition);
-			
+
 			if (nodePath == null) {
 				stop(direction);
 				return Status.FAILURE;

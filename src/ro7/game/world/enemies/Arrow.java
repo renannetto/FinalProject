@@ -14,19 +14,23 @@ public class Arrow extends MovingEntity {
 			Map<String, String> properties) {
 		super(world, shape, name, properties);
 	}
-	
+
 	@Override
 	public void onCollision(Collision collision) {
-		Character character = (Character) collision.other;		
-		character.receiveDamage(1);
+		try {
+			Character character = (Character) collision.other;
+			character.receiveDamage(1);
+		} catch (Exception e) {
+			
+		}
 		world.removeEntity(name);
 	}
-	
+
 	@Override
 	public void onCollisionDynamic(Collision collision) {
 
 	}
-	
+
 	@Override
 	public void onCollisionStatic(Collision collision) {
 

@@ -51,7 +51,7 @@ public class Character extends MovingEntity {
 	}
 	
 	public void push(Vec2f mtv) {
-		Vec2f translation = mtv.normalized().pmult(shape.getDimensions()); 
+		Vec2f translation = mtv.normalized().pmult(shape.getDimensions().sdiv(2.0f)); 
 		shape.move(translation);
 	}
 

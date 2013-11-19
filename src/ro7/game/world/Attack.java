@@ -7,10 +7,11 @@ import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.entities.CollidableEntity;
+import ro7.engine.world.io.Output;
 
 public class Attack extends CollidableEntity {
 
-	private final float TIME_LIMIT = 0.2f;
+	private final float TIME_LIMIT = 0.1f;
 
 	private int damage;
 	private float elapsedTime;
@@ -23,6 +24,8 @@ public class Attack extends CollidableEntity {
 		} else {
 			this.damage = 1;
 		}
+		
+		outputs.put("onFinish", new Output());
 
 		this.elapsedTime = 0.0f;
 	}
@@ -59,6 +62,7 @@ public class Attack extends CollidableEntity {
 		elapsedTime += nanoseconds / 1000000000.0f;
 		if (elapsedTime > TIME_LIMIT) {
 			world.removeEntity(name);
+			outputs.get("onFinish").run();
 		}
 	}
 
