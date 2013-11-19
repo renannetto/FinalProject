@@ -96,9 +96,7 @@ public class Player extends Character {
 		}
 
 		if (currentAttack != null) {
-			float seconds = nanoseconds / 1000000000.0f;
-			Vec2f translation = velocity.smult(seconds);
-			currentAttack.move(translation);
+			currentAttack.moveTo(getAttackPosition());
 		}
 		this.shape.update(nanoseconds);
 	}
@@ -109,6 +107,14 @@ public class Player extends Character {
 		attackProperties.put("collisionMask", attackCollision);
 		attackProperties.put("damage", "1");
 
+		Vec2f attackPosition = getAttackPosition();
+		CollidingShape attackShape = new AAB(attackPosition, Color.BLUE,
+				Color.BLUE, shape.getDimensions());
+		currentAttack = new Attack(world, attackShape, name, attackProperties);
+		return currentAttack;
+	}
+
+	private Vec2f getAttackPosition() {
 		Vec2f attackDirection = direction;
 		if (Math.abs(attackDirection.y) >= Math.abs(attackDirection.x)) {
 			attackDirection = new Vec2f(0.0f, attackDirection.y).normalized();
@@ -117,10 +123,7 @@ public class Player extends Character {
 		}
 		Vec2f attackPosition = shape.getPosition().plus(
 				shape.getDimensions().pmult(attackDirection));
-		CollidingShape attackShape = new AAB(attackPosition, Color.BLUE,
-				Color.BLUE, shape.getDimensions());
-		currentAttack = new Attack(world, attackShape, name, attackProperties);
-		return currentAttack;
+		return attackPosition;
 	}
 
 	public Vec2f getPosition() {

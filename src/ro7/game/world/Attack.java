@@ -29,15 +29,19 @@ public class Attack extends CollidableEntity {
 
 	@Override
 	public void onCollision(Collision collision) {
-		Character character = (Character) collision.other;
-		character.receiveDamage(damage);
-		Vec2f mtv = collision.mtv;
-		Vec2f centerDistance = collision.otherShape.center().minus(
-				collision.thisShape.center());
-		if (mtv.dot(centerDistance) < 0) {
-			mtv = mtv.smult(-1.0f);
+		try {
+			Character character = (Character) collision.other;
+			character.receiveDamage(damage);
+			Vec2f mtv = collision.mtv;
+			Vec2f centerDistance = collision.otherShape.center().minus(
+					collision.thisShape.center());
+			if (mtv.dot(centerDistance) < 0) {
+				mtv = mtv.smult(-1.0f);
+			}
+			character.push(mtv);
+		} catch (Exception e) {
+
 		}
-		character.push(mtv);
 	}
 
 	@Override
@@ -58,8 +62,8 @@ public class Attack extends CollidableEntity {
 		}
 	}
 
-	public void move(Vec2f translation) {
-		shape.move(translation);
+	public void moveTo(Vec2f position) {
+		shape.moveTo(position);
 	}
 
 }
