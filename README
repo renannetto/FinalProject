@@ -1,12 +1,11 @@
-Final 1 README
+Final 2 README
 
-Engine requirements:
- - Non positional sound: there is a class AudioManager which is responsible for playing music and sound effects. This class has two methods: playMusic and playSound, which create a MusicThread or a SoundThread.
- - Text box sequences: there is a TextCutsceneScreen in ro7.engine.screens which read a plaintext file with the dialogue on the cutscene and shows it above the current screen.
- - Playing video: we changed this requirement to read a sequence of images and playing a slideshow with them, because using the video API was too hard for what we needed.
- - UI: the package ro7.engine.ui has the classes used for the HUD and the menu screens. The GameWorld now has a Hud object which contains a Set of HudElements and draw them above the viewport. To set the position of this elements, there is an enum called ScreenPosition, with the following positions: TOP_LEFT, TOP_CENTER, TOP_RIGHT, CENTER_LEFT, CENTER, CENTER_RIGHT, BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT. On the game package there is a MenuScreen which use the menu API from the engine.
- - Save game: since there is no playable game yet, the save game features were not implemented.
+Using engine features:
+ - There is a main menu at the beginning and the UI API is used to show the player life bar
+ - A background music is been played using the audio API
+ - A text cutscene runs at the beginning of the game and if you try to leave the prison before killing the enemies
+ - A slideshow will be played when you win, but it is still not done
 
-Known bugs: there are no known bugs
+Known bugs: the attacking left sprite is missing and the enemy might get stuck on the wall sometimes (the grid is not correctly aligned with the walls)
 
-Approximate hours: 15 hours
+Approximate hours: 20 hours

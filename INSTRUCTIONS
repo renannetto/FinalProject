@@ -5,7 +5,6 @@ In the menu screen:
 	-Press Enter to select one 
 
 In the game screen:
-	-You are the black square. The other objects are your HUD and were drawn using the ui API.
 	-Use WASD to move the player
-	-Press M to play a sound effect
-	-Press P to run a slideshow
+	-Press Space to attack
+	-Your goal is to kill all enemies and leave the prison

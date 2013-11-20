@@ -31,6 +31,8 @@ public class Player extends Character {
 	private AnimatedSprite walkingLeft;
 	private AnimatedSprite attackingDown;
 	private AnimatedSprite attackingUp;
+	private AnimatedSprite attackingRight;
+	private AnimatedSprite attackingLeft;
 
 	public Player(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {
@@ -98,6 +100,8 @@ public class Player extends Character {
 				.get("timeToMoveAttacking"));
 		attackingDown = new AnimatedSprite(shape.getPosition(), attackingSheet, posDown, framesAttacking, timeToMoveAttacking);
 		attackingUp = new AnimatedSprite(shape.getPosition(), attackingSheet, posUp, framesAttacking, timeToMoveAttacking);
+		attackingRight = new AnimatedSprite(shape.getPosition(), attackingSheet, posRight, framesAttacking, timeToMoveAttacking);
+		attackingLeft = new AnimatedSprite(shape.getPosition(), attackingSheet, posLeft, framesAttacking, timeToMoveAttacking);
 	}
 
 	@Override
@@ -111,8 +115,12 @@ public class Player extends Character {
 		if (currentAttack != null) {
 			if (direction.y > 0) {
 				((CollidingSprite) shape).updateSprite(attackingDown);
-			} else {
+			} else if (direction.y < 0) {
 				((CollidingSprite) shape).updateSprite(attackingUp);
+			} else if (direction.x > 0) {
+				((CollidingSprite) shape).updateSprite(attackingRight);
+			} else {
+				((CollidingSprite) shape).updateSprite(attackingLeft);
 			}
 			currentAttack.moveTo(getAttackPosition());
 		} else if (velocity.y > 0) {
