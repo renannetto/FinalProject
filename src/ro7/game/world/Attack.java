@@ -1,5 +1,6 @@
 package ro7.game.world;
 
+import java.awt.Graphics2D;
 import java.util.Map;
 
 import cs195n.Vec2f;
@@ -11,7 +12,7 @@ import ro7.engine.world.io.Output;
 
 public class Attack extends CollidableEntity {
 
-	private final float TIME_LIMIT = 0.1f;
+	private final float TIME_LIMIT = 0.8f;
 
 	private int damage;
 	private float elapsedTime;
@@ -28,6 +29,11 @@ public class Attack extends CollidableEntity {
 		outputs.put("onFinish", new Output());
 
 		this.elapsedTime = 0.0f;
+	}
+	
+	@Override
+	public void draw(Graphics2D g) {
+		
 	}
 
 	@Override

@@ -21,8 +21,10 @@ import cs195n.Vec2f;
 public abstract class Enemy extends Character {
 
 	private final float DEATH_DELAY = 0.1f;
+	private final float DAMAGE_DELAY = 1.0f;
 
 	private float deadTime;
+	private float damageTime;
 
 	protected float actionRadius;
 	protected List<Vec2f> path;
@@ -33,6 +35,7 @@ public abstract class Enemy extends Character {
 		super(world, shape, name, properties);
 
 		deadTime = -1.0f;
+		damageTime = DAMAGE_DELAY;
 
 		if (properties.containsKey("actionRadius")) {
 			this.actionRadius = Float
@@ -50,30 +53,35 @@ public abstract class Enemy extends Character {
 
 	@Override
 	public void update(long nanoseconds) {
-		super.update(nanoseconds);
-		root.update(nanoseconds);
+		if (damageTime > DAMAGE_DELAY) {
+			super.update(nanoseconds);
+			root.update(nanoseconds);
 
-		if (!path.isEmpty()) {
-			Vec2f currentPosition = shape.getPosition();
-			Vec2f currentTarget = path.get(0);
-			if (currentPosition.dot(direction) >= currentTarget.dot(direction)) {
-				path.remove(0);
-				if (!path.isEmpty()) {
-					currentTarget = path.get(0);
-				} else {
-					return;
+			if (!path.isEmpty()) {
+				Vec2f currentPosition = shape.getPosition();
+				Vec2f currentTarget = path.get(0);
+				if (currentPosition.dot(direction) >= currentTarget
+						.dot(direction)) {
+					path.remove(0);
+					if (!path.isEmpty()) {
+						currentTarget = path.get(0);
+					} else {
+						return;
+					}
+				}
+				Vec2f newDirection = currentTarget.minus(currentPosition);
+				stop(this.direction);
+				move(newDirection.normalized());
+			}
+
+			if (deadTime >= 0.0f) {
+				deadTime += nanoseconds / 1000000000.0f;
+				if (deadTime > DEATH_DELAY) {
+					world.removeEntity(name);
 				}
 			}
-			Vec2f newDirection = currentTarget.minus(currentPosition);
-			stop(this.direction);
-			move(newDirection.normalized());
-		}
-
-		if (deadTime >= 0.0f) {
-			deadTime += nanoseconds / 1000000000.0f;
-			if (deadTime > DEATH_DELAY) {
-				world.removeEntity(name);
-			}
+		} else {
+			damageTime += nanoseconds / 1000000000.0f;
 		}
 	}
 
@@ -108,9 +116,12 @@ public abstract class Enemy extends Character {
 
 	@Override
 	public void receiveDamage(int damage) {
-		super.receiveDamage(damage);
-		if (lives <= 0) {
-			deadTime = 0.0f;
+		if (damageTime > DAMAGE_DELAY) {
+			super.receiveDamage(damage);
+			damageTime = 0.0f;
+			if (lives <= 0) {
+				deadTime = 0.0f;
+			}
 		}
 	}
 

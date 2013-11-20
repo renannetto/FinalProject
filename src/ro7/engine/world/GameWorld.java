@@ -197,7 +197,12 @@ public abstract class GameWorld {
 		Vec2f center = shapeData.getCenter();
 		Map<String, String> properties = shapeData.getProperties();
 
-		String colorString = properties.get("color");
+		String colorString;
+		if (properties.containsKey("color")) {
+			colorString = properties.get("color");
+		} else {
+			colorString = "BLACK";
+		}
 		Color color;
 		if (COLORS.containsKey(colorString)) {
 			color = COLORS.get(colorString);

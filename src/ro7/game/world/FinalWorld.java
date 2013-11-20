@@ -17,7 +17,7 @@ import ro7.engine.world.GameWorld;
 import ro7.engine.world.RayCollision;
 import ro7.engine.world.Viewport;
 import ro7.engine.world.entities.Ray;
-import ro7.game.world.enemies.PrisonArcher;
+import ro7.game.world.enemies.PrisonGuard;
 import ro7.game.world.map.FinalMap;
 import ro7.game.world.map.FinalNode;
 import ro7.game.world.map.MapParser;
@@ -86,22 +86,20 @@ public class FinalWorld extends GameWorld {
 		Map<String, String> playerProperties = new HashMap<String, String>();
 		playerProperties.put("targetVelocity", "100");
 		playerProperties.put("lives", "3");
-		playerProperties.put("standingSheet", "hero_walk_sheet");
-		playerProperties.put("posStandingDownX", "0");
-		playerProperties.put("posStandingDownY", "0");
-		playerProperties.put("posStandingUpX", "0");
-		playerProperties.put("posStandingUpY", "1");
-		playerProperties.put("posStandingLeftX", "0");
-		playerProperties.put("posStandingLeftY", "0");
-		playerProperties.put("posStandingRightX", "0");
-		playerProperties.put("posStandingRightY", "0");
 		playerProperties.put("walkingSheet", "hero_walk_sheet");
+		playerProperties.put("attackingSheet", "hero_attack_sheet");
+		playerProperties.put("posDownX", "0");
+		playerProperties.put("posDownY", "0");
+		playerProperties.put("posUpX", "0");
+		playerProperties.put("posUpY", "1");
+		playerProperties.put("posRightX", "0");
+		playerProperties.put("posRightY", "2");
+		playerProperties.put("posLeftX", "0");
+		playerProperties.put("posLeftY", "3");
 		playerProperties.put("framesWalking", "4");
 		playerProperties.put("timeToMoveWalking", "0.2");
-		playerProperties.put("posWalkingDownX", "0");
-		playerProperties.put("posWalkingDownY", "0");
-		playerProperties.put("posWalkingUpX", "0");
-		playerProperties.put("posWalkingUpY", "1");
+		playerProperties.put("framesAttacking", "7");
+		playerProperties.put("timeToMoveAttacking", "0.1");
 		playerProperties.put("categoryMask", "1");
 		playerProperties.put("collisionMask", "26");
 		playerProperties.put("attackCategory", "4");
@@ -114,28 +112,28 @@ public class FinalWorld extends GameWorld {
 		player = new Player(this, playerShape, "player", playerProperties);
 		entities.put("player", player);
 
-		// Map<String, String> enemyProperties = new HashMap<String, String>();
-		// enemyProperties.put("actionRadius", "96");
-		// enemyProperties.put("targetVelocity", "50");
-		// enemyProperties.put("lives", "2");
-		// enemyProperties.put("categoryMask", "2");
-		// enemyProperties.put("collisionMask", "23");
-		// PrisonGuard enemy = new PrisonGuard(this, new AAB(new
-		// Vec2f(432.0f, 112.0f), Color.RED, Color.RED, new Vec2f(32.0f,
-		// 32.0f)), "enemy1", enemyProperties);
-		// entities.put("enemy1", enemy);
+		 Map<String, String> enemyProperties = new HashMap<String, String>();
+		 enemyProperties.put("actionRadius", "96");
+		 enemyProperties.put("targetVelocity", "50");
+		 enemyProperties.put("lives", "2");
+		 enemyProperties.put("categoryMask", "2");
+		 enemyProperties.put("collisionMask", "23");
+		 PrisonGuard enemy = new PrisonGuard(this, new AAB(new
+		 Vec2f(432.0f, 112.0f), Color.RED, Color.RED, new Vec2f(32.0f,
+		 32.0f)), "enemy1", enemyProperties);
+		 entities.put("enemy1", enemy);
 
-		Map<String, String> archerProperties = new HashMap<String, String>();
-		archerProperties.put("actionRadius", "96");
-		archerProperties.put("detectionRadius", "256");
-		archerProperties.put("targetVelocity", "50");
-		archerProperties.put("lives", "2");
-		archerProperties.put("categoryMask", "2");
-		archerProperties.put("collisionMask", "23");
-		PrisonArcher archer = new PrisonArcher(this, new AAB(new Vec2f(432.0f,
-				112.0f), Color.RED, Color.RED, new Vec2f(36.0f, 36.0f)),
-				"enemy2", archerProperties);
-		entities.put("enemy2", archer);
+//		Map<String, String> archerProperties = new HashMap<String, String>();
+//		archerProperties.put("actionRadius", "96");
+//		archerProperties.put("detectionRadius", "256");
+//		archerProperties.put("targetVelocity", "50");
+//		archerProperties.put("lives", "2");
+//		archerProperties.put("categoryMask", "2");
+//		archerProperties.put("collisionMask", "23");
+//		PrisonArcher archer = new PrisonArcher(this, new AAB(new Vec2f(432.0f,
+//				112.0f), Color.RED, Color.RED, new Vec2f(36.0f, 36.0f)),
+//				"enemy2", archerProperties);
+//		entities.put("enemy2", archer);
 
 		ImageSprite topPrisonSprite = new ImageSprite(dimensions.sdiv(2.0f),
 				spriteSheets.get("prison_room001_top"), new Vec2i(0, 0));
@@ -181,6 +179,9 @@ public class FinalWorld extends GameWorld {
 				new Vec2i(0, 0)));
 		spriteSheets.put("hero_walk_sheet", new SpriteSheet(
 				"resources/sprites/Char/hero_walk_sheet.png",
+				new Vec2i(96, 96), new Vec2i(0, 0)));
+		spriteSheets.put("hero_attack_sheet", new SpriteSheet(
+				"resources/sprites/Char/hero_attack_sheet.png",
 				new Vec2i(96, 96), new Vec2i(0, 0)));
 		spriteSheets.put("prison_room001", new SpriteSheet(
 				"resources/sprites/Prison/room_001.jpg", new Vec2i(640, 480),
