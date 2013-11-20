@@ -38,6 +38,10 @@ public class ImageSprite extends Sprite {
 		sheet.draw(g, sheetPosition, position, dimensions);
 	}
 	
+	public void reset() {
+		
+	}
+	
 	public Vec2f getDimensions() {
 		return dimensions;
 	}

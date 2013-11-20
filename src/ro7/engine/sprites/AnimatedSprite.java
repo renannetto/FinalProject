@@ -54,5 +54,10 @@ public class AnimatedSprite extends ImageSprite {
 	public void draw(Graphics2D g) {
 		super.draw(g);
 	}
+	
+	@Override
+	public void reset() {
+		currentFrame = 0;
+	}
 
 }

@@ -9,8 +9,6 @@ import java.util.Set;
 
 import ro7.engine.Application;
 import ro7.engine.Screen;
-import ro7.engine.audio.AudioManager;
-import ro7.engine.screens.SlideShowScreen;
 import ro7.engine.screens.TextCutsceneScreen;
 import ro7.engine.world.Viewport;
 import ro7.game.world.FinalWorld;
@@ -24,23 +22,35 @@ public class GameScreen extends Screen {
 
 	private Set<Integer> pressedKeys;
 
+	private static String cutscene;
+
 	public GameScreen(Application app) {
 		super(app);
 		pressedKeys = new HashSet<Integer>();
-
-		// AudioManager.getInstance().playMusic("resources/musics/surf.ogg");
+		cutscene = "";
 	}
 
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 		try {
-			world.update(nanosSincePreviousTick);
-			if (world.lost()) {
-				app.popScreen();
+			if (!cutscene.equals("")) {
+				app.pushScreen(new TextCutsceneScreen(app, this, cutscene));
+				cutscene = "";
+			} else {
+				world.update(nanosSincePreviousTick);
+				if (world.lost()) {
+					app.popScreen();
+				} else if (world.won()) {
+					app.popScreen();
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void playCutscene(String cutscene) {
+		GameScreen.cutscene = cutscene;
 	}
 
 	@Override
@@ -84,19 +94,6 @@ public class GameScreen extends Screen {
 			break;
 		case KeyEvent.VK_SPACE:
 			world.attack();
-			break;
-		case KeyEvent.VK_M:
-			AudioManager.getInstance().playSound("resources/musics/music2.wav");
-			break;
-		case KeyEvent.VK_P:
-			world.stopPlayer();
-			app.pushScreen(new SlideShowScreen(app,
-					"resources/slideshows/slideshow1.txt"));
-			break;
-		case KeyEvent.VK_T:
-			world.stopPlayer();
-			app.pushScreen(new TextCutsceneScreen(app, this,
-					"resources/cutscenes/cutscene1.txt"));
 			break;
 		case KeyEvent.VK_ESCAPE:
 			app.popScreen();

@@ -21,7 +21,7 @@ import cs195n.Vec2f;
 public abstract class Enemy extends Character {
 
 	private final float DEATH_DELAY = 0.1f;
-	private final float DAMAGE_DELAY = 1.0f;
+	private final float DAMAGE_DELAY = 0.8f;
 
 	private float deadTime;
 	private float damageTime;

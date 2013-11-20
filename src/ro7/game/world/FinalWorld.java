@@ -16,7 +16,12 @@ import ro7.engine.ui.ScreenPosition;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.RayCollision;
 import ro7.engine.world.Viewport;
+import ro7.engine.world.entities.Entity;
 import ro7.engine.world.entities.Ray;
+import ro7.engine.world.io.Connection;
+import ro7.engine.world.io.Input;
+import ro7.game.screens.GameScreen;
+import ro7.game.world.enemies.Enemy;
 import ro7.game.world.enemies.PrisonGuard;
 import ro7.game.world.map.FinalMap;
 import ro7.game.world.map.FinalNode;
@@ -33,6 +38,7 @@ public class FinalWorld extends GameWorld {
 	private DiscreteBar lifebar;
 	private FinalMap map;
 	private boolean lost;
+	private boolean won;
 
 	public FinalWorld(Vec2f dimensions) {
 		super(dimensions);
@@ -83,6 +89,17 @@ public class FinalWorld extends GameWorld {
 				new Vec2f(272.0f, 208.0f), Color.BLACK, Color.BLACK, new Vec2f(
 						32.0f, 96.0f)), "wall13", wallProperties));
 
+		Map<String, String> doorProperties = new HashMap<String, String>();
+		doorProperties.put("categoryMask", "32");
+		doorProperties.put("collisionMask", "1");
+		Door door1 = new Door(this, new AAB(new Vec2f(352.0f, 16.0f),
+				Color.BLACK, Color.BLACK, new Vec2f(64.0f, 32.0f)), "door1",
+				doorProperties);
+		entities.put("door1", door1);
+		Input doorInput = door1.inputs.get("doEnter");
+		door1.connect("onCollision", new Connection(doorInput,
+				new HashMap<String, String>()));
+
 		Map<String, String> playerProperties = new HashMap<String, String>();
 		playerProperties.put("targetVelocity", "100");
 		playerProperties.put("lives", "3");
@@ -101,10 +118,10 @@ public class FinalWorld extends GameWorld {
 		playerProperties.put("framesAttacking", "7");
 		playerProperties.put("timeToMoveAttacking", "0.1");
 		playerProperties.put("categoryMask", "1");
-		playerProperties.put("collisionMask", "26");
+		playerProperties.put("collisionMask", "58");
 		playerProperties.put("attackCategory", "4");
 		playerProperties.put("attackCollision", "2");
-		ImageSprite playerSprite = new ImageSprite(dimensions.sdiv(2.0f),
+		ImageSprite playerSprite = new ImageSprite(new Vec2f(80.0f, 368.0f),
 				spriteSheets.get("hero_walk_sheet"), new Vec2i(0, 0));
 		CollidingSprite playerShape = new CollidingSprite(playerSprite,
 				new AAB(new Vec2f(80.0f, 368.0f), Color.BLACK, Color.BLACK,
@@ -112,28 +129,31 @@ public class FinalWorld extends GameWorld {
 		player = new Player(this, playerShape, "player", playerProperties);
 		entities.put("player", player);
 
-		 Map<String, String> enemyProperties = new HashMap<String, String>();
-		 enemyProperties.put("actionRadius", "96");
-		 enemyProperties.put("targetVelocity", "50");
-		 enemyProperties.put("lives", "2");
-		 enemyProperties.put("categoryMask", "2");
-		 enemyProperties.put("collisionMask", "23");
-		 PrisonGuard enemy = new PrisonGuard(this, new AAB(new
-		 Vec2f(432.0f, 112.0f), Color.RED, Color.RED, new Vec2f(32.0f,
-		 32.0f)), "enemy1", enemyProperties);
-		 entities.put("enemy1", enemy);
+		Map<String, String> enemyProperties = new HashMap<String, String>();
+		enemyProperties.put("actionRadius", "64");
+		enemyProperties.put("targetVelocity", "50");
+		enemyProperties.put("lives", "2");
+		enemyProperties.put("categoryMask", "2");
+		enemyProperties.put("collisionMask", "23");
+		entities.put("enemy1", new PrisonGuard(this, new AAB(new Vec2f(432.0f,
+				112.0f), Color.RED, Color.RED, new Vec2f(32.0f, 32.0f)),
+				"enemy1", enemyProperties));
+		entities.put("enemy2", new PrisonGuard(this, new AAB(new Vec2f(112.0f,
+				112.0f), Color.RED, Color.RED, new Vec2f(32.0f, 32.0f)),
+				"enemy2", enemyProperties));
 
-//		Map<String, String> archerProperties = new HashMap<String, String>();
-//		archerProperties.put("actionRadius", "96");
-//		archerProperties.put("detectionRadius", "256");
-//		archerProperties.put("targetVelocity", "50");
-//		archerProperties.put("lives", "2");
-//		archerProperties.put("categoryMask", "2");
-//		archerProperties.put("collisionMask", "23");
-//		PrisonArcher archer = new PrisonArcher(this, new AAB(new Vec2f(432.0f,
-//				112.0f), Color.RED, Color.RED, new Vec2f(36.0f, 36.0f)),
-//				"enemy2", archerProperties);
-//		entities.put("enemy2", archer);
+		// Map<String, String> archerProperties = new HashMap<String, String>();
+		// archerProperties.put("actionRadius", "96");
+		// archerProperties.put("detectionRadius", "256");
+		// archerProperties.put("targetVelocity", "50");
+		// archerProperties.put("lives", "2");
+		// archerProperties.put("categoryMask", "2");
+		// archerProperties.put("collisionMask", "23");
+		// PrisonArcher archer = new PrisonArcher(this, new AAB(new
+		// Vec2f(432.0f,
+		// 112.0f), Color.RED, Color.RED, new Vec2f(36.0f, 36.0f)),
+		// "enemy2", archerProperties);
+		// entities.put("enemy2", archer);
 
 		ImageSprite topPrisonSprite = new ImageSprite(dimensions.sdiv(2.0f),
 				spriteSheets.get("prison_room001_top"), new Vec2i(0, 0));
@@ -158,6 +178,9 @@ public class FinalWorld extends GameWorld {
 		map = MapParser.parseMap("resources/maps/map1.txt");
 
 		lost = false;
+		won = false;
+
+		GameScreen.playCutscene("resources/cutscenes/cutscene1.txt");
 	}
 
 	@Override
@@ -181,8 +204,8 @@ public class FinalWorld extends GameWorld {
 				"resources/sprites/Char/hero_walk_sheet.png",
 				new Vec2i(96, 96), new Vec2i(0, 0)));
 		spriteSheets.put("hero_attack_sheet", new SpriteSheet(
-				"resources/sprites/Char/hero_attack_sheet.png",
-				new Vec2i(96, 96), new Vec2i(0, 0)));
+				"resources/sprites/Char/hero_attack_sheet.png", new Vec2i(96,
+						96), new Vec2i(0, 0)));
 		spriteSheets.put("prison_room001", new SpriteSheet(
 				"resources/sprites/Prison/room_001.jpg", new Vec2i(640, 480),
 				new Vec2i(0, 0)));
@@ -234,9 +257,17 @@ public class FinalWorld extends GameWorld {
 	public void lose() {
 		lost = true;
 	}
+	
+	public void win() {
+		won = true;
+	}
 
 	public boolean lost() {
 		return lost;
+	}
+	
+	public boolean won() {
+		return won;
 	}
 
 	public void decreaseLife() {
@@ -250,6 +281,15 @@ public class FinalWorld extends GameWorld {
 	public boolean collidesPlayer(Ray ray) {
 		RayCollision closest = getCollided(ray);
 		return closest.other.equals(player);
+	}
+
+	public boolean noEnemies() {
+		for (Entity entity : entities.values()) {
+			if (entity instanceof Enemy) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

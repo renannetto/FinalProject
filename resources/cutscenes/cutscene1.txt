@@ -1,2 +1,2 @@
-This is an example cutscene. <n>Press enter to go to the next text box.
-Press enter again to go back to the game.
+Hero: where am I? I have to find a way out of here.
+Hero: but first, I have to kill those guards.

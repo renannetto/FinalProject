@@ -9,13 +9,12 @@ import ro7.engine.world.entities.Ray;
 import cs195n.Vec2f;
 
 /**
- * @author ro7
- * A CollidingShape which contains a sprite and a boundary shape.
- * The sprite is used on draw methods and the boundary shape is
- * used for collisions.
+ * @author ro7 A CollidingShape which contains a sprite and a boundary shape.
+ *         The sprite is used on draw methods and the boundary shape is used for
+ *         collisions.
  */
 public class CollidingSprite extends CollidingShape {
-	
+
 	private ImageSprite sprite;
 	private CollidingShape shape;
 
@@ -23,7 +22,7 @@ public class CollidingSprite extends CollidingShape {
 		super(shape.getPosition());
 		this.sprite = sprite;
 		this.shape = shape;
-		
+
 		this.shape.changeFillColor(null);
 	}
 
@@ -76,10 +75,12 @@ public class CollidingSprite extends CollidingShape {
 	public List<Vec2f> getPoints() {
 		return this.shape.getPoints();
 	}
-	
-	/* (non-Javadoc)
-	 * @see ro7.engine.sprites.shapes.CollidingShape#move(cs195n.Vec2f)
-	 * Move both the sprite and the bounding shape
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ro7.engine.sprites.shapes.CollidingShape#move(cs195n.Vec2f) Move
+	 * both the sprite and the bounding shape
 	 */
 	@Override
 	public void move(Vec2f translation) {
@@ -90,18 +91,20 @@ public class CollidingSprite extends CollidingShape {
 
 	@Override
 	public void updatePoints(Vec2f translation) {
-		
+
 	}
 
-	/* (non-Javadoc)
-	 * @see ro7.engine.sprites.Sprite#draw(java.awt.Graphics2D)
-	 * Draw only the sprite, not its bounding shape.
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ro7.engine.sprites.Sprite#draw(java.awt.Graphics2D) Draw only the
+	 * sprite, not its bounding shape.
 	 */
 	@Override
 	public void draw(Graphics2D g) {
 		this.sprite.draw(g);
 	}
-	
+
 	@Override
 	public void update(long nanoseconds) {
 		super.update(nanoseconds);
@@ -109,8 +112,11 @@ public class CollidingSprite extends CollidingShape {
 	}
 
 	public void updateSprite(ImageSprite sprite) {
-		this.sprite = sprite;
-		this.sprite.moveTo(shape.getPosition());
+		if (!this.sprite.equals(sprite)) {
+			this.sprite = sprite;
+			this.sprite.moveTo(shape.getPosition());
+			this.sprite.reset();
+		}
 	}
 
 	@Override

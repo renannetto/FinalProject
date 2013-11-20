@@ -103,8 +103,19 @@ public class Player extends Character {
 	@Override
 	public void update(long nanoseconds) {
 		super.update(nanoseconds);
-
-		if (velocity.y > 0) {
+		updateSprite();
+		this.shape.update(nanoseconds);
+	}
+	
+	public void updateSprite() {
+		if (currentAttack != null) {
+			if (direction.y > 0) {
+				((CollidingSprite) shape).updateSprite(attackingDown);
+			} else {
+				((CollidingSprite) shape).updateSprite(attackingUp);
+			}
+			currentAttack.moveTo(getAttackPosition());
+		} else if (velocity.y > 0) {
 			((CollidingSprite) shape).updateSprite(walkingDown);
 		} else if (velocity.y < 0) {
 			((CollidingSprite) shape).updateSprite(walkingUp);
@@ -116,19 +127,13 @@ public class Player extends Character {
 		else {
 			((CollidingSprite) shape).updateSprite(standing.get(direction));
 		}
-
-		if (currentAttack != null) {
-			if (direction.y > 0) {
-				((CollidingSprite) shape).updateSprite(attackingDown);
-			} else {
-				((CollidingSprite) shape).updateSprite(attackingUp);
-			}
-			currentAttack.moveTo(getAttackPosition());
-		}
-		this.shape.update(nanoseconds);
 	}
 
 	public Attack attack(String name) {
+		if (currentAttack!=null) {
+			return currentAttack;
+		}
+		
 		Map<String, String> attackProperties = new HashMap<String, String>();
 		attackProperties.put("categoryMask", attackCategory);
 		attackProperties.put("collisionMask", attackCollision);
