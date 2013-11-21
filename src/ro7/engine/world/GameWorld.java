@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -88,7 +89,7 @@ public abstract class GameWorld {
 		removeEntities = new HashSet<String>();
 
 		classes = new HashMap<String, Class<?>>();
-		entities = new HashMap<String, Entity>();
+		entities = new LinkedHashMap<String, Entity>();
 		setGameClasses();
 
 		spriteSheets = new HashMap<String, SpriteSheet>();
@@ -226,11 +227,11 @@ public abstract class GameWorld {
 			break;
 		}
 
-		if (!properties.containsKey("spriteSheet")) {
+		if (!properties.containsKey("sprite")) {
 			return shape;
 		}
 
-		SpriteSheet sheet = spriteSheets.get(properties.get("spriteSheet"));
+		SpriteSheet sheet = spriteSheets.get(getSpriteSheetName(properties.get("sprite")));
 		Vec2i sheetPosition = new Vec2i(Integer.parseInt(properties
 				.get("spritePosX")), Integer.parseInt(properties
 				.get("spritePosY")));
@@ -250,6 +251,11 @@ public abstract class GameWorld {
 		shape = new CollidingSprite(sprite, colShape);
 
 		return shape;
+	}
+
+	private String getSpriteSheetName(String spriteSheet) {
+		String[] strings = spriteSheet.split("/|\\.");
+		return strings[strings.length-2];
 	}
 
 	/**

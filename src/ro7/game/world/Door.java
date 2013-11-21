@@ -50,7 +50,6 @@ public class Door extends Sensor {
 	}
 
 	public void enter() {
-		System.out.println("enter door");
 		((FinalWorld) world).win();
 	}
 

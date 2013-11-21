@@ -7,9 +7,9 @@ import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.entities.Entity;
 
-public class TopScenario extends Entity {
+public class Background extends Entity {
 
-	public TopScenario(GameWorld world, CollidingShape shape, String name, Map<String, String> properties) {
+	public Background(GameWorld world, CollidingShape shape, String name, Map<String, String> properties) {
 		super(world, shape, name);
 		// TODO Auto-generated constructor stub
 	}

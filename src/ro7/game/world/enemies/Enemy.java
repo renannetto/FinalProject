@@ -163,6 +163,7 @@ public abstract class Enemy extends Character {
 
 			if (nodePath == null) {
 				stop(direction);
+				direction = newDirection;
 				return Status.FAILURE;
 			} else {
 				path.clear();

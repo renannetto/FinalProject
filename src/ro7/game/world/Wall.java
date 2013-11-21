@@ -10,7 +10,7 @@ import ro7.engine.world.entities.StaticEntity;
 
 public class Wall extends StaticEntity {
 
-	protected Wall(GameWorld world, CollidingShape shape, String name,
+	public Wall(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {
 		super(world, shape, name, properties);
 	}
