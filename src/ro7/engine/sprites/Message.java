@@ -18,7 +18,7 @@ public class Message extends Sprite {
 	private String text;
 	private float fontSize;
 	private Color fontColor;
-	
+
 	public Message(String text, float fontSize, Color fontColor, Vec2f position) {
 		super(position);
 		this.text = text;

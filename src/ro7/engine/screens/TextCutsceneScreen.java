@@ -13,16 +13,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cs195n.Vec2f;
-import cs195n.Vec2i;
 import ro7.engine.Application;
 import ro7.engine.Screen;
 import ro7.engine.sprites.TextBox;
+import cs195n.Vec2f;
+import cs195n.Vec2i;
 
 public class TextCutsceneScreen extends Screen {
 
 	private final Color TEXT_BOX_COLOR = Color.BLUE;
 	private final Color FONT_COLOR = Color.WHITE;
+	private final int NEXT_BOX_KEY = KeyEvent.VK_SPACE;
 
 	private Screen previousScreen;
 	private List<String> texts;
@@ -75,7 +76,7 @@ public class TextCutsceneScreen extends Screen {
 	@Override
 	public void onKeyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-		if (keyCode == 10) {
+		if (keyCode == NEXT_BOX_KEY) {
 			currentBox++;
 		}
 	}
@@ -134,7 +135,7 @@ public class TextCutsceneScreen extends Screen {
 			textBoxes.clear();
 			for (String text : texts) {
 				textBoxes.add(new TextBox(boxPosition, boxDimensions,
-						TEXT_BOX_COLOR, text, FONT_COLOR));
+						TEXT_BOX_COLOR, text, FONT_COLOR, NEXT_BOX_KEY));
 			}
 		} catch (NullPointerException e) {
 			System.out.println("No window size defined");

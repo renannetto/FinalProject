@@ -16,6 +16,7 @@ public class Slide extends Sprite {
 	private final int DURATION;
 
 	private Vec2i dimensions;
+	private String filename;
 	private BufferedImage image;
 	private float alpha;
 	private float elapsedTime;
@@ -23,11 +24,8 @@ public class Slide extends Sprite {
 	public Slide(Vec2f position, Vec2i dimensions, String filename, int duration) {
 		super(position);
 		this.dimensions = dimensions;
-		try {
-			this.image = ImageIO.read(new File(filename));
-		} catch (IOException e) {
-			System.out.println("Could not open image file");
-		}
+		this.filename = filename;
+		this.image = null;
 		this.DURATION = duration;
 		this.alpha = 0.5f;
 	}
@@ -48,11 +46,20 @@ public class Slide extends Sprite {
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-				alpha));
-		g.drawImage(image, (int) position.x, (int) position.y, dimensions.x, dimensions.y, null);
-		g.setComposite(AlphaComposite
-				.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+		if (image == null) {
+			try {
+				this.image = ImageIO.read(new File(filename));
+			} catch (IOException e) {
+				System.out.println("Could not open image file");
+			}
+		} else {
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+					alpha));
+			g.drawImage(image, (int) position.x, (int) position.y,
+					dimensions.x, dimensions.y, null);
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+					1.0f));
+		}
 	}
 
 	public boolean finished() {
