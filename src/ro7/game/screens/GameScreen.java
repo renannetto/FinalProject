@@ -9,7 +9,6 @@ import java.util.Set;
 
 import ro7.engine.Application;
 import ro7.engine.Screen;
-import ro7.engine.audio.AudioManager;
 import ro7.engine.screens.TextCutsceneScreen;
 import ro7.engine.world.Viewport;
 import ro7.game.world.FinalWorld;
@@ -29,7 +28,7 @@ public class GameScreen extends Screen {
 		super(app);
 		pressedKeys = new HashSet<Integer>();
 		cutscene = "";
-		AudioManager.getInstance().playMusic("resources/musics/background.ogg");
+		//AudioManager.getInstance().playMusic("resources/musics/background.ogg");
 	}
 
 	@Override

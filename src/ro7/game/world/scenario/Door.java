@@ -1,4 +1,4 @@
-package ro7.game.world;
+package ro7.game.world.scenario;
 
 import java.util.Map;
 
@@ -8,8 +8,10 @@ import ro7.engine.world.GameWorld;
 import ro7.engine.world.entities.Sensor;
 import ro7.engine.world.io.Input;
 import ro7.game.screens.GameScreen;
+import ro7.game.world.FinalEntity;
+import ro7.game.world.FinalWorld;
 
-public class Door extends Sensor {
+public class Door extends Sensor implements FinalEntity {
 
 	private boolean tried = false;
 
@@ -51,6 +53,24 @@ public class Door extends Sensor {
 
 	public void enter() {
 		((FinalWorld) world).win();
+	}
+
+	@Override
+	public void receiveDamage(int damage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void touchEnemy(Collision collision) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void receiveAttack(Collision collision) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

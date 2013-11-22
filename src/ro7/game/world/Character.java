@@ -7,7 +7,7 @@ import ro7.engine.world.GameWorld;
 import ro7.engine.world.entities.MovingEntity;
 import cs195n.Vec2f;
 
-public class Character extends MovingEntity {
+public abstract class Character extends MovingEntity implements FinalEntity {
 
 	protected int lives;
 	protected Vec2f direction;
@@ -46,12 +46,13 @@ public class Character extends MovingEntity {
 		}
 	}
 
+	@Override
 	public void receiveDamage(int damage) {
 		this.lives -= damage;
 	}
 	
 	public void push(Vec2f mtv) {
-		Vec2f translation = mtv.normalized().pmult(shape.getDimensions().sdiv(2.0f)); 
+		Vec2f translation = mtv.normalized().pmult(shape.getDimensions().sdiv(1.1f)); 
 		shape.move(translation);
 	}
 

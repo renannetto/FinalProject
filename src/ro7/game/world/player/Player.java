@@ -1,4 +1,4 @@
-package ro7.game.world;
+package ro7.game.world.player;
 
 import java.awt.Color;
 import java.util.HashMap;
@@ -14,7 +14,8 @@ import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.io.Connection;
 import ro7.engine.world.io.Input;
-import ro7.game.world.enemies.Enemy;
+import ro7.game.world.Character;
+import ro7.game.world.FinalWorld;
 import cs195n.Vec2f;
 import cs195n.Vec2i;
 
@@ -47,39 +48,36 @@ public class Player extends Character {
 		} else {
 			attackCollision = "-1";
 		}
-		
+
 		inputs.put("doStopAttack", new Input() {
-			
+
 			@Override
 			public void run(Map<String, String> args) {
 				currentAttack = null;
 			}
 		});
-		
+
 		SpriteSheet walkingSheet = world.getSpriteSheet(properties
 				.get("walkingSheet"));
 
 		standing = new HashMap<Vec2f, ImageSprite>();
-		Vec2i posDown = new Vec2i(Integer.parseInt(properties
-				.get("posDownX")), Integer.parseInt(properties
-				.get("posDownY")));
-		Vec2i posUp = new Vec2i(Integer.parseInt(properties
-				.get("posUpX")), Integer.parseInt(properties
-				.get("posUpY")));
-		Vec2i posRight = new Vec2i(Integer.parseInt(properties
-				.get("posRightX")), Integer.parseInt(properties
-				.get("posRightY")));
-		Vec2i posLeft = new Vec2i(Integer.parseInt(properties
-				.get("posLeftX")), Integer.parseInt(properties
-				.get("posLeftY")));
+		Vec2i posDown = new Vec2i(Integer.parseInt(properties.get("posDownX")),
+				Integer.parseInt(properties.get("posDownY")));
+		Vec2i posUp = new Vec2i(Integer.parseInt(properties.get("posUpX")),
+				Integer.parseInt(properties.get("posUpY")));
+		Vec2i posRight = new Vec2i(
+				Integer.parseInt(properties.get("posRightX")),
+				Integer.parseInt(properties.get("posRightY")));
+		Vec2i posLeft = new Vec2i(Integer.parseInt(properties.get("posLeftX")),
+				Integer.parseInt(properties.get("posLeftY")));
 		standing.put(new Vec2f(0.0f, 1.0f), new ImageSprite(
 				shape.getPosition(), walkingSheet, posDown));
-		standing.put(new Vec2f(0.0f, -1.0f), new ImageSprite(
-				shape.getPosition(), walkingSheet, posUp));
+		standing.put(new Vec2f(0.0f, -1.0f),
+				new ImageSprite(shape.getPosition(), walkingSheet, posUp));
 		standing.put(new Vec2f(1.0f, 0.0f), new ImageSprite(
 				shape.getPosition(), walkingSheet, posRight));
-		standing.put(new Vec2f(-1.0f, 0.0f), new ImageSprite(
-				shape.getPosition(), walkingSheet, posLeft));
+		standing.put(new Vec2f(-1.0f, 0.0f),
+				new ImageSprite(shape.getPosition(), walkingSheet, posLeft));
 
 		int framesWalking = Integer.parseInt(properties.get("framesWalking"));
 		float timeToMoveWalking = Float.parseFloat(properties
@@ -92,27 +90,39 @@ public class Player extends Character {
 				posRight, framesWalking, timeToMoveWalking);
 		walkingLeft = new AnimatedSprite(shape.getPosition(), walkingSheet,
 				posLeft, framesWalking, timeToMoveWalking);
-		
+
 		SpriteSheet attackingSheet = world.getSpriteSheet(properties
 				.get("attackingSheet"));
-		int framesAttacking = Integer.parseInt(properties.get("framesAttacking"));
+		int framesAttacking = Integer.parseInt(properties
+				.get("framesAttacking"));
 		float timeToMoveAttacking = Float.parseFloat(properties
 				.get("timeToMoveAttacking"));
-		attackingDown = new AnimatedSprite(shape.getPosition(), attackingSheet, posDown, framesAttacking, timeToMoveAttacking);
-		attackingUp = new AnimatedSprite(shape.getPosition(), attackingSheet, posUp, framesAttacking, timeToMoveAttacking);
-		attackingRight = new AnimatedSprite(shape.getPosition(), attackingSheet, posRight, framesAttacking, timeToMoveAttacking);
-		attackingLeft = new AnimatedSprite(shape.getPosition(), attackingSheet, posLeft, framesAttacking, timeToMoveAttacking);
+		attackingDown = new AnimatedSprite(shape.getPosition(), attackingSheet,
+				posDown, framesAttacking, timeToMoveAttacking);
+		attackingUp = new AnimatedSprite(shape.getPosition(), attackingSheet,
+				posUp, framesAttacking, timeToMoveAttacking);
+		attackingRight = new AnimatedSprite(shape.getPosition(),
+				attackingSheet, posRight, framesAttacking, timeToMoveAttacking);
+		attackingLeft = new AnimatedSprite(shape.getPosition(), attackingSheet,
+				posLeft, framesAttacking, timeToMoveAttacking);
 	}
 
 	@Override
 	public void update(long nanoseconds) {
-		super.update(nanoseconds);
-		updateSprite();
-		this.shape.update(nanoseconds);
-	}
-	
-	public void updateSprite() {
-		if (currentAttack != null) {
+		if (currentAttack == null) {
+			super.update(nanoseconds);
+			if (velocity.y > 0) {
+				((CollidingSprite) shape).updateSprite(walkingDown);
+			} else if (velocity.y < 0) {
+				((CollidingSprite) shape).updateSprite(walkingUp);
+			} else if (velocity.x > 0) {
+				((CollidingSprite) shape).updateSprite(walkingRight);
+			} else if (velocity.x < 0) {
+				((CollidingSprite) shape).updateSprite(walkingLeft);
+			} else {
+				((CollidingSprite) shape).updateSprite(standing.get(direction));
+			}
+		} else {
 			if (direction.y > 0) {
 				((CollidingSprite) shape).updateSprite(attackingDown);
 			} else if (direction.y < 0) {
@@ -122,26 +132,15 @@ public class Player extends Character {
 			} else {
 				((CollidingSprite) shape).updateSprite(attackingLeft);
 			}
-			currentAttack.moveTo(getAttackPosition());
-		} else if (velocity.y > 0) {
-			((CollidingSprite) shape).updateSprite(walkingDown);
-		} else if (velocity.y < 0) {
-			((CollidingSprite) shape).updateSprite(walkingUp);
-		} else if (velocity.x > 0) {
-			((CollidingSprite) shape).updateSprite(walkingRight);
-		} else if (velocity.x < 0) {
-			((CollidingSprite) shape).updateSprite(walkingLeft);
 		}
-		else {
-			((CollidingSprite) shape).updateSprite(standing.get(direction));
-		}
+		this.shape.update(nanoseconds);
 	}
 
 	public Attack attack(String name) {
-		if (currentAttack!=null) {
+		if (currentAttack != null) {
 			return currentAttack;
 		}
-		
+
 		Map<String, String> attackProperties = new HashMap<String, String>();
 		attackProperties.put("categoryMask", attackCategory);
 		attackProperties.put("collisionMask", attackCollision);
@@ -151,10 +150,11 @@ public class Player extends Character {
 		CollidingShape attackShape = new AAB(attackPosition, Color.BLUE,
 				Color.BLUE, shape.getDimensions());
 		currentAttack = new Attack(world, attackShape, name, attackProperties);
-		
-		Connection connection = new Connection(inputs.get("doStopAttack"), new HashMap<String, String>());
+
+		Connection connection = new Connection(inputs.get("doStopAttack"),
+				new HashMap<String, String>());
 		currentAttack.connect("onFinish", connection);
-		
+
 		return currentAttack;
 	}
 
@@ -175,27 +175,29 @@ public class Player extends Character {
 	}
 
 	@Override
-	public void onCollision(Collision collision) {
-		super.onCollision(collision);
-		if (collision.other instanceof Enemy) {
-			receiveDamage(1);
-			Vec2f mtv = collision.mtv;
-			Vec2f centerDistance = collision.thisShape.center().minus(
-					collision.otherShape.center());
-			if (mtv.dot(centerDistance) < 0) {
-				mtv = mtv.smult(-1.0f);
-			}
-			push(mtv);
-		}
-	}
-
-	@Override
 	public void receiveDamage(int damage) {
 		super.receiveDamage(damage);
 		((FinalWorld) world).decreaseLife();
 		if (lives <= 0) {
 			((FinalWorld) world).lose();
 		}
+	}
+
+	@Override
+	public void touchEnemy(Collision collision) {
+		receiveDamage(1);
+		Vec2f mtv = collision.mtv;
+		Vec2f centerDistance = collision.otherShape.center().minus(
+				collision.thisShape.center());
+		if (mtv.dot(centerDistance) < 0) {
+			mtv = mtv.smult(-1.0f);
+		}
+		push(mtv);
+	}
+
+	@Override
+	public void receiveAttack(Collision collision) {
+
 	}
 
 }

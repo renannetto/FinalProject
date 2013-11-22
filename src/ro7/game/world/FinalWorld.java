@@ -20,6 +20,11 @@ import ro7.game.world.enemies.PrisonGuard;
 import ro7.game.world.map.FinalMap;
 import ro7.game.world.map.FinalNode;
 import ro7.game.world.map.MapParser;
+import ro7.game.world.player.Attack;
+import ro7.game.world.player.Player;
+import ro7.game.world.scenario.Door;
+import ro7.game.world.scenario.Scenario;
+import ro7.game.world.scenario.Wall;
 import cs195n.CS195NLevelReader;
 import cs195n.CS195NLevelReader.InvalidLevelException;
 import cs195n.Vec2f;
@@ -69,8 +74,7 @@ public class FinalWorld extends GameWorld {
 
 	@Override
 	public void setGameClasses() {
-		classes.put("Background", Background.class);
-		classes.put("TopScenario", TopScenario.class);
+		classes.put("Scenario", Scenario.class);
 		classes.put("Wall", Wall.class);
 		classes.put("Player", Player.class);
 		classes.put("PrisonGuard", PrisonGuard.class);

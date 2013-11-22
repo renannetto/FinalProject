@@ -12,8 +12,8 @@ import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.game.world.Character;
+import ro7.game.world.FinalEntity;
 import ro7.game.world.FinalWorld;
-import ro7.game.world.Player;
 import ro7.game.world.map.FinalMap;
 import ro7.game.world.map.FinalNode;
 import cs195n.Vec2f;
@@ -21,7 +21,7 @@ import cs195n.Vec2f;
 public abstract class Enemy extends Character {
 
 	private final float DEATH_DELAY = 0.1f;
-	private final float DAMAGE_DELAY = 0.8f;
+	private final float DAMAGE_DELAY = 0.35f;
 
 	private float deadTime;
 	private float damageTime;
@@ -73,15 +73,15 @@ public abstract class Enemy extends Character {
 				stop(this.direction);
 				move(newDirection.normalized());
 			}
-
-			if (deadTime >= 0.0f) {
-				deadTime += nanoseconds / 1000000000.0f;
-				if (deadTime > DEATH_DELAY) {
-					world.removeEntity(name);
-				}
-			}
 		} else {
 			damageTime += nanoseconds / 1000000000.0f;
+		}
+		
+		if (deadTime >= 0.0f) {
+			deadTime += nanoseconds / 1000000000.0f;
+			if (deadTime > DEATH_DELAY) {
+				world.removeEntity(name);
+			}
 		}
 	}
 
@@ -89,29 +89,24 @@ public abstract class Enemy extends Character {
 	public void onCollision(Collision collision) {
 		super.onCollision(collision);
 		path.clear();
-		if (collision.other instanceof Player) {
-			Vec2f mtv = collision.mtv;
-			Vec2f centerDistance = collision.otherShape.center().minus(
-					collision.thisShape.center());
-			if (mtv.dot(centerDistance) < 0) {
-				mtv = mtv.smult(-1.0f);
-			}
-			Player player = (Player) collision.other;
-			player.receiveDamage(1);
-			player.push(mtv);
-		}
+		FinalEntity otherEntity = (FinalEntity) collision.other;
+		otherEntity.touchEnemy(collision);
 	}
 
 	@Override
 	public void onCollisionDynamic(Collision collision) {
 		super.onCollisionDynamic(collision);
 		path.clear();
+		FinalEntity otherEntity = (FinalEntity) collision.other;
+		otherEntity.touchEnemy(collision);
 	}
 
 	@Override
 	public void onCollisionStatic(Collision collision) {
 		super.onCollisionStatic(collision);
 		path.clear();
+		FinalEntity otherEntity = (FinalEntity) collision.other;
+		otherEntity.touchEnemy(collision);
 	}
 
 	@Override
@@ -123,6 +118,22 @@ public abstract class Enemy extends Character {
 				deadTime = 0.0f;
 			}
 		}
+	}
+	
+	@Override
+	public void touchEnemy(Collision collision) {
+		
+	}
+	
+	@Override
+	public void receiveAttack(Collision collision) {	
+		Vec2f mtv = collision.mtv;
+		Vec2f centerDistance = collision.otherShape.center().minus(
+				collision.thisShape.center());
+		if (mtv.dot(centerDistance) < 0) {
+			mtv = mtv.smult(-1.0f);
+		}
+		push(mtv);
 	}
 
 	protected class PlayerClose extends Condition {

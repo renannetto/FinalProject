@@ -1,17 +1,17 @@
 package ro7.game.world.enemies;
 
-import cs195n.Vec2f;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.RayCollision;
 import ro7.engine.world.entities.Ray;
+import ro7.game.world.FinalEntity;
+import cs195n.Vec2f;
 
-public class ArrowRay extends Ray {
+public class ArrowRay extends Ray implements FinalEntity {
 
 	public ArrowRay(GameWorld world, int categoryMask, int collisionMask,
 			Vec2f position, Vec2f direction) {
 		super(world, categoryMask, collisionMask, position, direction);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -34,6 +34,24 @@ public class ArrowRay extends Ray {
 
 	@Override
 	public void onCollisionStatic(Collision collision) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void receiveDamage(int damage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void touchEnemy(Collision collision) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void receiveAttack(Collision collision) {
 		// TODO Auto-generated method stub
 		
 	}

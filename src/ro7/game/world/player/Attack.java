@@ -1,18 +1,19 @@
-package ro7.game.world;
+package ro7.game.world.player;
 
 import java.awt.Graphics2D;
 import java.util.Map;
 
-import cs195n.Vec2f;
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.entities.CollidableEntity;
 import ro7.engine.world.io.Output;
+import ro7.game.world.FinalEntity;
+import cs195n.Vec2f;
 
-public class Attack extends CollidableEntity {
+public class Attack extends CollidableEntity implements FinalEntity {
 
-	private final float TIME_LIMIT = 0.8f;
+	private final float TIME_LIMIT = 0.35f;
 
 	private int damage;
 	private float elapsedTime;
@@ -25,42 +26,32 @@ public class Attack extends CollidableEntity {
 		} else {
 			this.damage = 1;
 		}
-		
+
 		outputs.put("onFinish", new Output());
 
 		this.elapsedTime = 0.0f;
 	}
-	
+
 	@Override
 	public void draw(Graphics2D g) {
-		
+
 	}
 
 	@Override
 	public void onCollision(Collision collision) {
-		try {
-			Character character = (Character) collision.other;
-			character.receiveDamage(damage);
-			Vec2f mtv = collision.mtv;
-			Vec2f centerDistance = collision.otherShape.center().minus(
-					collision.thisShape.center());
-			if (mtv.dot(centerDistance) < 0) {
-				mtv = mtv.smult(-1.0f);
-			}
-			character.push(mtv);
-		} catch (Exception e) {
-
-		}
+		FinalEntity otherEntity = (FinalEntity) collision.other;
+		otherEntity.receiveDamage(damage);
+		otherEntity.receiveAttack(collision);
 	}
 
 	@Override
 	public void onCollisionDynamic(Collision collision) {
-
+		
 	}
 
 	@Override
 	public void onCollisionStatic(Collision collision) {
-
+		
 	}
 
 	@Override
@@ -74,6 +65,24 @@ public class Attack extends CollidableEntity {
 
 	public void moveTo(Vec2f position) {
 		shape.moveTo(position);
+	}
+
+	@Override
+	public void receiveDamage(int damage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void touchEnemy(Collision collision) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void receiveAttack(Collision collision) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
