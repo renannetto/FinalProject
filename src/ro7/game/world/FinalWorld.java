@@ -20,6 +20,7 @@ import ro7.game.world.enemies.PrisonGuard;
 import ro7.game.world.map.FinalMap;
 import ro7.game.world.map.FinalNode;
 import ro7.game.world.map.MapParser;
+import ro7.game.world.player.Action;
 import ro7.game.world.player.Attack;
 import ro7.game.world.player.Player;
 import ro7.game.world.scenario.Door;
@@ -177,6 +178,11 @@ public class FinalWorld extends GameWorld {
 			}
 		}
 		return true;
+	}
+
+	public void action() {
+		Action action = player.action();
+		entities.put(action.getName(), action);
 	}
 
 }

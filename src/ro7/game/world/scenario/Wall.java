@@ -44,4 +44,10 @@ public class Wall extends StaticEntity implements FinalEntity {
 		
 	}
 
+	@Override
+	public void receiveAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

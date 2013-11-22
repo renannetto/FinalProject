@@ -10,4 +10,6 @@ public interface FinalEntity {
 	
 	public void receiveAttack(Collision collision);
 
+	public void receiveAction();
+
 }

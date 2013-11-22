@@ -96,6 +96,9 @@ public class GameScreen extends Screen {
 		case KeyEvent.VK_SPACE:
 			world.attack();
 			break;
+		case KeyEvent.VK_SHIFT:
+			world.action();
+			break;
 		case KeyEvent.VK_ESCAPE:
 			app.popScreen();
 			break;

@@ -56,4 +56,10 @@ public class ArrowRay extends Ray implements FinalEntity {
 		
 	}
 
+	@Override
+	public void receiveAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

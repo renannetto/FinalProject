@@ -164,6 +164,18 @@ public class Player extends Character {
 
 		return currentAttack;
 	}
+	
+	public Action action() {
+		Map<String, String> actionProperties = new HashMap<String, String>();
+		actionProperties.put("categoryMask", categoryMask+"");
+		actionProperties.put("collisionMask", collisionMask+"");
+		
+		Vec2f actionPosition = getAttackPosition();
+		CollidingShape actionShape = new AAB(actionPosition, Color.BLUE,
+				Color.BLUE, shape.getDimensions());
+		
+		return new Action(world, actionShape, name + "Action", actionProperties);
+	}
 
 	private Vec2f getAttackPosition() {
 		Vec2f attackDirection = direction;

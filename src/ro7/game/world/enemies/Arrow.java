@@ -54,4 +54,10 @@ public class Arrow extends MovingEntity implements FinalEntity {
 
 	}
 
+	@Override
+	public void receiveAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

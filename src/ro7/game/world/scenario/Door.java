@@ -73,4 +73,10 @@ public class Door extends Sensor implements FinalEntity {
 		
 	}
 
+	@Override
+	public void receiveAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -50,4 +50,10 @@ public class Scenario extends Entity implements FinalEntity {
 		
 	}
 
+	@Override
+	public void receiveAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

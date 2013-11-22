@@ -51,6 +51,12 @@ public abstract class Character extends MovingEntity implements FinalEntity {
 		this.lives -= damage;
 	}
 	
+	@Override
+	public void receiveAction() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	public void push(Vec2f mtv) {
 		Vec2f translation = mtv.normalized().pmult(shape.getDimensions().sdiv(1.1f)); 
 		shape.move(translation);
