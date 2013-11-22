@@ -1,57 +1,48 @@
-package ro7.game.world.enemies;
+package ro7.game.world;
 
 import java.util.Map;
 
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
-import ro7.engine.world.entities.MovingEntity;
-import ro7.game.world.FinalEntity;
+import ro7.engine.world.entities.StaticEntity;
+import ro7.game.screens.GameScreen;
 
-public class Arrow extends MovingEntity implements FinalEntity {
+public class NPC extends StaticEntity implements FinalEntity {
+	
+	private String cutscene;
 
-	public Arrow(GameWorld world, CollidingShape shape, String name,
+	public NPC(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {
 		super(world, shape, name, properties);
-	}
-
-	@Override
-	public void onCollision(Collision collision) {
-		FinalEntity otherEntity = (FinalEntity) collision.other;
-		otherEntity.receiveDamage(1);
-		world.removeEntity(name);
-	}
-
-	@Override
-	public void onCollisionDynamic(Collision collision) {
-
-	}
-
-	@Override
-	public void onCollisionStatic(Collision collision) {
-
+		cutscene = properties.get("cutscene");
 	}
 
 	@Override
 	public void receiveDamage(int damage) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void touchEnemy(Collision collision) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void receiveAttack(Collision collision) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void receiveAction() {
+		GameScreen.playCutscene(cutscene);
+	}
+
+	@Override
+	public void update(long nanoseconds) {
 		// TODO Auto-generated method stub
 		
 	}

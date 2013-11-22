@@ -24,6 +24,9 @@ public class Player extends Character {
 	private String attackCategory;
 	private String attackCollision;
 	private Attack currentAttack;
+	
+	private String actionCategory;
+	private String actionCollision;
 
 	private Map<Vec2f, ImageSprite> standing;
 	private AnimatedSprite walkingDown;
@@ -56,6 +59,17 @@ public class Player extends Character {
 				currentAttack = null;
 			}
 		});
+		
+		if (properties.containsKey("actionCategory")) {
+			actionCategory = properties.get("actionCategory");
+		} else {
+			actionCategory = "-1";
+		}
+		if (properties.containsKey("actionCollision")) {
+			actionCollision = properties.get("actionCollision");
+		} else {
+			actionCollision = "-1";
+		}
 
 		SpriteSheet walkingSheet = world.getSpriteSheet(properties
 				.get("walkingSheet"));
@@ -167,8 +181,8 @@ public class Player extends Character {
 	
 	public Action action() {
 		Map<String, String> actionProperties = new HashMap<String, String>();
-		actionProperties.put("categoryMask", categoryMask+"");
-		actionProperties.put("collisionMask", collisionMask+"");
+		actionProperties.put("categoryMask", actionCategory);
+		actionProperties.put("collisionMask", actionCollision);
 		
 		Vec2f actionPosition = getAttackPosition();
 		CollidingShape actionShape = new AAB(actionPosition, Color.BLUE,

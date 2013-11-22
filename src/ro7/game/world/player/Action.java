@@ -11,7 +11,7 @@ import ro7.game.world.FinalEntity;
 
 public class Action extends CollidableEntity implements FinalEntity {
 	
-	private final float ACTION_TIME = 0.5f;
+	private final float ACTION_TIME = 0.1f;
 	
 	private float elapsedTime;
 

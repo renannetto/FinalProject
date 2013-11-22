@@ -81,6 +81,7 @@ public class FinalWorld extends GameWorld {
 		classes.put("PrisonGuard", PrisonGuard.class);
 		classes.put("PrisonArcher", PrisonArcher.class);
 		classes.put("Door", Door.class);
+		classes.put("NPC", NPC.class);
 	}
 
 	@Override
