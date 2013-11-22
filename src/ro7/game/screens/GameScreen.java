@@ -175,9 +175,11 @@ public class GameScreen extends Screen {
 				viewport = new Viewport(new Vec2f(0.0f, 0.0f), new Vec2f(
 						newSize.x, newSize.y), world, scale, gamePosition);
 			} else {
-				viewport = new Viewport(new Vec2f(0.0f, 0.0f), new Vec2f(
-						windowSize.x, windowSize.y), world, new Vec2f(1.0f,
-						1.0f), new Vec2f(0.0f, 0.0f));
+				Vec2f initialDimensions = new Vec2f(640.0f, 480.0f);
+				Vec2f viewportDimensions = new Vec2f(
+						windowSize.x, windowSize.y);
+				Vec2f scale = viewportDimensions.pdiv(initialDimensions);
+				viewport = new Viewport(new Vec2f(0.0f, 0.0f), viewportDimensions, world, scale, new Vec2f(0.0f, 0.0f));
 			}
 		} catch (NullPointerException e) {
 			System.out.println("No window size defined");

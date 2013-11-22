@@ -136,6 +136,13 @@ public class Player extends Character {
 		this.shape.update(nanoseconds);
 	}
 
+	@Override
+	public void move(Vec2f direction) {
+		if (currentAttack == null) {
+			super.move(direction);
+		}
+	}
+
 	public Attack attack(String name) {
 		if (currentAttack != null) {
 			return currentAttack;
