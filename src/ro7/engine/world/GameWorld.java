@@ -2,6 +2,8 @@ package ro7.engine.world;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -28,6 +30,8 @@ import ro7.engine.world.entities.PhysicalEntity;
 import ro7.engine.world.entities.Ray;
 import ro7.engine.world.io.Connection;
 import ro7.engine.world.io.Input;
+import cs195n.CS195NLevelReader;
+import cs195n.CS195NLevelReader.InvalidLevelException;
 import cs195n.LevelData;
 import cs195n.LevelData.ConnectionData;
 import cs195n.LevelData.EntityData;
@@ -63,7 +67,7 @@ public abstract class GameWorld {
 	protected Map<String, Entity> entities;
 
 	protected Map<String, SpriteSheet> spriteSheets;
-	
+
 	protected Hud hud;
 
 	protected Vec2f dimensions;
@@ -94,7 +98,7 @@ public abstract class GameWorld {
 
 		spriteSheets = new HashMap<String, SpriteSheet>();
 		loadSpriteSheets();
-		
+
 		hud = new Hud(dimensions);
 	}
 
@@ -114,72 +118,84 @@ public abstract class GameWorld {
 	 *            Iterate through all entities described on the level,
 	 *            initialize them and their connections.
 	 */
-	public void initLevel(LevelData level) {
-		List<? extends EntityData> entitiesDatas = level.getEntities();
-		for (EntityData entityData : entitiesDatas) {
-			String entityClassName = entityData.getEntityClass();
-			Class<?> entityClass = classes.get(entityClassName);
-			String entityName = entityData.getName();
+	public void initLevel(String levelName) {
+		try {
+			LevelData level = CS195NLevelReader.readLevel(new File(
+					"resources/levels/" + levelName));
 
-			List<? extends ShapeData> shapeDatas = entityData.getShapes();
-			CollidingShape shape = null;
-			if (shapeDatas.size() > 1) {
-				List<CollidingShape> shapes = new ArrayList<CollidingShape>();
-				for (ShapeData shapeData : shapeDatas) {
-					CollidingShape partShape = createShape(shapeData);
-					shapes.add(partShape);
+			List<? extends EntityData> entitiesDatas = level.getEntities();
+			for (EntityData entityData : entitiesDatas) {
+				String entityClassName = entityData.getEntityClass();
+				Class<?> entityClass = classes.get(entityClassName);
+				String entityName = entityData.getName();
+
+				List<? extends ShapeData> shapeDatas = entityData.getShapes();
+				CollidingShape shape = null;
+				if (shapeDatas.size() > 1) {
+					List<CollidingShape> shapes = new ArrayList<CollidingShape>();
+					for (ShapeData shapeData : shapeDatas) {
+						CollidingShape partShape = createShape(shapeData);
+						shapes.add(partShape);
+					}
+					shape = new CompoundShape(shapes.get(0).center(), shapes);
+				} else if (shapeDatas.size() == 1) {
+					shape = createShape(shapeDatas.get(0));
 				}
-				shape = new CompoundShape(shapes.get(0).center(), shapes);
-			} else if (shapeDatas.size() == 1) {
-				shape = createShape(shapeDatas.get(0));
-			}
-			Map<String, String> properties = entityData.getProperties();
+				Map<String, String> properties = entityData.getProperties();
 
-			Constructor<?> constructor;
-			try {
+				Constructor<?> constructor;
 				constructor = entityClass.getConstructor(GameWorld.class,
 						CollidingShape.class, String.class, Map.class);
 				Entity entity = (Entity) constructor.newInstance(this, shape,
 						entityName, properties);
 				entities.put(entityName, entity);
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				System.out.println("Invalid constructor");
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				System.out.println("Constructor can't be accessed");
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-		}
 
-		List<? extends ConnectionData> connectionDatas = level.getConnections();
-		for (ConnectionData connectionData : connectionDatas) {
-			String target = connectionData.getTarget();
-			String targetInput = connectionData.getTargetInput();
+			List<? extends ConnectionData> connectionDatas = level
+					.getConnections();
+			for (ConnectionData connectionData : connectionDatas) {
+				String target = connectionData.getTarget();
+				String targetInput = connectionData.getTargetInput();
 
-			Entity targetEntity = entities.get(target);
-			Input input = targetEntity.inputs.get(targetInput);
+				Entity targetEntity = entities.get(target);
+				Input input = targetEntity.inputs.get(targetInput);
 
-			Map<String, String> properties = connectionData.getProperties();
+				Map<String, String> connectionProperties = connectionData
+						.getProperties();
 
-			Connection connection = new Connection(input, properties);
+				Connection connection = new Connection(input,
+						connectionProperties);
 
-			String source = connectionData.getSource();
-			String sourceOutput = connectionData.getSourceOutput();
+				String source = connectionData.getSource();
+				String sourceOutput = connectionData.getSourceOutput();
 
-			Entity sourceEntity = entities.get(source);
-			sourceEntity.connect(sourceOutput, connection);
+				Entity sourceEntity = entities.get(source);
+				sourceEntity.connect(sourceOutput, connection);
+			}
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Invalid constructor");
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Constructor can't be accessed");
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Save file not found");
+		} catch (InvalidLevelException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Invalid save file");
 		}
 	}
 
@@ -231,7 +247,8 @@ public abstract class GameWorld {
 			return shape;
 		}
 
-		SpriteSheet sheet = spriteSheets.get(getSpriteSheetName(properties.get("sprite")));
+		SpriteSheet sheet = spriteSheets.get(getSpriteSheetName(properties
+				.get("sprite")));
 		Vec2i sheetPosition = new Vec2i(Integer.parseInt(properties
 				.get("spritePosX")), Integer.parseInt(properties
 				.get("spritePosY")));
@@ -255,7 +272,7 @@ public abstract class GameWorld {
 
 	private String getSpriteSheetName(String spriteSheet) {
 		String[] strings = spriteSheet.split("/|\\.");
-		return strings[strings.length-2];
+		return strings[strings.length - 2];
 	}
 
 	/**
@@ -311,7 +328,7 @@ public abstract class GameWorld {
 			entities.put(entity.getName(), entity);
 		}
 		newEntities.clear();
-		
+
 		for (String entity : removeEntities) {
 			entities.get(entity).remove();
 			entities.remove(entity);
@@ -388,7 +405,7 @@ public abstract class GameWorld {
 	public SpriteSheet getSpriteSheet(String sheet) {
 		return spriteSheets.get(sheet);
 	}
-	
+
 	public void addEntity(Entity entity) {
 		newEntities.add(entity);
 	}

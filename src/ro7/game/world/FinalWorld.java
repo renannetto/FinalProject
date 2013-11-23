@@ -1,7 +1,5 @@
 package ro7.game.world;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.List;
 
 import ro7.engine.sprites.ImageSprite;
@@ -26,14 +24,15 @@ import ro7.game.world.player.Player;
 import ro7.game.world.scenario.Door;
 import ro7.game.world.scenario.Scenario;
 import ro7.game.world.scenario.Wall;
-import cs195n.CS195NLevelReader;
-import cs195n.CS195NLevelReader.InvalidLevelException;
 import cs195n.Vec2f;
 import cs195n.Vec2i;
 
 public class FinalWorld extends GameWorld {
 
 	private final String PLAYER_ATTACK = "playerAttack";
+	
+	private String currentLevel;
+	private String currentMap;
 
 	private Player player;
 	private DiscreteBar lifebar;
@@ -44,28 +43,13 @@ public class FinalWorld extends GameWorld {
 	public FinalWorld(Vec2f dimensions) {
 		super(dimensions);
 		
-		try {
-			initLevel(CS195NLevelReader.readLevel(new File("resources/levels/level1.nlf")));
-		} catch (FileNotFoundException e) {
-			System.out.println("Level file not found");
-		} catch (InvalidLevelException e) {
-			System.out.println("Invalid level file");
-		}
-
-		lifebar = new DiscreteBar(new ImageSprite(new Vec2f(0.0f, 0.0f),
-				spriteSheets.get("heart"), new Vec2i(0, 0)), 3);
-		hud.addHudElement(ScreenPosition.TOP_LEFT, lifebar);
-
-		ImageSprite barSprite = new ImageSprite(new Vec2f(0.0f, 0.0f),
-				spriteSheets.get("empty_energy_bar"), new Vec2i(0, 0));
-		ImageSprite fillSprite = new ImageSprite(new Vec2f(0.0f, 0.0f),
-				spriteSheets.get("energy_fill"), new Vec2i(0, 0));
-		ContinuousBar energybar = new ContinuousBar(barSprite, fillSprite);
-		hud.addHudElement(ScreenPosition.TOP_RIGHT, energybar);
+		initLevel("level1.nlf");
+		
+		loadMap("map1.txt");
+		
+		initUI();
 		
 		player = (Player)entities.get("player");
-
-		map = MapParser.parseMap("resources/maps/map1.txt");
 
 		lost = false;
 		won = false;
@@ -107,6 +91,33 @@ public class FinalWorld extends GameWorld {
 		spriteSheets.put("room_001_top", new SpriteSheet(
 				"resources/sprites/Prison/room_001_top.png",
 				new Vec2i(640, 480), new Vec2i(0, 0)));
+		spriteSheets.put("testZombie_001", new SpriteSheet(
+				"resources/sprites/testZombie_001.png",
+				new Vec2i(96, 96), new Vec2i(0, 0)));
+	}
+	
+	@Override
+	public void initLevel(String levelName) {
+		super.initLevel(levelName);
+		currentLevel = levelName;
+	}
+	
+	public void loadMap(String mapFile) {
+		map = MapParser.parseMap("resources/maps/" + mapFile);
+		currentMap = mapFile;
+	}
+	
+	private void initUI() {
+		lifebar = new DiscreteBar(new ImageSprite(new Vec2f(0.0f, 0.0f),
+				spriteSheets.get("heart"), new Vec2i(0, 0)), 3);
+		hud.addHudElement(ScreenPosition.TOP_LEFT, lifebar);
+
+		ImageSprite barSprite = new ImageSprite(new Vec2f(0.0f, 0.0f),
+				spriteSheets.get("empty_energy_bar"), new Vec2i(0, 0));
+		ImageSprite fillSprite = new ImageSprite(new Vec2f(0.0f, 0.0f),
+				spriteSheets.get("energy_fill"), new Vec2i(0, 0));
+		ContinuousBar energybar = new ContinuousBar(barSprite, fillSprite);
+		hud.addHudElement(ScreenPosition.TOP_RIGHT, energybar);
 	}
 
 	public void movePlayer(Vec2f direction) {
@@ -184,6 +195,13 @@ public class FinalWorld extends GameWorld {
 	public void action() {
 		Action action = player.action();
 		entities.put(action.getName(), action);
+	}
+	
+	@Override
+	public String toString() {
+		String worldString = currentLevel;
+		worldString += "\n" + currentMap;
+		return worldString;
 	}
 
 }
