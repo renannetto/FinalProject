@@ -8,11 +8,17 @@ import java.awt.event.MouseWheelEvent;
 import ro7.engine.Application;
 import ro7.engine.Screen;
 import ro7.engine.world.Viewport;
+import ro7.game.world.FinalSaveFile;
+import ro7.game.world.FinalWorld;
 import ro7.game.world.MenuWorld;
 import cs195n.Vec2f;
 import cs195n.Vec2i;
 
 public class MenuScreen extends Screen {
+	
+	private final String DEFAULT_SAVE_FILE = "resources/saves/save1";
+	private final String FIRST_LEVEL = "level1.nlf";
+	private final String FIRST_MAP = "map1.txt";
 	
 	private Viewport viewport;
 	private MenuWorld world;
@@ -52,9 +58,22 @@ public class MenuScreen extends Screen {
 				{
 					case 0:
 					{
-						app.pushScreen(new GameScreen(app));
+						Vec2f worldDimensions = new Vec2f(windowSize.x, windowSize.y);
+						FinalSaveFile saveFile = new FinalSaveFile(DEFAULT_SAVE_FILE);
+						FinalWorld gameWorld = new FinalWorld(worldDimensions, saveFile);
+						gameWorld.initLevel(FIRST_LEVEL);
+						gameWorld.loadMap(FIRST_MAP);
+						app.pushScreen(new GameScreen(app, gameWorld));
 					}
 					break;
+					case 1:
+					{
+						FinalSaveFile saveFile = new FinalSaveFile(DEFAULT_SAVE_FILE);
+						Vec2f worldDimensions = new Vec2f(windowSize.x, windowSize.y);
+						FinalWorld gameWorld = (FinalWorld) saveFile.load(worldDimensions);
+						app.pushScreen(new GameScreen(app, gameWorld));
+						break;
+					}
 					case 2:
 					{
 						System.exit(0);

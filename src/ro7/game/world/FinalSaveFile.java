@@ -22,7 +22,7 @@ public class FinalSaveFile extends SaveFile {
 			String level = reader.readLine();
 			String map = reader.readLine();
 			
-			FinalWorld world = new FinalWorld(dimensions);
+			FinalWorld world = new FinalWorld(dimensions, this);
 			world.initLevel(level);
 			world.loadMap(map);
 			

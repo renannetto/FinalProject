@@ -7,17 +7,27 @@ import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.entities.Sensor;
 import ro7.engine.world.io.Input;
-import ro7.game.screens.GameScreen;
 import ro7.game.world.FinalEntity;
 import ro7.game.world.FinalWorld;
+import cs195n.Vec2f;
 
 public class Door extends Sensor implements FinalEntity {
-
-	private boolean tried = false;
+	
+	private String nextRoom;
+	private Vec2f nextPosition;
 
 	public Door(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {
 		super(world, shape, name, properties);
+		
+		nextRoom = properties.get("nextRoom");
+		
+		if (properties.containsKey("nextPosX") && properties.containsKey("nextPosY")) {
+			nextPosition = new Vec2f(Float.parseFloat(properties.get("nextPosX")), Float.parseFloat(properties.get("nextPosY")));
+		} else {
+			nextPosition = null;
+		}
+		
 		inputs.put("doEnter", new Input() {
 
 			@Override
@@ -25,18 +35,6 @@ public class Door extends Sensor implements FinalEntity {
 				enter();
 			}
 		});
-	}
-
-	@Override
-	public void onCollision(Collision collision) {
-		if (((FinalWorld) world).noEnemies()) {
-			super.onCollision(collision);
-		} else {
-			if (!tried) {
-				GameScreen.playCutscene("resources/cutscenes/cutscene2.txt");
-				tried = true;
-			}
-		}
 	}
 
 	@Override
@@ -52,7 +50,10 @@ public class Door extends Sensor implements FinalEntity {
 	}
 
 	public void enter() {
-		((FinalWorld) world).win();
+		world.loadLevel(nextRoom);
+		if (nextPosition!=null) {
+			((FinalWorld)world).setInitialPosition(nextPosition);
+		}
 	}
 
 	@Override

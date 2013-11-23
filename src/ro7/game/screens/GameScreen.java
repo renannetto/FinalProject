@@ -24,8 +24,11 @@ public class GameScreen extends Screen {
 
 	private static String cutscene;
 
-	public GameScreen(Application app) {
+	public GameScreen(Application app, FinalWorld world) {
 		super(app);
+		
+		this.world = world;
+		
 		pressedKeys = new HashSet<Integer>();
 		cutscene = "";
 		//AudioManager.getInstance().playMusic("resources/musics/background.ogg");
@@ -166,10 +169,6 @@ public class GameScreen extends Screen {
 		super.onResize(newSize);
 
 		try {
-			if (world == null) {
-				world = new FinalWorld(new Vec2f(windowSize.x, windowSize.y));
-			}
-
 			if (viewport != null) {
 				Vec2f gamePosition = viewport.getGamePosition();
 				Vec2f proportion = new Vec2f((float) newSize.x / oldSize.x,

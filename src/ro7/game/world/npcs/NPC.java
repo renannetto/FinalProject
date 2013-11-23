@@ -1,4 +1,4 @@
-package ro7.game.world;
+package ro7.game.world.npcs;
 
 import java.util.Map;
 
@@ -7,6 +7,7 @@ import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.entities.StaticEntity;
 import ro7.game.screens.GameScreen;
+import ro7.game.world.FinalEntity;
 
 public class NPC extends StaticEntity implements FinalEntity {
 	

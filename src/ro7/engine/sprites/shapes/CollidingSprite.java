@@ -88,6 +88,13 @@ public class CollidingSprite extends CollidingShape {
 		this.shape.move(translation);
 		this.sprite.move(translation);
 	}
+	
+	@Override
+	public void moveTo(Vec2f position) {
+		super.moveTo(position);
+		this.shape.moveTo(position);
+		this.sprite.moveTo(position);
+	}
 
 	@Override
 	public void updatePoints(Vec2f translation) {

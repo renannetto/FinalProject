@@ -46,6 +46,10 @@ public class MovingEntity extends DynamicEntity {
 		}
 		velocity = velocity.smult(targetVelocity);
 	}
+	
+	public void moveTo(Vec2f newPosition) {
+		shape.moveTo(newPosition);
+	}
 
 	public void stop(Vec2f direction) {
 		if (direction.x*velocity.x > 0) {

@@ -157,7 +157,7 @@ public class Player extends Character {
 		}
 	}
 
-	public Attack attack(String name) {
+	public Attack attack() {
 		if (currentAttack != null) {
 			return currentAttack;
 		}
@@ -170,7 +170,7 @@ public class Player extends Character {
 		Vec2f attackPosition = getAttackPosition();
 		CollidingShape attackShape = new AAB(attackPosition, Color.BLUE,
 				Color.BLUE, shape.getDimensions());
-		currentAttack = new Attack(world, attackShape, name, attackProperties);
+		currentAttack = new Attack(world, attackShape, name + "Attack", attackProperties);
 
 		Connection connection = new Connection(inputs.get("doStopAttack"),
 				new HashMap<String, String>());

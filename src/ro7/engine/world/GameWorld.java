@@ -77,6 +77,8 @@ public abstract class GameWorld {
 
 	protected Set<Entity> newEntities;
 	protected Set<String> removeEntities;
+	
+	protected String nextLevel;
 
 	/**
 	 * @param dimensions
@@ -100,6 +102,8 @@ public abstract class GameWorld {
 		loadSpriteSheets();
 
 		hud = new Hud(dimensions);
+		
+		nextLevel = "";
 	}
 
 	/**
@@ -119,6 +123,14 @@ public abstract class GameWorld {
 	 *            initialize them and their connections.
 	 */
 	public void initLevel(String levelName) {
+		entities.clear();
+		collidables.clear();
+		physEntities.clear();
+		rays.clear();
+		newEntities.clear();
+		removeEntities.clear();
+		nextLevel = "";
+		
 		try {
 			LevelData level = CS195NLevelReader.readLevel(new File(
 					"resources/levels/" + levelName));
@@ -334,6 +346,10 @@ public abstract class GameWorld {
 			entities.remove(entity);
 		}
 		removeEntities.clear();
+		
+		if (!nextLevel.equals("")) {
+			initLevel(nextLevel);
+		}
 	}
 
 	/**
@@ -417,6 +433,10 @@ public abstract class GameWorld {
 	 */
 	public void removeEntity(String entityName) {
 		removeEntities.add(entityName);
+	}
+	
+	public void loadLevel(String levelName) {
+		nextLevel = levelName;
 	}
 
 }
