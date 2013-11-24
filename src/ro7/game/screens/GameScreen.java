@@ -11,7 +11,6 @@ import ro7.engine.Application;
 import ro7.engine.Screen;
 import ro7.engine.audio.AudioManager;
 import ro7.engine.screens.SlideShowScreen;
-import ro7.engine.screens.TextCutsceneScreen;
 import ro7.engine.world.Viewport;
 import ro7.game.world.FinalWorld;
 import cs195n.Vec2f;
@@ -42,7 +41,7 @@ public class GameScreen extends Screen {
 	public void onTick(long nanosSincePreviousTick) {
 		try {
 			if (!cutscene.equals("")) {
-				app.pushScreen(new TextCutsceneScreen(app, this, cutscene));
+				app.pushScreen(new FinalTextCutscene(app, this, cutscene));
 				cutscene = "";
 			} else {
 				world.update(nanosSincePreviousTick);

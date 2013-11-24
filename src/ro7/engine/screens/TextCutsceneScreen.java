@@ -16,13 +16,15 @@ import java.util.List;
 import ro7.engine.Application;
 import ro7.engine.Screen;
 import ro7.engine.sprites.TextBox;
+import ro7.engine.sprites.shapes.AAB;
+import ro7.engine.sprites.shapes.CollidingShape;
 import cs195n.Vec2f;
 import cs195n.Vec2i;
 
 public class TextCutsceneScreen extends Screen {
 
 	private final Color TEXT_BOX_COLOR = Color.BLUE;
-	private final Color FONT_COLOR = Color.WHITE;
+	private final Color FONT_COLOR = Color.BLACK;
 	private final int NEXT_BOX_KEY = KeyEvent.VK_SPACE;
 
 	private Screen previousScreen;
@@ -134,12 +136,15 @@ public class TextCutsceneScreen extends Screen {
 
 			textBoxes.clear();
 			for (String text : texts) {
-				textBoxes.add(new TextBox(boxPosition, boxDimensions,
-						TEXT_BOX_COLOR, text, FONT_COLOR, NEXT_BOX_KEY));
+				textBoxes.add(new TextBox(boxPosition, createTextBox(boxPosition, boxDimensions), text, FONT_COLOR, NEXT_BOX_KEY));
 			}
 		} catch (NullPointerException e) {
 			System.out.println("No window size defined");
 		}
+	}
+	
+	protected CollidingShape createTextBox(Vec2f position, Vec2f dimensions) {
+		return new AAB(position, TEXT_BOX_COLOR, TEXT_BOX_COLOR, dimensions);
 	}
 
 }

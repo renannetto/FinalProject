@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
-import ro7.engine.sprites.shapes.AAB;
+import ro7.engine.sprites.shapes.CollidingShape;
 import cs195n.Vec2f;
 
 public class TextBox extends Sprite {
@@ -13,11 +13,12 @@ public class TextBox extends Sprite {
 	
 	private Message text;
 	private Message nextBox;
-	private AAB box;
+	private CollidingShape box;
 
-	public TextBox(Vec2f position, Vec2f dimensions, Color boxColor, String text, Color fontColor, int nextBoxKey) {
+	public TextBox(Vec2f position, CollidingShape box, String text, Color fontColor, int nextBoxKey) {
 		super(position);
-		this.box = new AAB(position, boxColor, boxColor, dimensions);
+		this.box = box;
+		Vec2f dimensions = box.getDimensions();
 		this.text = new Message(text, INITIAL_FONT_SIZE, fontColor, position.minus(dimensions.sdiv(2.0f)));
 		String nextBoxText = "Press " + KeyEvent.getKeyText(nextBoxKey) + " to continue";
 		this.nextBox = new Message(nextBoxText, INITIAL_FONT_SIZE, fontColor, position.plus(dimensions.pmult(0.25f, 0.25f)));

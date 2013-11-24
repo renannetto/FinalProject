@@ -45,6 +45,7 @@ public class Player extends Character {
 	public Player(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {
 		super(world, shape, name, properties);
+		
 		if (properties.containsKey("attackCategory")) {
 			attackCategory = properties.get("attackCategory");
 		} else {

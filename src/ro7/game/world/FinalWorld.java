@@ -32,12 +32,12 @@ import cs195n.Vec2f;
 import cs195n.Vec2i;
 
 public class FinalWorld extends GameWorld {
-	
+
 	private FinalSaveFile currentSave;
-	
+
 	private String currentLevel;
 	private String currentMap;
-	
+
 	private Vec2f playerInitPosition;
 
 	private Player player;
@@ -48,10 +48,10 @@ public class FinalWorld extends GameWorld {
 
 	public FinalWorld(Vec2f dimensions, FinalSaveFile currentSave) {
 		super(dimensions);
-		
+
 		this.currentSave = currentSave;
 		this.playerInitPosition = null;
-		
+
 		initUI();
 
 		lost = false;
@@ -77,11 +77,11 @@ public class FinalWorld extends GameWorld {
 	@Override
 	public void loadSpriteSheets() {
 		spriteSheets.put("heart", new SpriteSheet(
-				"resources/sprites/ui/heart.png", new Vec2i(32, 28), new Vec2i(0,
-						0)));
+				"resources/sprites/ui/heart.png", new Vec2i(32, 28), new Vec2i(
+						0, 0)));
 		spriteSheets.put("empty_energy_bar", new SpriteSheet(
-				"resources/sprites/ui/empty_energy_bar.png", new Vec2i(200, 16),
-				new Vec2i(0, 0)));
+				"resources/sprites/ui/empty_energy_bar.png",
+				new Vec2i(200, 16), new Vec2i(0, 0)));
 		spriteSheets.put("energy_fill", new SpriteSheet(
 				"resources/sprites/ui/energy_fill.png", new Vec2i(16, 16),
 				new Vec2i(0, 0)));
@@ -91,7 +91,7 @@ public class FinalWorld extends GameWorld {
 		spriteSheets.put("save", new SpriteSheet(
 				"resources/sprites/npcs/save.png", new Vec2i(36, 36),
 				new Vec2i(0, 0)));
-		
+
 		spriteSheets.put("hero_walk_sheet", new SpriteSheet(
 				"resources/sprites/char/hero_walk_sheet.png",
 				new Vec2i(96, 96), new Vec2i(0, 0)));
@@ -108,26 +108,38 @@ public class FinalWorld extends GameWorld {
 				"resources/sprites/prison/room_002.jpg", new Vec2i(640, 480),
 				new Vec2i(0, 0)));
 		spriteSheets.put("testZombie_001", new SpriteSheet(
-				"resources/sprites/enemies/testZombie_001.png",
-				new Vec2i(96, 96), new Vec2i(0, 0)));
+				"resources/sprites/enemies/testZombie_001.png", new Vec2i(96,
+						96), new Vec2i(0, 0)));
 	}
-	
+
 	@Override
 	public void initLevel(String levelName) {
 		super.initLevel(levelName);
 		currentLevel = levelName;
-		player = (Player)entities.get("player");
-		if (playerInitPosition!=null) {
-			player.moveTo(playerInitPosition);
+		Player newPlayer = (Player) entities.get("player");
+		if (player == null) {
+			player = newPlayer;
 		}
-		playerInitPosition=null;
+		
+		entities.put(player.getName(), player);
+		collidables.remove(newPlayer);
+		collidables.add(player);
+		physEntities.remove(newPlayer);
+		physEntities.add(player);
+		
+		if (playerInitPosition != null) {
+			player.moveTo(playerInitPosition);
+		} else {
+			player.moveTo(newPlayer.getPosition());
+		}
+		playerInitPosition = null;
 	}
-	
+
 	public void loadMap(String mapFile) {
 		map = MapParser.parseMap("resources/maps/" + mapFile);
 		currentMap = mapFile;
 	}
-	
+
 	private void initUI() {
 		lifebar = new DiscreteBar(new ImageSprite(new Vec2f(0.0f, 0.0f),
 				spriteSheets.get("heart"), new Vec2i(0, 0)), 3);
@@ -140,7 +152,7 @@ public class FinalWorld extends GameWorld {
 		ContinuousBar energybar = new ContinuousBar(barSprite, fillSprite);
 		hud.addHudElement(ScreenPosition.TOP_RIGHT, energybar);
 	}
-	
+
 	public void save() {
 		currentSave.save(this);
 	}
@@ -148,7 +160,7 @@ public class FinalWorld extends GameWorld {
 	public void movePlayer(Vec2f direction) {
 		player.move(direction);
 	}
-	
+
 	public void setInitialPosition(Vec2f position) {
 		this.playerInitPosition = position;
 	}
@@ -186,7 +198,7 @@ public class FinalWorld extends GameWorld {
 	public void lose() {
 		lost = true;
 	}
-	
+
 	public void win() {
 		won = true;
 	}
@@ -194,7 +206,7 @@ public class FinalWorld extends GameWorld {
 	public boolean lost() {
 		return lost;
 	}
-	
+
 	public boolean won() {
 		return won;
 	}
@@ -225,7 +237,7 @@ public class FinalWorld extends GameWorld {
 		Action action = player.action();
 		entities.put(action.getName(), action);
 	}
-	
+
 	@Override
 	public String toString() {
 		String worldString = currentLevel;
