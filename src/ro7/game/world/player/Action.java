@@ -2,6 +2,7 @@ package ro7.game.world.player;
 
 import java.awt.Graphics2D;
 import java.util.Map;
+import java.util.Set;
 
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
@@ -13,11 +14,15 @@ public class Action extends CollidableEntity implements FinalEntity {
 	
 	private final float ACTION_TIME = 0.1f;
 	
+	private Set<Item> inventory;
+	
 	private float elapsedTime;
 
 	public Action(GameWorld world, CollidingShape shape, String name,
-			Map<String, String> properties) {
+			Map<String, String> properties, Set<Item> inventory) {
 		super(world, shape, name, properties);
+		
+		this.inventory = inventory;
 		
 		elapsedTime = 0.0f;
 	}
@@ -43,7 +48,7 @@ public class Action extends CollidableEntity implements FinalEntity {
 	@Override
 	public void onCollision(Collision collision) {
 		FinalEntity otherEntity = (FinalEntity) collision.other;
-		otherEntity.receiveAction();
+		otherEntity.receiveAction(new Collision(this, collision.mtv, collision.otherShape, collision.thisShape), inventory);
 		world.removeEntity(name);
 	}
 
@@ -73,9 +78,15 @@ public class Action extends CollidableEntity implements FinalEntity {
 	}
 
 	@Override
-	public void receiveAction() {
+	public void receiveAction(Collision collision, Set<Item> inventory) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void getItem(Item item) {
+		inventory.add(item);
+		System.out.println("Inventory: " + inventory);
 	}
 
 }

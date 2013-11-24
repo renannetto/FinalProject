@@ -1,6 +1,7 @@
 package ro7.game.world.npcs;
 
 import java.util.Map;
+import java.util.Set;
 
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
@@ -8,6 +9,7 @@ import ro7.engine.world.GameWorld;
 import ro7.engine.world.entities.StaticEntity;
 import ro7.game.screens.GameScreen;
 import ro7.game.world.FinalEntity;
+import ro7.game.world.player.Item;
 
 public class NPC extends StaticEntity implements FinalEntity {
 	
@@ -38,8 +40,14 @@ public class NPC extends StaticEntity implements FinalEntity {
 	}
 
 	@Override
-	public void receiveAction() {
+	public void receiveAction(Collision collision, Set<Item> inventory) {
 		GameScreen.playCutscene(cutscene);
+	}
+	
+	@Override
+	public void getItem(Item item) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

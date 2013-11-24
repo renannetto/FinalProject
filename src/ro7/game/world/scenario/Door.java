@@ -1,6 +1,7 @@
 package ro7.game.world.scenario;
 
 import java.util.Map;
+import java.util.Set;
 
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
@@ -9,6 +10,7 @@ import ro7.engine.world.entities.Sensor;
 import ro7.engine.world.io.Input;
 import ro7.game.world.FinalEntity;
 import ro7.game.world.FinalWorld;
+import ro7.game.world.player.Item;
 import cs195n.Vec2f;
 
 public class Door extends Sensor implements FinalEntity {
@@ -75,7 +77,13 @@ public class Door extends Sensor implements FinalEntity {
 	}
 
 	@Override
-	public void receiveAction() {
+	public void receiveAction(Collision collision, Set<Item> inventory) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void getItem(Item item) {
 		// TODO Auto-generated method stub
 		
 	}

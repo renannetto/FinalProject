@@ -16,6 +16,7 @@ import ro7.game.world.FinalEntity;
 import ro7.game.world.FinalWorld;
 import ro7.game.world.map.FinalMap;
 import ro7.game.world.map.FinalNode;
+import ro7.game.world.player.Item;
 import cs195n.Vec2f;
 
 public abstract class Enemy extends Character {
@@ -90,23 +91,7 @@ public abstract class Enemy extends Character {
 		super.onCollision(collision);
 		path.clear();
 		FinalEntity otherEntity = (FinalEntity) collision.other;
-		otherEntity.touchEnemy(collision);
-	}
-
-	@Override
-	public void onCollisionDynamic(Collision collision) {
-		super.onCollisionDynamic(collision);
-		path.clear();
-		FinalEntity otherEntity = (FinalEntity) collision.other;
-		otherEntity.touchEnemy(collision);
-	}
-
-	@Override
-	public void onCollisionStatic(Collision collision) {
-		super.onCollisionStatic(collision);
-		path.clear();
-		FinalEntity otherEntity = (FinalEntity) collision.other;
-		otherEntity.touchEnemy(collision);
+		otherEntity.touchEnemy(new Collision(this, collision.mtv, collision.otherShape, collision.thisShape));
 	}
 
 	@Override
@@ -128,12 +113,18 @@ public abstract class Enemy extends Character {
 	@Override
 	public void receiveAttack(Collision collision) {	
 		Vec2f mtv = collision.mtv;
-		Vec2f centerDistance = collision.otherShape.center().minus(
-				collision.thisShape.center());
+		Vec2f centerDistance = collision.thisShape.center().minus(
+				collision.otherShape.center());
 		if (mtv.dot(centerDistance) < 0) {
 			mtv = mtv.smult(-1.0f);
 		}
 		push(mtv);
+	}
+	
+	@Override
+	public void getItem(Item item) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	protected class PlayerClose extends Condition {

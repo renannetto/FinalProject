@@ -2,7 +2,9 @@ package ro7.game.world.player;
 
 import java.awt.Color;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import ro7.engine.sprites.AnimatedSprite;
 import ro7.engine.sprites.ImageSprite;
@@ -37,6 +39,8 @@ public class Player extends Character {
 	private AnimatedSprite attackingUp;
 	private AnimatedSprite attackingRight;
 	private AnimatedSprite attackingLeft;
+	
+	private Set<Item> inventory;
 
 	public Player(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {
@@ -119,6 +123,8 @@ public class Player extends Character {
 				attackingSheet, posRight, framesAttacking, timeToMoveAttacking);
 		attackingLeft = new AnimatedSprite(shape.getPosition(), attackingSheet,
 				posLeft, framesAttacking, timeToMoveAttacking);
+		
+		this.inventory = new HashSet<Item>();
 	}
 
 	@Override
@@ -188,7 +194,7 @@ public class Player extends Character {
 		CollidingShape actionShape = new AAB(actionPosition, Color.BLUE,
 				Color.BLUE, shape.getDimensions());
 		
-		return new Action(world, actionShape, name + "Action", actionProperties);
+		return new Action(world, actionShape, name + "Action", actionProperties, inventory);
 	}
 
 	private Vec2f getAttackPosition() {
@@ -220,8 +226,8 @@ public class Player extends Character {
 	public void touchEnemy(Collision collision) {
 		receiveDamage(1);
 		Vec2f mtv = collision.mtv;
-		Vec2f centerDistance = collision.otherShape.center().minus(
-				collision.thisShape.center());
+		Vec2f centerDistance = collision.thisShape.center().minus(
+				collision.otherShape.center());
 		if (mtv.dot(centerDistance) < 0) {
 			mtv = mtv.smult(-1.0f);
 		}
@@ -231,6 +237,11 @@ public class Player extends Character {
 	@Override
 	public void receiveAttack(Collision collision) {
 
+	}
+
+	@Override
+	public void getItem(Item item) {
+		
 	}
 
 }

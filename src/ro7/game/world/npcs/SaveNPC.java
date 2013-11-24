@@ -1,10 +1,13 @@
 package ro7.game.world.npcs;
 
 import java.util.Map;
+import java.util.Set;
 
 import ro7.engine.sprites.shapes.CollidingShape;
+import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.game.world.FinalWorld;
+import ro7.game.world.player.Item;
 
 public class SaveNPC extends NPC {
 
@@ -14,8 +17,8 @@ public class SaveNPC extends NPC {
 	}
 	
 	@Override
-	public void receiveAction() {
-		super.receiveAction();
+	public void receiveAction(Collision collision, Set<Item> inventory) {
+		super.receiveAction(collision, inventory);
 		((FinalWorld)world).save();
 	}
 

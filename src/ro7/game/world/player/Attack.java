@@ -2,6 +2,7 @@ package ro7.game.world.player;
 
 import java.awt.Graphics2D;
 import java.util.Map;
+import java.util.Set;
 
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
@@ -41,7 +42,7 @@ public class Attack extends CollidableEntity implements FinalEntity {
 	public void onCollision(Collision collision) {
 		FinalEntity otherEntity = (FinalEntity) collision.other;
 		otherEntity.receiveDamage(damage);
-		otherEntity.receiveAttack(collision);
+		otherEntity.receiveAttack(new Collision(this, collision.mtv, collision.otherShape, collision.thisShape));
 	}
 
 	@Override
@@ -86,7 +87,13 @@ public class Attack extends CollidableEntity implements FinalEntity {
 	}
 
 	@Override
-	public void receiveAction() {
+	public void receiveAction(Collision collision, Set<Item> inventory) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void getItem(Item item) {
 		// TODO Auto-generated method stub
 		
 	}

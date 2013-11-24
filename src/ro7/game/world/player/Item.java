@@ -1,61 +1,60 @@
-package ro7.game.world.enemies;
+package ro7.game.world.player;
 
-import java.util.Map;
+import java.awt.Graphics2D;
 import java.util.Set;
 
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
-import ro7.engine.world.entities.MovingEntity;
+import ro7.engine.world.entities.Entity;
 import ro7.game.world.FinalEntity;
-import ro7.game.world.player.Item;
 
-public class Arrow extends MovingEntity implements FinalEntity {
-
-	public Arrow(GameWorld world, CollidingShape shape, String name,
-			Map<String, String> properties) {
-		super(world, shape, name, properties);
+public class Item extends Entity implements FinalEntity {
+	
+	public Item(GameWorld world, CollidingShape shape,
+			String name) {
+		super(world, shape, name);
+	}
+	
+	@Override
+	public void update(long nanoseconds) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public void onCollision(Collision collision) {
-		FinalEntity otherEntity = (FinalEntity) collision.other;
-		otherEntity.receiveDamage(1);
-		world.removeEntity(name);
+	public void draw(Graphics2D g) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public void onCollisionDynamic(Collision collision) {
-
-	}
-
-	@Override
-	public void onCollisionStatic(Collision collision) {
-
+	public void remove() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void receiveDamage(int damage) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void touchEnemy(Collision collision) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void receiveAttack(Collision collision) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void receiveAction(Collision collision, Set<Item> inventory) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

@@ -5,7 +5,7 @@ import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.entities.CollidableEntity;
 
 public class Collision {
-
+	
 	public final CollidableEntity other;
 	public final Vec2f mtv;
 	public final CollidingShape thisShape;

@@ -1,10 +1,13 @@
 package ro7.game.world.enemies;
 
+import java.util.Set;
+
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.RayCollision;
 import ro7.engine.world.entities.Ray;
 import ro7.game.world.FinalEntity;
+import ro7.game.world.player.Item;
 import cs195n.Vec2f;
 
 public class ArrowRay extends Ray implements FinalEntity {
@@ -57,7 +60,13 @@ public class ArrowRay extends Ray implements FinalEntity {
 	}
 
 	@Override
-	public void receiveAction() {
+	public void receiveAction(Collision collision, Set<Item> inventory) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void getItem(Item item) {
 		// TODO Auto-generated method stub
 		
 	}

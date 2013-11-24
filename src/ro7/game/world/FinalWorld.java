@@ -22,8 +22,10 @@ import ro7.game.world.npcs.NPC;
 import ro7.game.world.npcs.SaveNPC;
 import ro7.game.world.player.Action;
 import ro7.game.world.player.Attack;
+import ro7.game.world.player.GameItem;
 import ro7.game.world.player.Player;
 import ro7.game.world.scenario.Door;
+import ro7.game.world.scenario.LockedDoor;
 import ro7.game.world.scenario.Scenario;
 import ro7.game.world.scenario.Wall;
 import cs195n.Vec2f;
@@ -66,8 +68,10 @@ public class FinalWorld extends GameWorld {
 		classes.put("PrisonGuard", PrisonGuard.class);
 		classes.put("PrisonArcher", PrisonArcher.class);
 		classes.put("Door", Door.class);
+		classes.put("LockedDoor", LockedDoor.class);
 		classes.put("NPC", NPC.class);
 		classes.put("SaveNPC", SaveNPC.class);
+		classes.put("GameItem", GameItem.class);
 	}
 
 	@Override

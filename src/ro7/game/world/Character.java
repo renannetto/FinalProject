@@ -1,10 +1,13 @@
 package ro7.game.world;
 
 import java.util.Map;
+import java.util.Set;
 
 import ro7.engine.sprites.shapes.CollidingShape;
+import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.entities.MovingEntity;
+import ro7.game.world.player.Item;
 import cs195n.Vec2f;
 
 public abstract class Character extends MovingEntity implements FinalEntity {
@@ -52,7 +55,7 @@ public abstract class Character extends MovingEntity implements FinalEntity {
 	}
 	
 	@Override
-	public void receiveAction() {
+	public void receiveAction(Collision collision, Set<Item> inventory) {
 		// TODO Auto-generated method stub
 		
 	}

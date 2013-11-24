@@ -64,5 +64,11 @@ public abstract class Entity {
 			return false;
 		return true;
 	}
+	
+	@Override
+	public String toString() {
+		String string = "Entity: " + name;
+		return string;
+	}
 
 }
