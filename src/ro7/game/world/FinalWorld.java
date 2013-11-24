@@ -23,6 +23,7 @@ import ro7.game.world.npcs.SaveNPC;
 import ro7.game.world.player.Action;
 import ro7.game.world.player.Attack;
 import ro7.game.world.player.GameItem;
+import ro7.game.world.player.Item;
 import ro7.game.world.player.Player;
 import ro7.game.world.scenario.Door;
 import ro7.game.world.scenario.LockedDoor;
@@ -236,6 +237,13 @@ public class FinalWorld extends GameWorld {
 	public void action() {
 		Action action = player.action();
 		entities.put(action.getName(), action);
+	}
+	
+	public boolean playerHas(Item item) {
+		if (player==null) {
+			return false;
+		}
+		return player.hasItem(item);
 	}
 
 	@Override

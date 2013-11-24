@@ -245,4 +245,8 @@ public class Player extends Character {
 		
 	}
 
+	public boolean hasItem(Item item) {
+		return inventory.contains(item);
+	}
+
 }
