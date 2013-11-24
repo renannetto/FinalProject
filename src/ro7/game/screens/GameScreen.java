@@ -9,6 +9,8 @@ import java.util.Set;
 
 import ro7.engine.Application;
 import ro7.engine.Screen;
+import ro7.engine.audio.AudioManager;
+import ro7.engine.screens.SlideShowScreen;
 import ro7.engine.screens.TextCutsceneScreen;
 import ro7.engine.world.Viewport;
 import ro7.game.world.FinalWorld;
@@ -16,6 +18,8 @@ import cs195n.Vec2f;
 import cs195n.Vec2i;
 
 public class GameScreen extends Screen {
+	
+	private final String BACKGROUND_MUSIC = "resources/musics/background.ogg";
 
 	private Viewport viewport;
 	private FinalWorld world;
@@ -31,7 +35,7 @@ public class GameScreen extends Screen {
 		
 		pressedKeys = new HashSet<Integer>();
 		cutscene = "";
-		//AudioManager.getInstance().playMusic("resources/musics/background.ogg");
+		AudioManager.getInstance().playMusic(BACKGROUND_MUSIC, true);
 	}
 
 	@Override
@@ -43,9 +47,12 @@ public class GameScreen extends Screen {
 			} else {
 				world.update(nanosSincePreviousTick);
 				if (world.lost()) {
+					AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
 					app.popScreen();
 				} else if (world.won()) {
+					AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
 					app.popScreen();
+					app.pushScreen(new SlideShowScreen(app, "resources/slideshows/continue.txt"));
 				}
 			}
 		} catch (Exception e) {
@@ -103,6 +110,7 @@ public class GameScreen extends Screen {
 			world.action();
 			break;
 		case KeyEvent.VK_ESCAPE:
+			AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
 			app.popScreen();
 			break;
 		}

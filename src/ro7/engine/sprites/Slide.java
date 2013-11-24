@@ -1,6 +1,7 @@
 package ro7.engine.sprites;
 
 import java.awt.AlphaComposite;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -53,12 +54,14 @@ public class Slide extends Sprite {
 				System.out.println("Could not open image file");
 			}
 		} else {
+			Composite oldComposite = g.getComposite();
+			
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
 					alpha));
 			g.drawImage(image, (int) position.x, (int) position.y,
 					dimensions.x, dimensions.y, null);
-			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-					1.0f));
+			
+			g.setComposite(oldComposite);
 		}
 	}
 

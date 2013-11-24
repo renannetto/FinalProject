@@ -48,13 +48,13 @@ public class MenuWorld extends GameWorld{
 	public void loadSpriteSheets() {
 		// TODO Auto-generated method stub
 		spriteSheets.put("menuBackground", new SpriteSheet(
-				"resources/sprites/Menu.jpg", new Vec2i(640, 480), new Vec2i(0, 0)));
+				"resources/sprites/ui/Menu.jpg", new Vec2i(640, 480), new Vec2i(0, 0)));
 		spriteSheets.put("menuOptStart", new SpriteSheet(
-				"resources/sprites/Start.png", new Vec2i(240, 60), new Vec2i(0, 0)));
+				"resources/sprites/ui/Start.png", new Vec2i(240, 60), new Vec2i(0, 0)));
 		spriteSheets.put("menuOptOptions", new SpriteSheet(
-				"resources/sprites/Options.png", new Vec2i(240, 60), new Vec2i(0, 0)));
+				"resources/sprites/ui/Options.png", new Vec2i(240, 60), new Vec2i(0, 0)));
 		spriteSheets.put("menuOptExit", new SpriteSheet(
-				"resources/sprites/Exit.png", new Vec2i(240, 60), new Vec2i(0, 0)));
+				"resources/sprites/ui/Exit.png", new Vec2i(240, 60), new Vec2i(0, 0)));
 	}
 	
 	

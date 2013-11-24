@@ -77,31 +77,38 @@ public class FinalWorld extends GameWorld {
 	@Override
 	public void loadSpriteSheets() {
 		spriteSheets.put("heart", new SpriteSheet(
-				"resources/sprites/heart.png", new Vec2i(32, 28), new Vec2i(0,
+				"resources/sprites/ui/heart.png", new Vec2i(32, 28), new Vec2i(0,
 						0)));
 		spriteSheets.put("empty_energy_bar", new SpriteSheet(
-				"resources/sprites/empty_energy_bar.png", new Vec2i(200, 16),
+				"resources/sprites/ui/empty_energy_bar.png", new Vec2i(200, 16),
 				new Vec2i(0, 0)));
 		spriteSheets.put("energy_fill", new SpriteSheet(
-				"resources/sprites/energy_fill.png", new Vec2i(16, 16),
+				"resources/sprites/ui/energy_fill.png", new Vec2i(16, 16),
 				new Vec2i(0, 0)));
+		spriteSheets.put("statue_key", new SpriteSheet(
+				"resources/sprites/items/statue_key.png", new Vec2i(24, 24),
+				new Vec2i(0, 0)));
+		spriteSheets.put("save", new SpriteSheet(
+				"resources/sprites/npcs/save.png", new Vec2i(36, 36),
+				new Vec2i(0, 0)));
+		
 		spriteSheets.put("hero_walk_sheet", new SpriteSheet(
-				"resources/sprites/Char/hero_walk_sheet.png",
+				"resources/sprites/char/hero_walk_sheet.png",
 				new Vec2i(96, 96), new Vec2i(0, 0)));
 		spriteSheets.put("hero_attack_sheet", new SpriteSheet(
-				"resources/sprites/Char/hero_attack_sheet.png", new Vec2i(96,
+				"resources/sprites/char/hero_attack_sheet.png", new Vec2i(96,
 						96), new Vec2i(0, 0)));
 		spriteSheets.put("room_001", new SpriteSheet(
-				"resources/sprites/Prison/room_001.jpg", new Vec2i(640, 480),
+				"resources/sprites/prison/room_001.jpg", new Vec2i(640, 480),
 				new Vec2i(0, 0)));
 		spriteSheets.put("room_001_top", new SpriteSheet(
-				"resources/sprites/Prison/room_001_top.png",
+				"resources/sprites/prison/room_001_top.png",
 				new Vec2i(640, 480), new Vec2i(0, 0)));
 		spriteSheets.put("room_002", new SpriteSheet(
-				"resources/sprites/Prison/room_002.jpg", new Vec2i(640, 480),
+				"resources/sprites/prison/room_002.jpg", new Vec2i(640, 480),
 				new Vec2i(0, 0)));
 		spriteSheets.put("testZombie_001", new SpriteSheet(
-				"resources/sprites/testZombie_001.png",
+				"resources/sprites/enemies/testZombie_001.png",
 				new Vec2i(96, 96), new Vec2i(0, 0)));
 	}
 	

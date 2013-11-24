@@ -86,7 +86,6 @@ public class Action extends CollidableEntity implements FinalEntity {
 	@Override
 	public void getItem(Item item) {
 		inventory.add(item);
-		System.out.println("Inventory: " + inventory);
 	}
 
 }

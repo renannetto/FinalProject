@@ -1,0 +1,2 @@
+resources/slideshows/to_be_continued.jpg
+5

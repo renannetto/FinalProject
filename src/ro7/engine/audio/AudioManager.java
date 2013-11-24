@@ -2,6 +2,8 @@ package ro7.engine.audio;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -16,63 +18,75 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class AudioManager implements LineListener {
 
 	private static AudioManager instance;
+	
+	private Map<String, MusicThread> audioThreads = new HashMap<String, MusicThread>();
 
 	// Specialized Thread for streaming the background music
 	public class MusicThread extends Thread {
 
-		private SourceDataLine line;
-		private AudioInputStream encoded;
-		private AudioInputStream stream;
+		private String fileName;
+		private boolean repeat;
+		private boolean stop;
 
-		public MusicThread(String fileName) {
-			try {
-				encoded = AudioSystem.getAudioInputStream(new File(fileName));
-				AudioFormat encodedFormat = encoded.getFormat();
-				AudioFormat decodedFormat = getDecodedFormat(encodedFormat);
-				stream = AudioSystem
-						.getAudioInputStream(decodedFormat, encoded);
-
-				line = AudioSystem.getSourceDataLine(decodedFormat);
-				line.open(decodedFormat);
-				line.start();
-			} catch (UnsupportedAudioFileException e) {
-				System.out.println("Audio file not supported");
-			} catch (IOException e) {
-				System.out.println("Could not open audio file");
-			} // Original
-			catch (LineUnavailableException e) {
-				System.out.println("Unavailable line");
-			}
-
+		public MusicThread(String fileName, boolean repeat) {
+			this.fileName = fileName;
+			this.repeat = repeat;
+			this.stop = false;
 		}
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
-			byte[] data = new byte[4096];
-			int nRead = 0;
-			while (true) {
-				// se desse pra tirar esse try catch seria lindo
-				try {
-					nRead = stream.read(data, 0, data.length);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			if (repeat) {
+				while (repeat) {
+					playMusic();
 				}
-				if (nRead == -1)
-					break;
-				line.write(data, 0, nRead);
-			}
-			line.drain();
-			line.close();
-			try {
-				stream.close();
-				encoded.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} else {
+				playMusic();
 			}
 		}
+
+		private void playMusic() {
+			try {
+				AudioInputStream encoded = AudioSystem
+						.getAudioInputStream(new File(fileName));
+				AudioFormat encodedFormat = encoded.getFormat();
+				AudioFormat decodedFormat = getDecodedFormat(encodedFormat);
+				AudioInputStream stream = AudioSystem.getAudioInputStream(
+						decodedFormat, encoded);
+
+				SourceDataLine line = AudioSystem
+						.getSourceDataLine(decodedFormat);
+				line.open(decodedFormat);
+				line.start();
+				byte[] data = new byte[4096];
+				int nRead = 0;
+				while (!stop) {
+					nRead = stream.read(data, 0, data.length);
+					if (nRead == -1)
+						break;
+					line.write(data, 0, nRead);
+				}
+				line.drain();
+				line.close();
+				stream.close();
+				encoded.close();
+			} catch (UnsupportedAudioFileException e) {
+				// TODO Auto-generated catch block
+				System.out.println("Unsupported audio file");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println("Failed to read audio file");
+			} catch (LineUnavailableException e) {
+				// TODO Auto-generated catch block
+				System.out.println("Line unavailable");
+			}
+		}
+
+		public void stopMusic() {
+			stop = true;
+			repeat = false;
+		}
+	
 	}
 
 	// Specialized Thread for streaming the sound effects
@@ -106,11 +120,12 @@ public class AudioManager implements LineListener {
 	}
 
 	// Method for playing MUSIC ONLY - Music should be on OGG format.
-	public void playMusic(String fileName) {
+	public void playMusic(String fileName, boolean repeat) {
 
 		// Start a thread to open and play the file
-		MusicThread mt = new MusicThread(fileName);
+		MusicThread mt = new MusicThread(fileName, repeat);
 		Thread thread = new Thread(mt);
+		audioThreads.put(fileName, mt);
 		thread.start();
 	}
 
@@ -119,6 +134,11 @@ public class AudioManager implements LineListener {
 		SongThread st = new SongThread(fileName);
 		Thread thread = new Thread(st);
 		thread.start();
+	}
+	
+	public void stopMusic(String fileName) {
+		audioThreads.get(fileName).stopMusic();
+		audioThreads.remove(fileName);
 	}
 
 	private static AudioFormat getDecodedFormat(AudioFormat format) {
