@@ -1,6 +1,9 @@
 package ro7.game.world;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Map;
 
 import ro7.engine.sprites.ImageSprite;
 import ro7.engine.sprites.SpriteSheet;
@@ -29,6 +32,9 @@ import ro7.game.world.scenario.Door;
 import ro7.game.world.scenario.LockedDoor;
 import ro7.game.world.scenario.Scenario;
 import ro7.game.world.scenario.Wall;
+import cs195n.CS195NLevelReader;
+import cs195n.CS195NLevelReader.InvalidLevelException;
+import cs195n.LevelData;
 import cs195n.Vec2f;
 import cs195n.Vec2i;
 
@@ -37,7 +43,6 @@ public class FinalWorld extends GameWorld {
 	private FinalSaveFile currentSave;
 
 	private String currentLevel;
-	private String currentMap;
 
 	private Vec2f playerInitPosition;
 
@@ -116,6 +121,19 @@ public class FinalWorld extends GameWorld {
 	@Override
 	public void initLevel(String levelName) {
 		super.initLevel(levelName);
+		
+		try {
+			LevelData level = CS195NLevelReader.readLevel(new File(
+					"resources/levels/" + levelName));
+			Map<String, String> levelProperties = level.getProperties();
+			String mapFile = levelProperties.get("map");
+			loadMap(mapFile);
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found");
+		} catch (InvalidLevelException e) {
+			System.out.println("Invalid level file");
+		}
+		
 		currentLevel = levelName;
 		Player newPlayer = (Player) entities.get("player");
 		if (player == null) {
@@ -136,9 +154,8 @@ public class FinalWorld extends GameWorld {
 		playerInitPosition = null;
 	}
 
-	public void loadMap(String mapFile) {
+	private void loadMap(String mapFile) {
 		map = MapParser.parseMap("resources/maps/" + mapFile);
-		currentMap = mapFile;
 	}
 
 	private void initUI() {
@@ -248,9 +265,17 @@ public class FinalWorld extends GameWorld {
 
 	@Override
 	public String toString() {
-		String worldString = currentLevel;
-		worldString += "\n" + currentMap;
+		String worldString = currentLevel + "\n";
+		worldString += player.toString() + "\n";
 		return worldString;
+	}
+
+	public void setPlayerLives(int lives) {
+		player.setLives(lives);
+	}
+
+	public void getItem(Item item) {
+		player.getItem(item);
 	}
 
 }

@@ -70,8 +70,11 @@ public class GameItem extends StaticEntity implements FinalEntity {
 
 	@Override
 	public void update(long nanoseconds) {
-		// TODO Auto-generated method stub
-
+		if (((FinalWorld) world).playerHas(item)) {
+			visible = false;
+		} else {
+			visible = true;
+		}
 	}
 
 }

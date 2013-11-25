@@ -242,11 +242,29 @@ public class Player extends Character {
 
 	@Override
 	public void getItem(Item item) {
-		
+		inventory.add(item);
 	}
 
 	public boolean hasItem(Item item) {
 		return inventory.contains(item);
+	}
+	
+	@Override
+	public String toString() {
+		String playerString = lives + "\n";
+		playerString += inventory.size() + "\n";
+		for (Item item : inventory) {
+			playerString += item.toString() + "\n";
+		}
+		return playerString;
+	}
+
+	public void setLives(int lives) {
+		int oldLives = this.lives;
+		this.lives = lives;
+		for (int i=0; i<oldLives-lives; i++) {
+			((FinalWorld)world).decreaseLife();
+		}
 	}
 
 }

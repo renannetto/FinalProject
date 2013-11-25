@@ -67,8 +67,7 @@ public abstract class Entity {
 	
 	@Override
 	public String toString() {
-		String string = "Entity: " + name;
-		return string;
+		return name;
 	}
 
 }

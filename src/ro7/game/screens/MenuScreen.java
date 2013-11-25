@@ -18,7 +18,6 @@ public class MenuScreen extends Screen {
 	
 	private final String DEFAULT_SAVE_FILE = "resources/saves/save1";
 	private final String FIRST_LEVEL = "level1.nlf";
-	private final String FIRST_MAP = "map1.txt";
 	
 	private Viewport viewport;
 	private MenuWorld world;
@@ -62,7 +61,6 @@ public class MenuScreen extends Screen {
 						FinalSaveFile saveFile = new FinalSaveFile(DEFAULT_SAVE_FILE);
 						FinalWorld gameWorld = new FinalWorld(worldDimensions, saveFile);
 						gameWorld.initLevel(FIRST_LEVEL);
-						gameWorld.loadMap(FIRST_MAP);
 						app.pushScreen(new GameScreen(app, gameWorld));
 					}
 					break;
