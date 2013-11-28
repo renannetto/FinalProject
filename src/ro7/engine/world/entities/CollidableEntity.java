@@ -94,5 +94,9 @@ public abstract class CollidableEntity extends Entity {
 	public void remove() {
 		world.removeCollidableEntity(this);
 	}
+	
+	public void moveTo(Vec2f position) {
+		shape.moveTo(position);
+	}
 
 }

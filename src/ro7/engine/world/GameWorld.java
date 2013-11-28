@@ -435,6 +435,10 @@ public abstract class GameWorld {
 		removeEntities.add(entityName);
 	}
 	
+	public Entity getEntity(String entityName) {
+		return entities.get(entityName);
+	}
+	
 	public void loadLevel(String levelName) {
 		nextLevel = levelName;
 	}

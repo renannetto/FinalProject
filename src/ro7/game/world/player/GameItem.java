@@ -8,8 +8,10 @@ import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.entities.StaticEntity;
+import ro7.engine.world.io.Output;
 import ro7.game.world.FinalEntity;
 import ro7.game.world.FinalWorld;
+import cs195n.Vec2f;
 
 public class GameItem extends StaticEntity implements FinalEntity {
 
@@ -22,12 +24,14 @@ public class GameItem extends StaticEntity implements FinalEntity {
 
 		String itemName = properties.get("itemName");
 		item = new Item(world, shape, itemName);
-
-		if (((FinalWorld) world).playerHas(item)) {
-			visible = false;
+		
+		if (properties.containsKey("visible")) {
+			visible = Boolean.parseBoolean(properties.get("visible"));
 		} else {
 			visible = true;
 		}
+		
+		outputs.put("receiveAction", new Output());
 	}
 
 	@Override
@@ -59,7 +63,7 @@ public class GameItem extends StaticEntity implements FinalEntity {
 	public void receiveAction(Collision collision, Set<Item> inventory) {
 		FinalEntity other = (FinalEntity) collision.other;
 		other.getItem(item);
-		world.removeEntity(name);
+		outputs.get("receiveAction").run();
 	}
 
 	@Override
@@ -72,9 +76,28 @@ public class GameItem extends StaticEntity implements FinalEntity {
 	public void update(long nanoseconds) {
 		if (((FinalWorld) world).playerHas(item)) {
 			visible = false;
+			world.removeCollidableEntity(this);
+			world.removePhysicalEntity(this);
 		} else {
 			visible = true;
+			world.addCollidableEntity(this);
+			world.addCollidableEntity(this);
 		}
+	}
+	
+	public Item getItem() {
+		return this.item;
+	}
+	
+	@Override
+	public void onCollisionStatic(Collision collision) {
+		Vec2f mtv = collision.mtv;
+		if (mtv.mag2() == 0) {
+			return;
+		}
+
+		shape.move(mtv);
+
 	}
 
 }

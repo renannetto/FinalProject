@@ -66,6 +66,7 @@ public class FinalWorld extends GameWorld {
 	@Override
 	public void setGameClasses() {
 		classes.put("Scenario", Scenario.class);
+		classes.put("InvisibleScenario", Scenario.class);
 		classes.put("Wall", Wall.class);
 		classes.put("Player", Player.class);
 		classes.put("PrisonGuard", PrisonGuard.class);
@@ -118,7 +119,7 @@ public class FinalWorld extends GameWorld {
 	@Override
 	public void initLevel(String levelName) {
 		super.initLevel(levelName);
-		
+
 		try {
 			LevelData level = CS195NLevelReader.readLevel(new File(
 					"resources/levels/" + levelName));
@@ -130,19 +131,19 @@ public class FinalWorld extends GameWorld {
 		} catch (InvalidLevelException e) {
 			System.out.println("Invalid level file");
 		}
-		
+
 		currentLevel = levelName;
 		Player newPlayer = (Player) entities.get("player");
 		if (player == null) {
 			player = newPlayer;
 		}
-		
+
 		entities.put(player.getName(), player);
 		collidables.remove(newPlayer);
 		collidables.add(player);
 		physEntities.remove(newPlayer);
 		physEntities.add(player);
-		
+
 		if (playerInitPosition != null) {
 			player.moveTo(playerInitPosition);
 		} else {
@@ -193,7 +194,9 @@ public class FinalWorld extends GameWorld {
 
 	public void attack() {
 		Attack attack = player.attack();
-		entities.put(attack.getName(), attack);
+		if (attack != null) {
+			entities.put(attack.getName(), attack);
+		}
 	}
 
 	public List<FinalNode> pathToPlayer(Vec2f position) {
@@ -252,9 +255,9 @@ public class FinalWorld extends GameWorld {
 		Action action = player.action();
 		entities.put(action.getName(), action);
 	}
-	
+
 	public boolean playerHas(Item item) {
-		if (player==null) {
+		if (player == null) {
 			return false;
 		}
 		return player.hasItem(item);

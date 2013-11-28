@@ -86,7 +86,7 @@ public abstract class StaticEntity extends PhysicalEntity {
 	 */
 	@Override
 	public void onCollisionStatic(Collision collision) {
-
+		
 	}
 
 }

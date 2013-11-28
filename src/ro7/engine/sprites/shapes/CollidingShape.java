@@ -74,8 +74,14 @@ public abstract class CollidingShape extends Sprite {
 	 */
 	@Override
 	public void move(Vec2f translation) {
-		this.position = this.position.plus(translation);
+		super.move(translation);
 		updatePoints(translation);
+	}
+	
+	@Override
+	public void moveTo(Vec2f position) {
+		Vec2f translation = position.minus(this.position);
+		this.move(translation);
 	}
 
 	public abstract void updatePoints(Vec2f translation);
