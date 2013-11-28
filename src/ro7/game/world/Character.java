@@ -61,7 +61,7 @@ public abstract class Character extends MovingEntity implements FinalEntity {
 	}
 	
 	public void push(Vec2f mtv) {
-		Vec2f translation = mtv.normalized().pmult(shape.getDimensions().sdiv(1.1f)); 
+		Vec2f translation = mtv.normalized().pmult(shape.getDimensions().smult(1.5f)); 
 		shape.move(translation);
 	}
 

@@ -35,7 +35,7 @@ public class Attack extends CollidableEntity implements FinalEntity {
 
 	@Override
 	public void draw(Graphics2D g) {
-
+		shape.draw(g);
 	}
 
 	@Override

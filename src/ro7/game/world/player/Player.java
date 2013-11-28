@@ -202,7 +202,7 @@ public class Player extends Character {
 
 		Vec2f attackPosition = getAttackPosition();
 		CollidingShape attackShape = new AAB(attackPosition, Color.BLUE,
-				Color.BLUE, shape.getDimensions());
+				Color.BLUE, shape.getDimensions().sdiv(2.0f));
 		currentAttack = new Attack(world, attackShape, name + "Attack",
 				attackProperties);
 

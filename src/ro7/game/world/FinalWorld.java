@@ -39,6 +39,8 @@ import cs195n.Vec2i;
 
 public class FinalWorld extends GameWorld {
 
+	private final float SLOW_TIME = 0.7f;
+
 	private FinalSaveFile currentSave;
 
 	private String currentLevel;
@@ -48,8 +50,12 @@ public class FinalWorld extends GameWorld {
 	private Player player;
 	private DiscreteBar lifebar;
 	private FinalMap map;
+
 	private boolean lost;
 	private boolean won;
+
+	private float slow;
+	private float elapsedSlow;
 
 	public FinalWorld(Vec2f dimensions, FinalSaveFile currentSave) {
 		super(dimensions);
@@ -61,6 +67,9 @@ public class FinalWorld extends GameWorld {
 
 		lost = false;
 		won = false;
+
+		this.slow = 1.0f;
+		this.elapsedSlow = SLOW_TIME;
 	}
 
 	@Override
@@ -111,9 +120,9 @@ public class FinalWorld extends GameWorld {
 		spriteSheets.put("room_002", new SpriteSheet(
 				"resources/sprites/prison/room_002.jpg", new Vec2i(640, 480),
 				new Vec2i(0, 0)));
-		spriteSheets.put("testZombie_001", new SpriteSheet(
-				"resources/sprites/enemies/testZombie_001.png", new Vec2i(96,
-						96), new Vec2i(0, 0)));
+		spriteSheets.put("enemy_001", new SpriteSheet(
+				"resources/sprites/enemies/enemy_001.png", new Vec2i(32,
+						32), new Vec2i(0, 0)));
 	}
 
 	@Override
@@ -167,6 +176,15 @@ public class FinalWorld extends GameWorld {
 				spriteSheets.get("energy_fill"), new Vec2i(0, 0));
 		ContinuousBar energybar = new ContinuousBar(barSprite, fillSprite);
 		hud.addHudElement(ScreenPosition.TOP_RIGHT, energybar);
+	}
+
+	@Override
+	public void update(long nanoseconds) {
+		if (elapsedSlow < SLOW_TIME) {
+			elapsedSlow += nanoseconds / 1000000000.0f;
+			nanoseconds = (long)(nanoseconds*slow);
+		}
+		super.update(nanoseconds);
 	}
 
 	public void save() {
@@ -276,6 +294,11 @@ public class FinalWorld extends GameWorld {
 
 	public void getItem(Item item) {
 		player.getItem(item);
+	}
+
+	public void slow(float slowFactor) {
+		this.slow = slowFactor;
+		elapsedSlow = 0.0f;
 	}
 
 }

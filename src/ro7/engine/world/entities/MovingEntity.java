@@ -9,7 +9,7 @@ import ro7.engine.world.GameWorld;
 
 public class MovingEntity extends DynamicEntity {
 
-	private float targetVelocity;
+	protected float targetVelocity;
 
 	public MovingEntity(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {

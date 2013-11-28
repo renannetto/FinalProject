@@ -21,6 +21,7 @@ import cs195n.Vec2f;
 
 public abstract class Enemy extends Character {
 
+	private final float SLOW_FACTOR = 0.5f;
 	private final float DEATH_DELAY = 0.1f;
 	private final float DAMAGE_DELAY = 0.35f;
 
@@ -57,7 +58,6 @@ public abstract class Enemy extends Character {
 		if (damageTime > DAMAGE_DELAY) {
 			super.update(nanoseconds);
 			root.update(nanoseconds);
-
 			if (!path.isEmpty()) {
 				Vec2f currentPosition = shape.getPosition();
 				Vec2f currentTarget = path.get(0);
@@ -77,7 +77,7 @@ public abstract class Enemy extends Character {
 		} else {
 			damageTime += nanoseconds / 1000000000.0f;
 		}
-		
+
 		if (deadTime >= 0.0f) {
 			deadTime += nanoseconds / 1000000000.0f;
 			if (deadTime > DEATH_DELAY) {
@@ -91,7 +91,8 @@ public abstract class Enemy extends Character {
 		super.onCollision(collision);
 		path.clear();
 		FinalEntity otherEntity = (FinalEntity) collision.other;
-		otherEntity.touchEnemy(new Collision(this, collision.mtv, collision.otherShape, collision.thisShape));
+		otherEntity.touchEnemy(new Collision(this, collision.mtv,
+				collision.otherShape, collision.thisShape));
 	}
 
 	@Override
@@ -104,14 +105,14 @@ public abstract class Enemy extends Character {
 			}
 		}
 	}
-	
+
 	@Override
 	public void touchEnemy(Collision collision) {
-		
+
 	}
-	
+
 	@Override
-	public void receiveAttack(Collision collision) {	
+	public void receiveAttack(Collision collision) {
 		Vec2f mtv = collision.mtv;
 		Vec2f centerDistance = collision.thisShape.center().minus(
 				collision.otherShape.center());
@@ -119,12 +120,14 @@ public abstract class Enemy extends Character {
 			mtv = mtv.smult(-1.0f);
 		}
 		push(mtv);
+		// move(mtv.normalized());
+		((FinalWorld) world).slow(SLOW_FACTOR);
 	}
-	
+
 	@Override
 	public void getItem(Item item) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	protected class PlayerClose extends Condition {
