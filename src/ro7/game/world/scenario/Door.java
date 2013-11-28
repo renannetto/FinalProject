@@ -1,19 +1,19 @@
 package ro7.game.world.scenario;
 
+import java.awt.Graphics2D;
 import java.util.Map;
 import java.util.Set;
 
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
-import ro7.engine.world.entities.Sensor;
-import ro7.engine.world.io.Input;
+import ro7.engine.world.entities.CollidableEntity;
 import ro7.game.world.FinalEntity;
 import ro7.game.world.FinalWorld;
 import ro7.game.world.player.Item;
 import cs195n.Vec2f;
 
-public class Door extends Sensor implements FinalEntity {
+public class Door extends CollidableEntity implements FinalEntity {
 	
 	private String nextRoom;
 	private Vec2f nextPosition;
@@ -29,14 +29,11 @@ public class Door extends Sensor implements FinalEntity {
 		} else {
 			nextPosition = null;
 		}
-		
-		inputs.put("doEnter", new Input() {
-
-			@Override
-			public void run(Map<String, String> args) {
-				enter();
-			}
-		});
+	}
+	
+	@Override
+	public void onCollision(Collision collision) {
+		enter();
 	}
 
 	@Override
@@ -85,6 +82,17 @@ public class Door extends Sensor implements FinalEntity {
 	@Override
 	public void getItem(Item item) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(long nanoseconds) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void draw(Graphics2D g) {
 		
 	}
 

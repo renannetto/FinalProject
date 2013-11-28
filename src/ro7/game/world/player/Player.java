@@ -31,14 +31,8 @@ public class Player extends Character {
 	private String actionCollision;
 
 	private Map<Vec2f, ImageSprite> standing;
-	private AnimatedSprite walkingDown;
-	private AnimatedSprite walkingUp;
-	private AnimatedSprite walkingRight;
-	private AnimatedSprite walkingLeft;
-	private AnimatedSprite attackingDown;
-	private AnimatedSprite attackingUp;
-	private AnimatedSprite attackingRight;
-	private AnimatedSprite attackingLeft;
+	private Map<Vec2f, AnimatedSprite> walking;
+	private Map<Vec2f, AnimatedSprite> attacking;
 	
 	private Set<Item> inventory;
 
@@ -101,14 +95,15 @@ public class Player extends Character {
 		int framesWalking = Integer.parseInt(properties.get("framesWalking"));
 		float timeToMoveWalking = Float.parseFloat(properties
 				.get("timeToMoveWalking"));
-		walkingDown = new AnimatedSprite(shape.getPosition(), walkingSheet,
-				posDown, framesWalking, timeToMoveWalking);
-		walkingUp = new AnimatedSprite(shape.getPosition(), walkingSheet,
-				posUp, framesWalking, timeToMoveWalking);
-		walkingRight = new AnimatedSprite(shape.getPosition(), walkingSheet,
-				posRight, framesWalking, timeToMoveWalking);
-		walkingLeft = new AnimatedSprite(shape.getPosition(), walkingSheet,
-				posLeft, framesWalking, timeToMoveWalking);
+		walking = new HashMap<Vec2f, AnimatedSprite>();
+		walking.put(new Vec2f(0.0f, 1.0f), new AnimatedSprite(shape.getPosition(), walkingSheet,
+				posDown, framesWalking, timeToMoveWalking));
+		walking.put(new Vec2f(0.0f, -1.0f), new AnimatedSprite(shape.getPosition(), walkingSheet,
+				posUp, framesWalking, timeToMoveWalking));
+		walking.put(new Vec2f(1.0f, 0.0f), new AnimatedSprite(shape.getPosition(), walkingSheet,
+				posRight, framesWalking, timeToMoveWalking));
+		walking.put(new Vec2f(-1.0f, 0.0f), new AnimatedSprite(shape.getPosition(), walkingSheet,
+				posLeft, framesWalking, timeToMoveWalking));
 
 		SpriteSheet attackingSheet = world.getSpriteSheet(properties
 				.get("attackingSheet"));
@@ -116,14 +111,15 @@ public class Player extends Character {
 				.get("framesAttacking"));
 		float timeToMoveAttacking = Float.parseFloat(properties
 				.get("timeToMoveAttacking"));
-		attackingDown = new AnimatedSprite(shape.getPosition(), attackingSheet,
-				posDown, framesAttacking, timeToMoveAttacking);
-		attackingUp = new AnimatedSprite(shape.getPosition(), attackingSheet,
-				posUp, framesAttacking, timeToMoveAttacking);
-		attackingRight = new AnimatedSprite(shape.getPosition(),
-				attackingSheet, posRight, framesAttacking, timeToMoveAttacking);
-		attackingLeft = new AnimatedSprite(shape.getPosition(), attackingSheet,
-				posLeft, framesAttacking, timeToMoveAttacking);
+		attacking = new HashMap<Vec2f, AnimatedSprite>();
+		attacking.put(new Vec2f(0.0f, 1.0f), new AnimatedSprite(shape.getPosition(), attackingSheet,
+				posDown, framesAttacking, timeToMoveAttacking));
+		attacking.put(new Vec2f(0.0f, -1.0f), new AnimatedSprite(shape.getPosition(), attackingSheet,
+				posUp, framesAttacking, timeToMoveAttacking));
+		attacking.put(new Vec2f(1.0f, 0.0f), new AnimatedSprite(shape.getPosition(),
+				attackingSheet, posRight, framesAttacking, timeToMoveAttacking));
+		attacking.put(new Vec2f(-1.0f, 0.0f), new AnimatedSprite(shape.getPosition(), attackingSheet,
+				posLeft, framesAttacking, timeToMoveAttacking));
 		
 		this.inventory = new HashSet<Item>();
 	}
@@ -133,25 +129,25 @@ public class Player extends Character {
 		if (currentAttack == null) {
 			super.update(nanoseconds);
 			if (velocity.y > 0) {
-				((CollidingSprite) shape).updateSprite(walkingDown);
+				((CollidingSprite) shape).updateSprite(walking.get(new Vec2f(0.0f, 1.0f)));
 			} else if (velocity.y < 0) {
-				((CollidingSprite) shape).updateSprite(walkingUp);
+				((CollidingSprite) shape).updateSprite(walking.get(new Vec2f(0.0f, -1.0f)));
 			} else if (velocity.x > 0) {
-				((CollidingSprite) shape).updateSprite(walkingRight);
+				((CollidingSprite) shape).updateSprite(walking.get(new Vec2f(1.0f, 0.0f)));
 			} else if (velocity.x < 0) {
-				((CollidingSprite) shape).updateSprite(walkingLeft);
+				((CollidingSprite) shape).updateSprite(walking.get(new Vec2f(-1.0f, 0.0f)));
 			} else {
 				((CollidingSprite) shape).updateSprite(standing.get(direction));
 			}
 		} else {
 			if (direction.y > 0) {
-				((CollidingSprite) shape).updateSprite(attackingDown);
+				((CollidingSprite) shape).updateSprite(attacking.get(new Vec2f(0.0f, 1.0f)));
 			} else if (direction.y < 0) {
-				((CollidingSprite) shape).updateSprite(attackingUp);
+				((CollidingSprite) shape).updateSprite(attacking.get(new Vec2f(0.0f, -1.0f)));
 			} else if (direction.x > 0) {
-				((CollidingSprite) shape).updateSprite(attackingRight);
+				((CollidingSprite) shape).updateSprite(attacking.get(new Vec2f(1.0f, 0.0f)));
 			} else {
-				((CollidingSprite) shape).updateSprite(attackingLeft);
+				((CollidingSprite) shape).updateSprite(attacking.get(new Vec2f(-1.0f, 0.0f)));
 			}
 		}
 		this.shape.update(nanoseconds);

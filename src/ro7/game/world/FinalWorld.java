@@ -14,7 +14,6 @@ import ro7.engine.world.GameWorld;
 import ro7.engine.world.RayCollision;
 import ro7.engine.world.entities.Entity;
 import ro7.engine.world.entities.Ray;
-import ro7.game.screens.GameScreen;
 import ro7.game.world.enemies.Enemy;
 import ro7.game.world.enemies.PrisonArcher;
 import ro7.game.world.enemies.PrisonGuard;
@@ -62,8 +61,6 @@ public class FinalWorld extends GameWorld {
 
 		lost = false;
 		won = false;
-
-		GameScreen.playCutscene("resources/cutscenes/cutscene1.txt");
 	}
 
 	@Override

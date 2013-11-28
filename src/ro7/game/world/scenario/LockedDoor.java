@@ -7,7 +7,6 @@ import java.util.Set;
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
-import ro7.engine.world.io.Input;
 import ro7.game.screens.GameScreen;
 import ro7.game.world.FinalWorld;
 import ro7.game.world.player.Item;
@@ -32,14 +31,6 @@ public class LockedDoor extends Door {
 				locks.add(item);
 			}
 		}
-
-		inputs.put("win", new Input() {
-
-			@Override
-			public void run(Map<String, String> args) {
-				((FinalWorld) (LockedDoor.super.world)).win();
-			}
-		});
 	}
 
 	@Override
@@ -55,7 +46,7 @@ public class LockedDoor extends Door {
 			}
 		}
 		if (unlocked.size() == locks.size()) {
-			super.onCollision(collision);
+			((FinalWorld) (LockedDoor.super.world)).win();
 		} else {
 			GameScreen.playCutscene("resources/cutscenes/lockedDoor.txt");
 		}
