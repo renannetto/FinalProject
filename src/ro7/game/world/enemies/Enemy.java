@@ -21,12 +21,9 @@ import cs195n.Vec2f;
 
 public abstract class Enemy extends Character {
 
-	private final float SLOW_FACTOR = 0.5f;
 	private final float DEATH_DELAY = 0.1f;
-	private final float DAMAGE_DELAY = 0.35f;
 
 	private float deadTime;
-	private float damageTime;
 
 	protected float actionRadius;
 	protected List<Vec2f> path;
@@ -37,7 +34,6 @@ public abstract class Enemy extends Character {
 		super(world, shape, name, properties);
 
 		deadTime = -1.0f;
-		damageTime = DAMAGE_DELAY;
 
 		if (properties.containsKey("actionRadius")) {
 			this.actionRadius = Float
@@ -55,8 +51,8 @@ public abstract class Enemy extends Character {
 
 	@Override
 	public void update(long nanoseconds) {
-		if (damageTime > DAMAGE_DELAY) {
-			super.update(nanoseconds);
+		super.update(nanoseconds);
+		if (damageTime >= DAMAGE_DELAY) {
 			root.update(nanoseconds);
 			if (!path.isEmpty()) {
 				Vec2f currentPosition = shape.getPosition();
@@ -74,8 +70,6 @@ public abstract class Enemy extends Character {
 				stop(this.direction);
 				move(newDirection.normalized());
 			}
-		} else {
-			damageTime += nanoseconds / 1000000000.0f;
 		}
 
 		if (deadTime >= 0.0f) {
@@ -97,9 +91,8 @@ public abstract class Enemy extends Character {
 
 	@Override
 	public void receiveDamage(int damage) {
-		if (damageTime > DAMAGE_DELAY) {
+		if (damageTime >= DAMAGE_DELAY) {
 			super.receiveDamage(damage);
-			damageTime = 0.0f;
 			if (lives <= 0) {
 				deadTime = 0.0f;
 			}
@@ -119,9 +112,9 @@ public abstract class Enemy extends Character {
 		if (mtv.dot(centerDistance) < 0) {
 			mtv = mtv.smult(-1.0f);
 		}
+		path.clear();
 		push(mtv);
 		// move(mtv.normalized());
-		((FinalWorld) world).slow(SLOW_FACTOR);
 	}
 
 	@Override
