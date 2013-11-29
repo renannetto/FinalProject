@@ -98,33 +98,36 @@ public abstract class Character extends MovingEntity implements FinalEntity {
 				targetVelocity = originalVelocity;
 			}
 
-			if (velocity.mag2() == 0) {
-				((CollidingSprite) shape).updateSprite(standing.get(direction));
-			} else {
-				if (Math.abs(velocity.y) >= Math.abs(velocity.x)) {
-					if (velocity.y > 0) {
-						((CollidingSprite) shape).updateSprite(walking
-								.get(new Vec2f(0.0f, 1.0f)));
-					} else {
-						((CollidingSprite) shape).updateSprite(walking
-								.get(new Vec2f(0.0f, -1.0f)));
-					}
-				} else {
-					if (velocity.x > 0) {
-						((CollidingSprite) shape).updateSprite(walking
-								.get(new Vec2f(1.0f, 0.0f)));
-					} else {
-						((CollidingSprite) shape).updateSprite(walking
-								.get(new Vec2f(-1.0f, 0.0f)));
-					}
-				}
-			}
-			
+			updateSprite(nanoseconds);			
 		} else {
 			damageTime += nanoseconds / 1000000000.0f;
 		}
 		super.update(nanoseconds);
 		shape.update(nanoseconds);
+	}
+	
+	protected void updateSprite(long nanoseconds) {
+		if (velocity.mag2() == 0) {
+			((CollidingSprite) shape).updateSprite(standing.get(direction));
+		} else {
+			if (Math.abs(velocity.y) >= Math.abs(velocity.x)) {
+				if (velocity.y > 0) {
+					((CollidingSprite) shape).updateSprite(walking
+							.get(new Vec2f(0.0f, 1.0f)));
+				} else {
+					((CollidingSprite) shape).updateSprite(walking
+							.get(new Vec2f(0.0f, -1.0f)));
+				}
+			} else {
+				if (velocity.x > 0) {
+					((CollidingSprite) shape).updateSprite(walking
+							.get(new Vec2f(1.0f, 0.0f)));
+				} else {
+					((CollidingSprite) shape).updateSprite(walking
+							.get(new Vec2f(-1.0f, 0.0f)));
+				}
+			}
+		}
 	}
 
 	@Override

@@ -52,8 +52,7 @@ public class NPC extends StaticEntity implements FinalEntity {
 
 	@Override
 	public void update(long nanoseconds) {
-		// TODO Auto-generated method stub
-		
+		shape.update(nanoseconds);
 	}
 
 }

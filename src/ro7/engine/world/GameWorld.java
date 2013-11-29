@@ -204,7 +204,7 @@ public abstract class GameWorld {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			System.out.println("Save file not found");
+			System.out.println("Level file not found");
 		} catch (InvalidLevelException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Invalid save file");
@@ -269,7 +269,7 @@ public abstract class GameWorld {
 		ImageSprite sprite;
 		if (properties.containsKey("frames")) {
 			int frames = Integer.parseInt(properties.get("frames"));
-			int timeToMove = Integer.parseInt(properties.get("timeToMove"));
+			float timeToMove = Float.parseFloat(properties.get("timeToMove"));
 			sprite = new AnimatedSprite(position, sheet, sheetPosition,
 					sheet.getFrameDimensions(), frames, timeToMove);
 		} else {

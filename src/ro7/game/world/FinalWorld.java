@@ -17,6 +17,7 @@ import ro7.engine.world.entities.Ray;
 import ro7.game.world.enemies.Enemy;
 import ro7.game.world.enemies.PrisonArcher;
 import ro7.game.world.enemies.PrisonGuard;
+import ro7.game.world.enemies.spawners.PrisonGuardSpawner;
 import ro7.game.world.map.FinalMap;
 import ro7.game.world.map.FinalNode;
 import ro7.game.world.map.MapParser;
@@ -72,6 +73,7 @@ public class FinalWorld extends GameWorld {
 		classes.put("Player", Player.class);
 		classes.put("PrisonGuard", PrisonGuard.class);
 		classes.put("PrisonArcher", PrisonArcher.class);
+		classes.put("PrisonGuardSpawner", PrisonGuardSpawner.class);
 		classes.put("Door", Door.class);
 		classes.put("LockedDoor", LockedDoor.class);
 		classes.put("NPC", NPC.class);
@@ -90,19 +92,13 @@ public class FinalWorld extends GameWorld {
 		spriteSheets.put("energy_fill", new SpriteSheet(
 				"resources/sprites/ui/energy_fill.png", new Vec2i(16, 16),
 				new Vec2i(0, 0)));
-		spriteSheets.put("statue_key", new SpriteSheet(
-				"resources/sprites/items/statue_key.png", new Vec2i(24, 24),
+		spriteSheets.put("rock_eye_blue", new SpriteSheet(
+				"resources/sprites/items/rock_eye_blue.png", new Vec2i(32, 32),
 				new Vec2i(0, 0)));
-		spriteSheets.put("save", new SpriteSheet(
-				"resources/sprites/npcs/save.png", new Vec2i(36, 36),
+		spriteSheets.put("rock_eye_orange", new SpriteSheet(
+				"resources/sprites/items/rock_eye_orange.png", new Vec2i(32, 32),
 				new Vec2i(0, 0)));
-
-		spriteSheets.put("hero_walk_sheet", new SpriteSheet(
-				"resources/sprites/char/hero_walk_sheet.png",
-				new Vec2i(96, 96), new Vec2i(0, 0)));
-		spriteSheets.put("hero_attack_sheet", new SpriteSheet(
-				"resources/sprites/char/hero_attack_sheet.png", new Vec2i(96,
-						96), new Vec2i(0, 0)));
+		
 		spriteSheets.put("room_001", new SpriteSheet(
 				"resources/sprites/prison/room_001.jpg", new Vec2i(640, 480),
 				new Vec2i(0, 0)));
@@ -112,8 +108,45 @@ public class FinalWorld extends GameWorld {
 		spriteSheets.put("room_002", new SpriteSheet(
 				"resources/sprites/prison/room_002.jpg", new Vec2i(640, 480),
 				new Vec2i(0, 0)));
+		spriteSheets.put("room_002_top", new SpriteSheet(
+				"resources/sprites/prison/room_002_top.png",
+				new Vec2i(640, 480), new Vec2i(0, 0)));
+		spriteSheets.put("room_003", new SpriteSheet(
+				"resources/sprites/prison/room_003.jpg", new Vec2i(640, 480),
+				new Vec2i(0, 0)));
+		spriteSheets.put("room_003_top", new SpriteSheet(
+				"resources/sprites/prison/room_003_top.png",
+				new Vec2i(640, 480), new Vec2i(0, 0)));
+		spriteSheets.put("room_004", new SpriteSheet(
+				"resources/sprites/prison/room_004.jpg", new Vec2i(640, 480),
+				new Vec2i(0, 0)));
+		spriteSheets.put("room_004_top", new SpriteSheet(
+				"resources/sprites/prison/room_004_top.png",
+				new Vec2i(640, 480), new Vec2i(0, 0)));
+		spriteSheets.put("room_004_puzzle_orange", new SpriteSheet(
+				"resources/sprites/prison/room_004_puzzle_orange.png",
+				new Vec2i(640, 480), new Vec2i(0, 0)));
+		spriteSheets.put("room_004_puzzle_blue", new SpriteSheet(
+				"resources/sprites/prison/room_004_puzzle_blue.png",
+				new Vec2i(640, 480), new Vec2i(0, 0)));
+		spriteSheets.put("room_005", new SpriteSheet(
+				"resources/sprites/prison/room_005.jpg", new Vec2i(640, 480),
+				new Vec2i(0, 0)));
+		spriteSheets.put("room_005_top", new SpriteSheet(
+				"resources/sprites/prison/room_005_top.png",
+				new Vec2i(640, 480), new Vec2i(0, 0)));
+
+		spriteSheets.put("hero_walk_sheet", new SpriteSheet(
+				"resources/sprites/char/hero_walk_sheet.png",
+				new Vec2i(96, 96), new Vec2i(0, 0)));
+		spriteSheets.put("hero_attack_sheet", new SpriteSheet(
+				"resources/sprites/char/hero_attack_sheet.png", new Vec2i(96,
+						96), new Vec2i(0, 0)));
 		spriteSheets.put("enemy_001", new SpriteSheet(
 				"resources/sprites/enemies/enemy_001.png", new Vec2i(32, 32),
+				new Vec2i(0, 0)));
+		spriteSheets.put("death", new SpriteSheet(
+				"resources/sprites/npcs/death.png", new Vec2i(32, 32),
 				new Vec2i(0, 0)));
 	}
 

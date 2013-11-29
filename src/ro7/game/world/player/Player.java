@@ -115,6 +115,15 @@ public class Player extends Character {
 		if (currentAttack == null) {
 			super.update(nanoseconds);
 		} else {
+			updateSprite(nanoseconds);
+		}
+	}
+
+	@Override
+	protected void updateSprite(long nanoseconds) {
+		if (currentAttack == null) {
+			super.updateSprite(nanoseconds);
+		} else {
 			if (Math.abs(direction.y) >= Math.abs(direction.x)) {
 				if (direction.y > 0) {
 					((CollidingSprite) shape).updateSprite(attacking
@@ -132,8 +141,9 @@ public class Player extends Character {
 							.get(new Vec2f(-1.0f, 0.0f)));
 				}
 			}
+			
+			this.shape.update(nanoseconds);
 		}
-		this.shape.update(nanoseconds);
 	}
 
 	@Override
@@ -180,10 +190,15 @@ public class Player extends Character {
 		if (damageTime < DAMAGE_DELAY) {
 			return null;
 		}
-		
-		Vec2f actionPosition = getAttackDirection();
+
+		Vec2f actionDirection = getAttackDirection();
+		Vec2f actionPosition = shape.getPosition().plus(
+				shape.getDimensions().sdiv(2.0f).pmult(actionDirection));
+		Vec2f actionDimensions = shape.getDimensions().pdiv(
+				Math.abs(actionDirection.x) + 1,
+				Math.abs(actionDirection.y) + 1);
 		CollidingShape actionShape = new AAB(actionPosition, Color.BLUE,
-				Color.BLUE, shape.getDimensions());
+				Color.BLUE, actionDimensions);
 		String actionName = name + "Action";
 
 		if (!carrying.equals("")) {
