@@ -14,14 +14,16 @@ public class Action extends CollidableEntity implements FinalEntity {
 	
 	private final float ACTION_TIME = 0.1f;
 	
+	private Player player;
 	private Set<Item> inventory;
 	
 	private float elapsedTime;
 
 	public Action(GameWorld world, CollidingShape shape, String name,
-			Map<String, String> properties, Set<Item> inventory) {
+			Map<String, String> properties, Player player, Set<Item> inventory) {
 		super(world, shape, name, properties);
 		
+		this.player = player;
 		this.inventory = inventory;
 		
 		elapsedTime = 0.0f;
@@ -85,7 +87,7 @@ public class Action extends CollidableEntity implements FinalEntity {
 
 	@Override
 	public void getItem(Item item) {
-		inventory.add(item);
+		player.getItem(item);
 	}
 
 }

@@ -7,7 +7,6 @@ import java.util.Map;
 
 import ro7.engine.sprites.ImageSprite;
 import ro7.engine.sprites.SpriteSheet;
-import ro7.engine.ui.ContinuousBar;
 import ro7.engine.ui.DiscreteBar;
 import ro7.engine.ui.ScreenPosition;
 import ro7.engine.world.GameWorld;
@@ -29,6 +28,7 @@ import ro7.game.world.player.GameItem;
 import ro7.game.world.player.Item;
 import ro7.game.world.player.Player;
 import ro7.game.world.scenario.Door;
+import ro7.game.world.scenario.InvisibleScenario;
 import ro7.game.world.scenario.LockedDoor;
 import ro7.game.world.scenario.Scenario;
 import ro7.game.world.scenario.Wall;
@@ -68,7 +68,7 @@ public class FinalWorld extends GameWorld {
 	@Override
 	public void setGameClasses() {
 		classes.put("Scenario", Scenario.class);
-		classes.put("InvisibleScenario", Scenario.class);
+		classes.put("InvisibleScenario", InvisibleScenario.class);
 		classes.put("Wall", Wall.class);
 		classes.put("Player", Player.class);
 		classes.put("PrisonGuard", PrisonGuard.class);
@@ -168,15 +168,13 @@ public class FinalWorld extends GameWorld {
 
 		currentLevel = levelName;
 		Player newPlayer = (Player) entities.get("player");
+		
 		if (player == null) {
 			player = newPlayer;
+		} else {
+			newPlayer.copy(player);
+			player = newPlayer;
 		}
-
-		entities.put(player.getName(), player);
-		collidables.remove(newPlayer);
-		collidables.add(player);
-		physEntities.remove(newPlayer);
-		physEntities.add(player);
 
 		if (playerInitPosition != null) {
 			player.moveTo(playerInitPosition);
@@ -195,12 +193,12 @@ public class FinalWorld extends GameWorld {
 				spriteSheets.get("heart"), new Vec2i(0, 0)), 3);
 		hud.addHudElement(ScreenPosition.TOP_LEFT, lifebar);
 
-		ImageSprite barSprite = new ImageSprite(new Vec2f(0.0f, 0.0f),
-				spriteSheets.get("empty_energy_bar"), new Vec2i(0, 0));
-		ImageSprite fillSprite = new ImageSprite(new Vec2f(0.0f, 0.0f),
-				spriteSheets.get("energy_fill"), new Vec2i(0, 0));
-		ContinuousBar energybar = new ContinuousBar(barSprite, fillSprite);
-		hud.addHudElement(ScreenPosition.TOP_RIGHT, energybar);
+//		ImageSprite barSprite = new ImageSprite(new Vec2f(0.0f, 0.0f),
+//				spriteSheets.get("empty_energy_bar"), new Vec2i(0, 0));
+//		ImageSprite fillSprite = new ImageSprite(new Vec2f(0.0f, 0.0f),
+//				spriteSheets.get("energy_fill"), new Vec2i(0, 0));
+//		ContinuousBar energybar = new ContinuousBar(barSprite, fillSprite);
+//		hud.addHudElement(ScreenPosition.TOP_RIGHT, energybar);
 	}
 
 	public void save() {

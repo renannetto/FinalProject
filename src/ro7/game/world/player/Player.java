@@ -56,6 +56,24 @@ public class Player extends Character {
 				currentAttack = null;
 			}
 		});
+		
+		inputs.put("doGetItem", new Input() {
+			
+			@Override
+			public void run(Map<String, String> args) {
+				String itemName = args.get("itemName");
+				Item item = new Item(Player.this.world, null, itemName);
+				getItem(item);
+			}
+		});
+		
+		inputs.put("doWin", new Input() {
+			
+			@Override
+			public void run(Map<String, String> args) {
+				((FinalWorld)Player.this.world).win();
+			}
+		});
 
 		if (properties.containsKey("actionCategory")) {
 			actionCategory = properties.get("actionCategory");
@@ -207,7 +225,7 @@ public class Player extends Character {
 			dropActionProperties.put("collisionMask", "0");
 
 			DropAction action = new DropAction(world, actionShape, actionName,
-					dropActionProperties, inventory, carrying);
+					dropActionProperties, this, inventory, carrying);
 			carrying = "";
 			return action;
 		} else {
@@ -216,7 +234,7 @@ public class Player extends Character {
 			actionProperties.put("collisionMask", actionCollision);
 
 			return new Action(world, actionShape, actionName, actionProperties,
-					inventory);
+					this, inventory);
 		}
 	}
 
@@ -285,6 +303,13 @@ public class Player extends Character {
 		for (int i = 0; i < oldLives - lives; i++) {
 			((FinalWorld) world).decreaseLife();
 		}
+	}
+
+	public void copy(Player oldPlayer) {
+		this.lives = oldPlayer.lives;
+		this.inventory = oldPlayer.inventory;
+		this.direction = oldPlayer.direction;
+		this.velocity = oldPlayer.velocity;
 	}
 
 }

@@ -7,14 +7,16 @@ import java.util.Set;
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
+import ro7.engine.world.io.Output;
 import ro7.game.screens.GameScreen;
-import ro7.game.world.FinalWorld;
 import ro7.game.world.player.Item;
 
 public class LockedDoor extends Door {
 
 	private Set<Item> locks;
 	private Set<Item> unlocked;
+	
+	private String lockedCutscene;
 
 	public LockedDoor(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {
@@ -31,6 +33,14 @@ public class LockedDoor extends Door {
 				locks.add(item);
 			}
 		}
+		
+		if (properties.containsKey("lockedCutscene")) {
+			lockedCutscene = properties.get("lockedCutscene");
+		} else {
+			lockedCutscene = "";
+		}
+		
+		outputs.put("onUnlock", new Output());
 	}
 
 	@Override
@@ -43,12 +53,11 @@ public class LockedDoor extends Door {
 		for (Item item : locks) {
 			if (inventory.contains(item)) {
 				unlocked.add(item);
+				outputs.get("onUnlock").run();
 			}
 		}
-		if (unlocked.size() == locks.size()) {
-			((FinalWorld) (LockedDoor.super.world)).win();
-		} else {
-			GameScreen.playCutscene("resources/cutscenes/lockedDoor.txt");
+		if (unlocked.size() != locks.size() && !lockedCutscene.equals("")) {
+			GameScreen.playCutscene(lockedCutscene);
 		}
 	}
 
