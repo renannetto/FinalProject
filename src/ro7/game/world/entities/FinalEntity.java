@@ -1,4 +1,4 @@
-package ro7.game.world;
+package ro7.game.world.entities;
 
 import java.util.Set;
 
@@ -16,5 +16,7 @@ public interface FinalEntity {
 	public void receiveAction(Collision collision, Set<Item> inventory);
 	
 	public void getItem(Item item);
+	
+	public void fall(Collision collision);
 
 }

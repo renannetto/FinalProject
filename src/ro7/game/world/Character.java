@@ -2,21 +2,19 @@ package ro7.game.world;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import ro7.engine.sprites.AnimatedSprite;
 import ro7.engine.sprites.ImageSprite;
 import ro7.engine.sprites.SpriteSheet;
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.sprites.shapes.CollidingSprite;
-import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
-import ro7.engine.world.entities.MovingEntity;
-import ro7.game.world.player.Item;
+import ro7.game.world.entities.FinalEntity;
+import ro7.game.world.entities.FinalMovingEntity;
 import cs195n.Vec2f;
 import cs195n.Vec2i;
 
-public abstract class Character extends MovingEntity implements FinalEntity {
+public abstract class Character extends FinalMovingEntity implements FinalEntity {
 
 	protected final float DAMAGE_DELAY = 0.2f;
 	protected final float DAMAGE_VELOCITY = 200.0f;
@@ -149,12 +147,6 @@ public abstract class Character extends MovingEntity implements FinalEntity {
 	@Override
 	public void receiveDamage(int damage) {
 		this.lives -= damage;
-	}
-
-	@Override
-	public void receiveAction(Collision collision, Set<Item> inventory) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void push(Vec2f mtv) {

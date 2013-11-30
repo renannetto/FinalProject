@@ -274,17 +274,17 @@ public class Player extends Character {
 	}
 
 	@Override
-	public void receiveAttack(Collision collision) {
-
-	}
-
-	@Override
 	public void getItem(Item item) {
 		inventory.add(item);
 	}
 
 	public boolean hasItem(Item item) {
 		return inventory.contains(item);
+	}
+
+	@Override
+	public void fall(Collision collision) {
+
 	}
 
 	@Override

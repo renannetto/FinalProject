@@ -16,11 +16,10 @@ import ro7.engine.sprites.shapes.CollidingSprite;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.game.world.Character;
-import ro7.game.world.FinalEntity;
 import ro7.game.world.FinalWorld;
+import ro7.game.world.entities.FinalEntity;
 import ro7.game.world.map.FinalMap;
 import ro7.game.world.map.FinalNode;
-import ro7.game.world.player.Item;
 import cs195n.Vec2f;
 import cs195n.Vec2i;
 
@@ -171,11 +170,6 @@ public abstract class Enemy extends Character {
 	}
 
 	@Override
-	public void touchEnemy(Collision collision) {
-
-	}
-
-	@Override
 	public void receiveAttack(Collision collision) {
 		Vec2f mtv = collision.mtv;
 		Vec2f centerDistance = collision.thisShape.center().minus(
@@ -186,12 +180,6 @@ public abstract class Enemy extends Character {
 		path.clear();
 		push(mtv);
 		// move(mtv.normalized());
-	}
-
-	@Override
-	public void getItem(Item item) {
-		// TODO Auto-generated method stub
-
 	}
 
 	protected class PlayerClose extends Condition {

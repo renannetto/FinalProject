@@ -7,10 +7,10 @@ import java.util.Set;
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
-import ro7.engine.world.entities.CollidableEntity;
-import ro7.game.world.FinalEntity;
+import ro7.game.world.entities.FinalCollidableEntity;
+import ro7.game.world.entities.FinalEntity;
 
-public class Action extends CollidableEntity implements FinalEntity {
+public class Action extends FinalCollidableEntity implements FinalEntity {
 	
 	private final float ACTION_TIME = 0.1f;
 	
@@ -27,24 +27,6 @@ public class Action extends CollidableEntity implements FinalEntity {
 		this.inventory = inventory;
 		
 		elapsedTime = 0.0f;
-	}
-
-	@Override
-	public void receiveDamage(int damage) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void touchEnemy(Collision collision) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void receiveAttack(Collision collision) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -77,12 +59,6 @@ public class Action extends CollidableEntity implements FinalEntity {
 		if (elapsedTime > ACTION_TIME) {
 			world.removeEntity(name);
 		}
-	}
-
-	@Override
-	public void receiveAction(Collision collision, Set<Item> inventory) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

@@ -2,18 +2,16 @@ package ro7.game.world.scenario;
 
 import java.awt.Graphics2D;
 import java.util.Map;
-import java.util.Set;
 
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
-import ro7.engine.world.entities.CollidableEntity;
-import ro7.game.world.FinalEntity;
 import ro7.game.world.FinalWorld;
-import ro7.game.world.player.Item;
+import ro7.game.world.entities.FinalCollidableEntity;
+import ro7.game.world.entities.FinalEntity;
 import cs195n.Vec2f;
 
-public class Door extends CollidableEntity implements FinalEntity {
+public class Door extends FinalCollidableEntity implements FinalEntity {
 	
 	private String nextRoom;
 	private Vec2f nextPosition;
@@ -53,36 +51,6 @@ public class Door extends CollidableEntity implements FinalEntity {
 		if (nextPosition!=null) {
 			((FinalWorld)world).setInitialPosition(nextPosition);
 		}
-	}
-
-	@Override
-	public void receiveDamage(int damage) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void touchEnemy(Collision collision) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void receiveAttack(Collision collision) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void receiveAction(Collision collision, Set<Item> inventory) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void getItem(Item item) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
