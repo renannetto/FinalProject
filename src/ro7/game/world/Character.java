@@ -106,7 +106,8 @@ public abstract class Character extends FinalMovingEntity implements FinalEntity
 	
 	protected void updateSprite(long nanoseconds) {
 		if (velocity.mag2() == 0) {
-			((CollidingSprite) shape).updateSprite(standing.get(direction));
+			Vec2f roundedDirection = new Vec2f(Math.round(direction.x), Math.round(direction.y));
+			((CollidingSprite) shape).updateSprite(standing.get(roundedDirection));
 		} else {
 			if (Math.abs(velocity.y) >= Math.abs(velocity.x)) {
 				if (velocity.y > 0) {
