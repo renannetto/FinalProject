@@ -1,1 +1,6 @@
-Saving game...
+So, are you still alive?
+As you can see, I'm the death, and a mad sorcerer stole <n>my spell book.
+Now he is playing with undeads and I need your help to take it back.
+Kill the sorcerer and bring my book back to me. <n>Don't worry, if something goes wrong I can bring you back to life, <n>I'm the death after all.
+To find the sorcerer you will need to find the two eyes of <n>this statue and place them on it. Good luck!
+<Saving game...>

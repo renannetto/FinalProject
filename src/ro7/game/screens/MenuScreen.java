@@ -15,10 +15,10 @@ import cs195n.Vec2f;
 import cs195n.Vec2i;
 
 public class MenuScreen extends Screen {
-	
+
 	private final String DEFAULT_SAVE_FILE = "resources/saves/save1";
 	private final String FIRST_LEVEL = "level1.nlf";
-	
+
 	private Viewport viewport;
 	private MenuWorld world;
 
@@ -41,44 +41,45 @@ public class MenuScreen extends Screen {
 	@Override
 	public void onKeyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onKeyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		switch(e.getKeyCode())
-		{
-			case KeyEvent.VK_W: world.menu.moveIndex(-1); break;
-			case KeyEvent.VK_S: world.menu.moveIndex(1); break;
-			case KeyEvent.VK_ENTER:
-			{
-				switch(world.menu.getSelectedIndex())
-				{
-					case 0:
-					{
-						Vec2f worldDimensions = new Vec2f(windowSize.x, windowSize.y);
-						FinalSaveFile saveFile = new FinalSaveFile(DEFAULT_SAVE_FILE);
-						FinalWorld gameWorld = new FinalWorld(worldDimensions, saveFile);
-						gameWorld.initLevel(FIRST_LEVEL);
-						app.pushScreen(new GameScreen(app, gameWorld));
-					}
-					break;
-					case 1:
-					{
-						FinalSaveFile saveFile = new FinalSaveFile(DEFAULT_SAVE_FILE);
-						Vec2f worldDimensions = new Vec2f(windowSize.x, windowSize.y);
-						FinalWorld gameWorld = (FinalWorld) saveFile.load(worldDimensions);
-						app.pushScreen(new GameScreen(app, gameWorld));
-						break;
-					}
-					case 2:
-					{
-						System.exit(0);
-					}
-					break;
-				}
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_W:
+			world.menu.moveIndex(-1);
+			break;
+		case KeyEvent.VK_S:
+			world.menu.moveIndex(1);
+			break;
+		case KeyEvent.VK_ENTER: {
+			switch (world.menu.getSelectedIndex()) {
+			case 0: {
+				Vec2f worldDimensions = new Vec2f(windowSize.x, windowSize.y);
+				FinalSaveFile saveFile = new FinalSaveFile(DEFAULT_SAVE_FILE);
+				FinalWorld gameWorld = new FinalWorld(worldDimensions, saveFile);
+				gameWorld.initLevel(FIRST_LEVEL);
+				app.pushScreen(new GameScreen(app, gameWorld));
 			}
+				break;
+			case 1: {
+				FinalSaveFile saveFile = new FinalSaveFile(DEFAULT_SAVE_FILE);
+				Vec2f worldDimensions = new Vec2f(windowSize.x, windowSize.y);
+				FinalWorld gameWorld = (FinalWorld) saveFile
+						.load(worldDimensions);
+				if (gameWorld != null) {
+					app.pushScreen(new GameScreen(app, gameWorld));
+				}
+				break;
+			}
+			case 2: {
+				System.exit(0);
+			}
+				break;
+			}
+		}
 			break;
 		}
 	}
@@ -86,45 +87,45 @@ public class MenuScreen extends Screen {
 	@Override
 	public void onKeyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onMouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onMousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onMouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onMouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onMouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onMouseWheelMoved(MouseWheelEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void onResize(Vec2i newSize) {
 		Vec2i oldSize = windowSize;
