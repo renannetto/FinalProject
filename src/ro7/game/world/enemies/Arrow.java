@@ -14,6 +14,12 @@ public class Arrow extends FinalMovingEntity implements FinalEntity {
 			Map<String, String> properties) {
 		super(world, shape, name, properties);
 	}
+	
+	@Override
+	public void update(long nanoseconds) {
+		super.update(nanoseconds);
+		shape.update(nanoseconds);
+	}
 
 	@Override
 	public void onCollision(Collision collision) {

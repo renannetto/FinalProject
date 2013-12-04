@@ -1,11 +1,11 @@
-Final 2 README
+Final 3 README
 
 Using engine features:
  - There is a main menu at the beginning and the UI API is used to show the player life bar
  - A background music is been played using the audio API
- - A text cutscene runs at the beginning of the game and if you try to leave the prison before killing the enemies
- - A slideshow will be played when you win, but it is still not done
+ - A text cutscene runs when you talk with the NPC or try to open a locked door without the keys
+ - A slideshow shows at the end of the game
 
-Known bugs: the attacking left sprite is missing and the enemy might get stuck on the wall sometimes (the grid is not correctly aligned with the walls)
+Known bugs: the ranged enemy IA doesn't work right sometimes
 
 Approximate hours: 20 hours

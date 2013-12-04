@@ -34,7 +34,7 @@ public class GameScreen extends Screen {
 		
 		pressedKeys = new HashSet<Integer>();
 		cutscene = "";
-		//AudioManager.getInstance().playMusic(BACKGROUND_MUSIC, true);
+		AudioManager.getInstance().playMusic(BACKGROUND_MUSIC, true);
 	}
 
 	@Override
@@ -46,10 +46,10 @@ public class GameScreen extends Screen {
 			} else {
 				world.update(nanosSincePreviousTick);
 				if (world.lost()) {
-					//AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
+					AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
 					app.popScreen();
 				} else if (world.won()) {
-					//AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
+					AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
 					app.popScreen();
 					app.pushScreen(new SlideShowScreen(app, "resources/slideshows/continue.txt"));
 				}
@@ -109,7 +109,7 @@ public class GameScreen extends Screen {
 			world.action();
 			break;
 		case KeyEvent.VK_ESCAPE:
-			//AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
+			AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
 			app.popScreen();
 			break;
 		}

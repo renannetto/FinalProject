@@ -12,16 +12,24 @@ import ro7.engine.ai.Condition;
 import ro7.engine.ai.Selector;
 import ro7.engine.ai.Sequence;
 import ro7.engine.ai.Status;
+import ro7.engine.sprites.AnimatedSprite;
+import ro7.engine.sprites.SpriteSheet;
 import ro7.engine.sprites.shapes.Circle;
 import ro7.engine.sprites.shapes.CollidingShape;
+import ro7.engine.sprites.shapes.CollidingSprite;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.entities.Ray;
 import ro7.game.world.FinalWorld;
 import ro7.game.world.map.FinalMap;
 import ro7.game.world.map.FinalNode;
 import cs195n.Vec2f;
+import cs195n.Vec2i;
 
 public class PrisonArcher extends Enemy {
+
+	private final SpriteSheet ARROW_SHEET;
+	private final int FRAMES_ARROW;
+	private final float TIME_TO_MOVE_ARROW;
 
 	private float detectionRadius;
 
@@ -34,6 +42,11 @@ public class PrisonArcher extends Enemy {
 		} else {
 			this.detectionRadius = shape.getDimensions().x;
 		}
+
+		ARROW_SHEET = world.getSpriteSheet(properties.get("arrowSheet"));
+		FRAMES_ARROW = Integer.parseInt(properties.get("framesArrow"));
+		TIME_TO_MOVE_ARROW = Float
+				.parseFloat(properties.get("timeToMoveArrow"));
 	}
 
 	@Override
@@ -118,12 +131,13 @@ public class PrisonArcher extends Enemy {
 			Vec2f arrowDirection = playerPosition.minus(shape.getPosition())
 					.normalized();
 
-			Ray arrowRay = new ArrowRay(world, 16, 3, shape.getPosition()
-					.plus(shape.getDimensions().pmult(arrowDirection)),
+			Ray arrowRay = new ArrowRay(world, 16, 3, shape.getPosition().plus(
+					shape.getDimensions().pmult(arrowDirection)),
 					arrowDirection);
-			boolean visible = ((FinalWorld)world).collidesPlayer(arrowRay);
+			boolean visible = ((FinalWorld) world).collidesPlayer(arrowRay);
 
-			return shape.getPosition().dist(playerPosition) < detectionRadius && visible;
+			return shape.getPosition().dist(playerPosition) < detectionRadius
+					&& visible;
 		}
 
 	}
@@ -157,11 +171,15 @@ public class PrisonArcher extends Enemy {
 			arrowProperties.put("collisionMask", "3");
 			arrowProperties.put("targetVelocity", "200");
 
+			AnimatedSprite arrowSprite = new AnimatedSprite(
+					shape.getPosition(), ARROW_SHEET, new Vec2i(0, 0),
+					FRAMES_ARROW, TIME_TO_MOVE_ARROW);
 			CollidingShape arrowShape = new Circle(shape.getPosition().plus(
 					shape.getDimensions().pmult(arrowDirection)), Color.RED,
 					Color.RED, 5.0f);
+			CollidingSprite arrowColldable = new CollidingSprite(arrowSprite, arrowShape);
 
-			Arrow arrow = new Arrow(world, arrowShape, name + "Arrow",
+			Arrow arrow = new Arrow(world, arrowColldable, name + "Arrow",
 					arrowProperties);
 			arrow.move(arrowDirection);
 			world.addEntity(arrow);
