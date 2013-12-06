@@ -7,7 +7,7 @@ import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.entities.CollidableEntity;
-import ro7.game.world.player.Item;
+import ro7.game.world.items.Item;
 
 public abstract class FinalCollidableEntity extends CollidableEntity implements FinalEntity {
 

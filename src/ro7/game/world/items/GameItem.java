@@ -1,4 +1,4 @@
-package ro7.game.world.player;
+package ro7.game.world.items;
 
 import java.awt.Graphics2D;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class GameItem extends FinalStaticEntity implements FinalEntity {
 			visible = true;
 		}
 		
-		outputs.put("receiveAction", new Output());
+		outputs.put("onReceiveAction", new Output());
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class GameItem extends FinalStaticEntity implements FinalEntity {
 	public void receiveAction(Collision collision, Set<Item> inventory) {
 		FinalEntity other = (FinalEntity) collision.other;
 		other.getItem(item);
-		outputs.get("receiveAction").run();
+		outputs.get("onReceiveAction").run();
 	}
 
 	@Override

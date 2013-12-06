@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.SaveFile;
-import ro7.game.world.player.Item;
+import ro7.game.world.items.Item;
 import cs195n.Vec2f;
 
 public class FinalSaveFile extends SaveFile {

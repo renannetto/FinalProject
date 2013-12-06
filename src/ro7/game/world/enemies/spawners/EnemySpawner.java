@@ -9,7 +9,7 @@ import ro7.game.world.FinalWorld;
 import ro7.game.world.enemies.Enemy;
 import ro7.game.world.entities.FinalEntity;
 import ro7.game.world.entities.FinalEntityImp;
-import ro7.game.world.player.Item;
+import ro7.game.world.items.Item;
 
 public abstract class EnemySpawner extends FinalEntityImp implements
 		FinalEntity {
@@ -59,12 +59,6 @@ public abstract class EnemySpawner extends FinalEntityImp implements
 
 	@Override
 	public void draw(Graphics2D g) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void remove() {
 		// TODO Auto-generated method stub
 
 	}

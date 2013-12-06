@@ -24,6 +24,23 @@ public abstract class Entity {
 		this.name = name;
 		this.outputs = new HashMap<String, Output>();
 		this.inputs = new HashMap<String, Input>();
+		
+		inputs.put("doRemove", new Input() {
+
+			@Override
+			public void run(Map<String, String> args) {
+				Entity.this.world
+						.removeEntity(Entity.this.name);
+			}
+		});
+
+		inputs.put("doAdd", new Input() {
+
+			@Override
+			public void run(Map<String, String> args) {
+				Entity.this.world.addEntity(Entity.this);
+			}
+		});
 	}
 	
 	public abstract void update(long nanoseconds);
@@ -33,6 +50,8 @@ public abstract class Entity {
 	public void connect(String output, Connection connection) {
 		outputs.get(output).connect(connection);
 	}
+	
+	public abstract void add();
 	
 	public abstract void remove();
 	

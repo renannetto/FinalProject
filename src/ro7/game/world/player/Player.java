@@ -17,6 +17,7 @@ import ro7.engine.world.io.Connection;
 import ro7.engine.world.io.Input;
 import ro7.game.world.Character;
 import ro7.game.world.FinalWorld;
+import ro7.game.world.items.Item;
 import cs195n.Vec2f;
 import cs195n.Vec2i;
 
@@ -56,9 +57,9 @@ public class Player extends Character {
 				currentAttack = null;
 			}
 		});
-		
+
 		inputs.put("doGetItem", new Input() {
-			
+
 			@Override
 			public void run(Map<String, String> args) {
 				String itemName = args.get("itemName");
@@ -66,12 +67,12 @@ public class Player extends Character {
 				getItem(item);
 			}
 		});
-		
+
 		inputs.put("doWin", new Input() {
-			
+
 			@Override
 			public void run(Map<String, String> args) {
-				((FinalWorld)Player.this.world).win();
+				((FinalWorld) Player.this.world).win();
 			}
 		});
 
@@ -119,7 +120,7 @@ public class Player extends Character {
 		this.inventory = new HashSet<Item>();
 		this.carrying = "";
 
-		inputs.put("carryItem", new Input() {
+		inputs.put("doCarryItem", new Input() {
 
 			@Override
 			public void run(Map<String, String> args) {
@@ -159,7 +160,7 @@ public class Player extends Character {
 							.get(new Vec2f(-1.0f, 0.0f)));
 				}
 			}
-			
+
 			this.shape.update(nanoseconds);
 		}
 	}
@@ -284,7 +285,18 @@ public class Player extends Character {
 
 	@Override
 	public void fall(Collision collision) {
+		// receiveDamage(1);
+		stop(direction);
 
+		Vec2f mtv = collision.mtv;
+		Vec2f centerDistance = collision.thisShape.center().minus(
+				collision.otherShape.center());
+		if (mtv.dot(centerDistance) < 0) {
+			mtv = mtv.smult(-1.0f);
+		}
+
+		shape.moveTo(shape.getPosition().plus(
+				mtv.normalized().pmult(shape.getDimensions().sdiv(1.5f))));
 	}
 
 	@Override

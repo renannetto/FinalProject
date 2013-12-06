@@ -40,6 +40,11 @@ public abstract class CollidableEntity extends Entity {
 		this.collisionMask = collisionMask;
 		world.addCollidableEntity(this);
 	}
+	
+	@Override
+	public void add() {
+		world.addCollidableEntity(this);
+	}
 
 	public boolean collidable(CollidableEntity other) {
 		return (this.categoryMask & other.collisionMask) != 0;

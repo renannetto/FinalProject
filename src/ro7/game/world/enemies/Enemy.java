@@ -158,6 +158,24 @@ public abstract class Enemy extends Character {
 		otherEntity.touchEnemy(new Collision(this, collision.mtv,
 				collision.otherShape, collision.thisShape));
 	}
+	
+	@Override
+	public void onCollisionStatic(Collision collision) {
+		super.onCollisionStatic(collision);
+		path.clear();
+		FinalEntity otherEntity = (FinalEntity) collision.other;
+		otherEntity.touchEnemy(new Collision(this, collision.mtv,
+				collision.otherShape, collision.thisShape));
+	}
+	
+	@Override
+	public void onCollisionDynamic(Collision collision) {
+		super.onCollisionDynamic(collision);
+		path.clear();
+		FinalEntity otherEntity = (FinalEntity) collision.other;
+		otherEntity.touchEnemy(new Collision(this, collision.mtv,
+				collision.otherShape, collision.thisShape));
+	}
 
 	@Override
 	public void receiveDamage(int damage) {

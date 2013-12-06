@@ -43,5 +43,11 @@ public class FinalNode extends Node {
 		}
 		return true;
 	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return position.toString();
+	}
 
 }

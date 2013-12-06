@@ -9,6 +9,7 @@ import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.game.world.entities.FinalCollidableEntity;
 import ro7.game.world.entities.FinalEntity;
+import ro7.game.world.items.Item;
 
 public class Action extends FinalCollidableEntity implements FinalEntity {
 	

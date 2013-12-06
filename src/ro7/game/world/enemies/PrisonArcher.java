@@ -74,7 +74,7 @@ public class PrisonArcher extends Enemy {
 		attack.addChild(playerInRange);
 		attack.addChild(shoot);
 
-		root.addChild(defense);
+		//root.addChild(defense);
 		root.addChild(attack);
 		root.addChild(walk);
 	}
@@ -155,6 +155,9 @@ public class PrisonArcher extends Enemy {
 
 		@Override
 		public Status act(float nanoseconds) {
+			path.clear();
+			stop(direction);
+			
 			if (elapsedTime < SHOOT_DELAY) {
 				elapsedTime += nanoseconds / 1000000000.0f;
 				return Status.RUNNING;
@@ -172,7 +175,8 @@ public class PrisonArcher extends Enemy {
 			arrowProperties.put("targetVelocity", "200");
 
 			AnimatedSprite arrowSprite = new AnimatedSprite(
-					shape.getPosition(), ARROW_SHEET, new Vec2i(0, 0),
+					shape.getPosition().plus(
+							shape.getDimensions().pmult(arrowDirection)), ARROW_SHEET, new Vec2i(0, 0),
 					FRAMES_ARROW, TIME_TO_MOVE_ARROW);
 			CollidingShape arrowShape = new Circle(shape.getPosition().plus(
 					shape.getDimensions().pmult(arrowDirection)), Color.RED,

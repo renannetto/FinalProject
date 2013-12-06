@@ -1,4 +1,4 @@
-package ro7.game.world.player;
+package ro7.game.world.items;
 
 import java.awt.Graphics2D;
 
@@ -22,12 +22,6 @@ public class Item extends FinalEntityImp implements FinalEntity {
 
 	@Override
 	public void draw(Graphics2D g) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void remove() {
 		// TODO Auto-generated method stub
 		
 	}

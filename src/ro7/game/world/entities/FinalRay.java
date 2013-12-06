@@ -5,7 +5,7 @@ import java.util.Set;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.entities.Ray;
-import ro7.game.world.player.Item;
+import ro7.game.world.items.Item;
 import cs195n.Vec2f;
 
 public abstract class FinalRay extends Ray implements FinalEntity {

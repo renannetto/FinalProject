@@ -16,6 +16,9 @@ import ro7.engine.world.entities.Ray;
 import ro7.game.world.enemies.Enemy;
 import ro7.game.world.enemies.spawners.PrisonArcherSpawner;
 import ro7.game.world.enemies.spawners.PrisonGuardSpawner;
+import ro7.game.world.items.GameItem;
+import ro7.game.world.items.Item;
+import ro7.game.world.items.StateItem;
 import ro7.game.world.map.FinalMap;
 import ro7.game.world.map.FinalNode;
 import ro7.game.world.map.MapParser;
@@ -23,9 +26,8 @@ import ro7.game.world.npcs.NPC;
 import ro7.game.world.npcs.SaveNPC;
 import ro7.game.world.player.Action;
 import ro7.game.world.player.Attack;
-import ro7.game.world.player.GameItem;
-import ro7.game.world.player.Item;
 import ro7.game.world.player.Player;
+import ro7.game.world.scenario.ChangingScenario;
 import ro7.game.world.scenario.Door;
 import ro7.game.world.scenario.FallingArea;
 import ro7.game.world.scenario.InvisibleScenario;
@@ -69,6 +71,7 @@ public class FinalWorld extends GameWorld {
 	public void setGameClasses() {
 		classes.put("Scenario", Scenario.class);
 		classes.put("InvisibleScenario", InvisibleScenario.class);
+		classes.put("ChangingScenario", ChangingScenario.class);
 		classes.put("Wall", Wall.class);
 		classes.put("Player", Player.class);
 		classes.put("PrisonGuardSpawner", PrisonGuardSpawner.class);
@@ -78,6 +81,7 @@ public class FinalWorld extends GameWorld {
 		classes.put("NPC", NPC.class);
 		classes.put("SaveNPC", SaveNPC.class);
 		classes.put("GameItem", GameItem.class);
+		classes.put("StateItem", StateItem.class);
 		classes.put("FallingArea", FallingArea.class);
 	}
 

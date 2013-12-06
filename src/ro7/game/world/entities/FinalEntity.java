@@ -3,7 +3,7 @@ package ro7.game.world.entities;
 import java.util.Set;
 
 import ro7.engine.world.Collision;
-import ro7.game.world.player.Item;
+import ro7.game.world.items.Item;
 
 public interface FinalEntity {
 	

@@ -7,7 +7,7 @@ import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.game.world.FinalWorld;
-import ro7.game.world.player.Item;
+import ro7.game.world.items.Item;
 
 public class SaveNPC extends NPC {
 

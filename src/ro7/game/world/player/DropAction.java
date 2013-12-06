@@ -5,6 +5,8 @@ import java.util.Set;
 
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.GameWorld;
+import ro7.game.world.items.GameItem;
+import ro7.game.world.items.Item;
 
 public class DropAction extends Action {
 
@@ -14,7 +16,7 @@ public class DropAction extends Action {
 		
 		GameItem gameItem = (GameItem)world.getEntity(gameItemName);
 		gameItem.moveTo(shape.getPosition());
-		//inventory.remove(gameItem.getItem());
+		inventory.remove(gameItem.getItem());
 	}
 
 }

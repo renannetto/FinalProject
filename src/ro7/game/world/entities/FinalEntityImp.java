@@ -6,7 +6,7 @@ import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.entities.Entity;
-import ro7.game.world.player.Item;
+import ro7.game.world.items.Item;
 
 public abstract class FinalEntityImp extends Entity implements FinalEntity {
 
@@ -47,6 +47,18 @@ public abstract class FinalEntityImp extends Entity implements FinalEntity {
 
 	@Override
 	public void fall(Collision collision) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void add() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void remove() {
 		// TODO Auto-generated method stub
 		
 	}

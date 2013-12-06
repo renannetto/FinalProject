@@ -14,12 +14,26 @@ public class FallingArea extends FinalStaticEntity implements FinalEntity {
 	public FallingArea(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {
 		super(world, shape, name, properties);
-		// TODO Auto-generated constructor stub
+		
+		if (properties.containsKey("remove")) {
+			boolean remove = Boolean.parseBoolean(properties.get("remove"));
+			if (remove) {
+				world.removeEntity(name);
+			}
+		}
 	}
 
 	@Override
 	public void onCollision(Collision collision) {
 		super.onCollision(collision);
+		FinalEntity otherEntity = (FinalEntity) collision.other;
+		otherEntity.fall(new Collision(this, collision.mtv,
+				collision.otherShape, collision.thisShape));
+	}
+	
+	@Override
+	public void onCollisionDynamic(Collision collision) {
+		super.onCollisionDynamic(collision);
 		FinalEntity otherEntity = (FinalEntity) collision.other;
 		otherEntity.fall(new Collision(this, collision.mtv,
 				collision.otherShape, collision.thisShape));

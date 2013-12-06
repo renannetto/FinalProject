@@ -14,7 +14,8 @@ import ro7.game.world.entities.FinalMovingEntity;
 import cs195n.Vec2f;
 import cs195n.Vec2i;
 
-public abstract class Character extends FinalMovingEntity implements FinalEntity {
+public abstract class Character extends FinalMovingEntity implements
+		FinalEntity {
 
 	protected final float DAMAGE_DELAY = 0.2f;
 	protected final float DAMAGE_VELOCITY = 200.0f;
@@ -96,18 +97,20 @@ public abstract class Character extends FinalMovingEntity implements FinalEntity
 				targetVelocity = originalVelocity;
 			}
 
-			updateSprite(nanoseconds);			
+			updateSprite(nanoseconds);
 		} else {
 			damageTime += nanoseconds / 1000000000.0f;
 		}
 		super.update(nanoseconds);
 		shape.update(nanoseconds);
 	}
-	
+
 	protected void updateSprite(long nanoseconds) {
 		if (velocity.mag2() == 0) {
-			Vec2f roundedDirection = new Vec2f(Math.round(direction.x), Math.round(direction.y));
-			((CollidingSprite) shape).updateSprite(standing.get(roundedDirection));
+			Vec2f roundedDirection = new Vec2f(Math.round(direction.x),
+					Math.round(direction.y));
+			((CollidingSprite) shape).updateSprite(standing
+					.get(roundedDirection));
 		} else {
 			if (Math.abs(velocity.y) >= Math.abs(velocity.x)) {
 				if (velocity.y > 0) {
@@ -139,9 +142,17 @@ public abstract class Character extends FinalMovingEntity implements FinalEntity
 
 	@Override
 	public void stop(Vec2f direction) {
-		super.stop(direction);
-		if (this.velocity.mag2() > 0) {
-			this.direction = this.velocity.normalized();
+		if (Math.abs(direction.y) > 0) {
+			super.stop(new Vec2f(0.0f, direction.y));
+			if (this.velocity.mag2() > 0) {
+				this.direction = this.velocity.normalized();
+			}
+		}
+		if (Math.abs(direction.x) > 0) {
+			super.stop(new Vec2f(direction.x, 0.0f));
+			if (this.velocity.mag2() > 0) {
+				this.direction = this.velocity.normalized();
+			}
 		}
 	}
 

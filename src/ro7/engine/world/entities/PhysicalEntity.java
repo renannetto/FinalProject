@@ -40,6 +40,12 @@ public abstract class PhysicalEntity extends CollidableEntity {
 
 		world.addPhysicalEntity(this);
 	}
+	
+	@Override
+	public void add() {
+		super.add();
+		world.addPhysicalEntity(this);
+	}
 
 	/*
 	 * (non-Javadoc)

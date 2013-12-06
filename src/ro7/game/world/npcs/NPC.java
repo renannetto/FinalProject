@@ -9,7 +9,7 @@ import ro7.engine.world.GameWorld;
 import ro7.game.screens.GameScreen;
 import ro7.game.world.entities.FinalEntity;
 import ro7.game.world.entities.FinalStaticEntity;
-import ro7.game.world.player.Item;
+import ro7.game.world.items.Item;
 
 public class NPC extends FinalStaticEntity implements FinalEntity {
 

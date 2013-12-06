@@ -9,7 +9,7 @@ import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.io.Output;
 import ro7.game.screens.GameScreen;
-import ro7.game.world.player.Item;
+import ro7.game.world.items.Item;
 
 public class LockedDoor extends Door {
 
