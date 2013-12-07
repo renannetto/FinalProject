@@ -6,6 +6,7 @@ import java.util.Set;
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
+import ro7.engine.world.io.Input;
 import ro7.game.screens.GameScreen;
 import ro7.game.world.entities.FinalEntity;
 import ro7.game.world.entities.FinalStaticEntity;
@@ -25,6 +26,14 @@ public class NPC extends FinalStaticEntity implements FinalEntity {
 		cutscene = properties.get("cutscene");
 
 		elapsedTime = CUTSCENE_DELAY;
+		
+		inputs.put("doPlayCutscene", new Input() {
+			
+			@Override
+			public void run(Map<String, String> args) {
+				GameScreen.playCutscene(cutscene);
+			}
+		});
 	}
 
 	@Override

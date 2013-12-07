@@ -173,7 +173,7 @@ public class Player extends Character {
 	}
 
 	public Attack attack() {
-		if (!carrying.equals("") || damageTime < DAMAGE_DELAY) {
+		if (damageTime < DAMAGE_DELAY) {
 			currentAttack = null;
 			return currentAttack;
 		}
@@ -212,7 +212,7 @@ public class Player extends Character {
 
 		Vec2f actionDirection = getAttackDirection();
 		Vec2f actionPosition = shape.getPosition().plus(
-				shape.getDimensions().sdiv(2.0f).pmult(actionDirection));
+				shape.getDimensions().pmult(actionDirection));
 		Vec2f actionDimensions = shape.getDimensions().pdiv(
 				Math.abs(actionDirection.x) + 1,
 				Math.abs(actionDirection.y) + 1);
@@ -222,8 +222,8 @@ public class Player extends Character {
 
 		if (!carrying.equals("")) {
 			Map<String, String> dropActionProperties = new HashMap<String, String>();
-			dropActionProperties.put("categoryMask", "0");
-			dropActionProperties.put("collisionMask", "0");
+			dropActionProperties.put("categoryMask", actionCategory);
+			dropActionProperties.put("collisionMask", actionCollision);
 
 			DropAction action = new DropAction(world, actionShape, actionName,
 					dropActionProperties, this, inventory, carrying);
@@ -285,7 +285,7 @@ public class Player extends Character {
 
 	@Override
 	public void fall(Collision collision) {
-		// receiveDamage(1);
+		receiveDamage(1);
 		stop(direction);
 
 		Vec2f mtv = collision.mtv;
@@ -298,10 +298,17 @@ public class Player extends Character {
 		shape.moveTo(shape.getPosition().plus(
 				mtv.normalized().pmult(shape.getDimensions().sdiv(1.5f))));
 	}
+	
+	@Override
+	public void push(Vec2f mtv) {
+		super.push(mtv);
+		direction = direction.smult(-1.0f);
+	}
 
 	@Override
 	public String toString() {
-		String playerString = lives + "\n";
+		String playerString = "";
+//		playerString += lives + "\n";
 		playerString += inventory.size() + "\n";
 		for (Item item : inventory) {
 			playerString += item.toString() + "\n";

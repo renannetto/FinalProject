@@ -165,8 +165,6 @@ public abstract class Character extends FinalMovingEntity implements
 		targetVelocity = DAMAGE_VELOCITY;
 		move(mtv.normalized());
 		damageTime = 0.0f;
-		// Vec2f translation = mtv.normalized().pmult(shape.getDimensions());
-		// shape.move(translation);
 	}
 
 }

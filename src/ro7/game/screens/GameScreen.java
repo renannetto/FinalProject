@@ -41,6 +41,8 @@ public class GameScreen extends Screen {
 	public void onTick(long nanosSincePreviousTick) {
 		try {
 			if (!cutscene.equals("")) {
+				world.stopPlayer();
+				pressedKeys.clear();
 				app.pushScreen(new FinalTextCutscene(app, this, cutscene));
 				cutscene = "";
 			} else {

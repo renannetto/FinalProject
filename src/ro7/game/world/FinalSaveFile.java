@@ -25,8 +25,8 @@ public class FinalSaveFile extends SaveFile {
 			FinalWorld world = new FinalWorld(dimensions, this);
 			world.initLevel(level);
 
-			int lives = Integer.parseInt(reader.readLine());
-			world.setPlayerLives(lives);
+//			int lives = Integer.parseInt(reader.readLine());
+//			world.setPlayerLives(lives);
 
 			int inventorySize = Integer.parseInt(reader.readLine());
 			for (int i = 0; i < inventorySize; i++) {

@@ -16,8 +16,10 @@ import ro7.engine.world.entities.Ray;
 import ro7.game.world.enemies.Enemy;
 import ro7.game.world.enemies.spawners.PrisonArcherSpawner;
 import ro7.game.world.enemies.spawners.PrisonGuardSpawner;
+import ro7.game.world.entities.FinalOneTimeSensor;
 import ro7.game.world.items.GameItem;
 import ro7.game.world.items.Item;
+import ro7.game.world.items.ItemSensor;
 import ro7.game.world.items.StateItem;
 import ro7.game.world.map.FinalMap;
 import ro7.game.world.map.FinalNode;
@@ -83,6 +85,8 @@ public class FinalWorld extends GameWorld {
 		classes.put("GameItem", GameItem.class);
 		classes.put("StateItem", StateItem.class);
 		classes.put("FallingArea", FallingArea.class);
+		classes.put("OneTimeSensor", FinalOneTimeSensor.class);
+		classes.put("ItemSensor", ItemSensor.class);
 	}
 
 	@Override

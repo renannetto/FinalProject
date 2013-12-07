@@ -13,7 +13,7 @@ import ro7.game.world.items.Item;
 
 public class Action extends FinalCollidableEntity implements FinalEntity {
 	
-	private final float ACTION_TIME = 0.1f;
+	private final float ACTION_TIME = 0.05f;
 	
 	private Player player;
 	private Set<Item> inventory;
