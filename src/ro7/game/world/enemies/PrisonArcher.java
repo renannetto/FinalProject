@@ -79,7 +79,7 @@ public class PrisonArcher extends Enemy {
 		root.addChild(walk);
 	}
 
-	private class MoveAway extends Action {
+	protected class MoveAway extends Action {
 
 		@Override
 		public void reset() {
@@ -117,7 +117,7 @@ public class PrisonArcher extends Enemy {
 
 	}
 
-	private class PlayerInRange extends Condition {
+	protected class PlayerInRange extends Condition {
 
 		@Override
 		public void reset() {
@@ -142,9 +142,9 @@ public class PrisonArcher extends Enemy {
 
 	}
 
-	private class Shoot extends Action {
+	protected class Shoot extends Action {
 
-		private final float SHOOT_DELAY = 3.0f;
+		protected float shootDelay = 3.0f;
 
 		private float elapsedTime = 0.0f;
 
@@ -158,7 +158,11 @@ public class PrisonArcher extends Enemy {
 			path.clear();
 			stop(direction);
 			
-			if (elapsedTime < SHOOT_DELAY) {
+			return shoot(nanoseconds);
+		}
+
+		protected Status shoot(float nanoseconds) {
+			if (elapsedTime < shootDelay) {
 				elapsedTime += nanoseconds / 1000000000.0f;
 				return Status.RUNNING;
 			}

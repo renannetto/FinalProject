@@ -16,6 +16,7 @@ import ro7.engine.world.entities.Ray;
 import ro7.game.world.enemies.Enemy;
 import ro7.game.world.enemies.spawners.PrisonArcherSpawner;
 import ro7.game.world.enemies.spawners.PrisonGuardSpawner;
+import ro7.game.world.enemies.spawners.SorcererSpawner;
 import ro7.game.world.entities.FinalOneTimeSensor;
 import ro7.game.world.items.GameItem;
 import ro7.game.world.items.Item;
@@ -78,6 +79,7 @@ public class FinalWorld extends GameWorld {
 		classes.put("Player", Player.class);
 		classes.put("PrisonGuardSpawner", PrisonGuardSpawner.class);
 		classes.put("PrisonArcherSpawner", PrisonArcherSpawner.class);
+		classes.put("SorcererSpawner", SorcererSpawner.class);
 		classes.put("Door", Door.class);
 		classes.put("LockedDoor", LockedDoor.class);
 		classes.put("NPC", NPC.class);
