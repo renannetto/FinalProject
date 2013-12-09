@@ -29,7 +29,10 @@ public abstract class CollidableEntity extends Entity {
 		} else {
 			this.collisionMask = -1;
 		}
-		world.addCollidableEntity(this);
+
+		if (shape != null) {
+			world.addCollidableEntity(this);
+		}
 	}
 
 	protected CollidableEntity(GameWorld world, int categoryMask,
@@ -40,7 +43,7 @@ public abstract class CollidableEntity extends Entity {
 		this.collisionMask = collisionMask;
 		world.addCollidableEntity(this);
 	}
-	
+
 	@Override
 	public void add() {
 		world.addCollidableEntity(this);
@@ -58,6 +61,10 @@ public abstract class CollidableEntity extends Entity {
 	 * @return a Collision object
 	 */
 	public Collision collides(CollidableEntity other) {
+		if (this.shape == null) {
+			System.out.println("Stop");
+			return new Collision(other, null, this.shape, other.shape);
+		}
 		Vec2f mtv = this.shape.collides(other.shape);
 		return new Collision(other, mtv, this.shape, other.shape);
 	}
@@ -99,7 +106,7 @@ public abstract class CollidableEntity extends Entity {
 	public void remove() {
 		world.removeCollidableEntity(this);
 	}
-	
+
 	public void moveTo(Vec2f position) {
 		shape.moveTo(position);
 	}

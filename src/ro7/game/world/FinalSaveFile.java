@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.SaveFile;
@@ -25,14 +26,21 @@ public class FinalSaveFile extends SaveFile {
 			FinalWorld world = new FinalWorld(dimensions, this);
 			world.initLevel(level);
 
-//			int lives = Integer.parseInt(reader.readLine());
-//			world.setPlayerLives(lives);
+			// int lives = Integer.parseInt(reader.readLine());
+			// world.setPlayerLives(lives);
 
 			int inventorySize = Integer.parseInt(reader.readLine());
 			for (int i = 0; i < inventorySize; i++) {
 				String itemName = reader.readLine();
-				Item item = new Item(world, null, itemName);
+				Item item = new Item(world, null, itemName,
+						new HashMap<String, String>());
 				world.getItem(item);
+			}
+			String carryingItem = reader.readLine();
+			if (!carryingItem.equals("null")) {
+				Item item = new Item(world, null, carryingItem,
+						new HashMap<String, String>());
+				world.removeItem(item);
 			}
 
 			reader.close();

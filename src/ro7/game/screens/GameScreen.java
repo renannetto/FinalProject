@@ -17,7 +17,7 @@ import cs195n.Vec2f;
 import cs195n.Vec2i;
 
 public class GameScreen extends Screen {
-	
+
 	private final String BACKGROUND_MUSIC = "resources/musics/background.ogg";
 
 	private Viewport viewport;
@@ -29,12 +29,12 @@ public class GameScreen extends Screen {
 
 	public GameScreen(Application app, FinalWorld world) {
 		super(app);
-		
+
 		this.world = world;
-		
+
 		pressedKeys = new HashSet<Integer>();
 		cutscene = "";
-		//AudioManager.getInstance().playMusic(BACKGROUND_MUSIC, true);
+		AudioManager.getInstance().playMusic(BACKGROUND_MUSIC, true);
 	}
 
 	@Override
@@ -48,12 +48,13 @@ public class GameScreen extends Screen {
 			} else {
 				world.update(nanosSincePreviousTick);
 				if (world.lost()) {
-					//AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
+					AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
 					app.popScreen();
 				} else if (world.won()) {
-					//AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
+					AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
 					app.popScreen();
-					app.pushScreen(new SlideShowScreen(app, "resources/slideshows/continue.txt"));
+					app.pushScreen(new SlideShowScreen(app,
+							"resources/slideshows/continue.txt"));
 				}
 			}
 		} catch (Exception e) {
@@ -108,10 +109,12 @@ public class GameScreen extends Screen {
 			world.attack();
 			break;
 		case KeyEvent.VK_SHIFT:
-			world.action();
+			if (!pressedKeys.contains(keyCode)) {
+				world.action();
+			}
 			break;
 		case KeyEvent.VK_ESCAPE:
-			//AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
+			AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
 			app.popScreen();
 			break;
 		}
@@ -187,10 +190,10 @@ public class GameScreen extends Screen {
 						newSize.x, newSize.y), world, scale, gamePosition);
 			} else {
 				Vec2f initialDimensions = new Vec2f(640.0f, 480.0f);
-				Vec2f viewportDimensions = new Vec2f(
-						windowSize.x, windowSize.y);
+				Vec2f viewportDimensions = new Vec2f(windowSize.x, windowSize.y);
 				Vec2f scale = viewportDimensions.pdiv(initialDimensions);
-				viewport = new Viewport(new Vec2f(0.0f, 0.0f), viewportDimensions, world, scale, new Vec2f(0.0f, 0.0f));
+				viewport = new Viewport(new Vec2f(0.0f, 0.0f),
+						viewportDimensions, world, scale, new Vec2f(0.0f, 0.0f));
 			}
 		} catch (NullPointerException e) {
 			System.out.println("No window size defined");

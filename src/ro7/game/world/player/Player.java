@@ -33,7 +33,7 @@ public class Player extends Character {
 	private Map<Vec2f, AnimatedSprite> attacking;
 
 	private Set<Item> inventory;
-	private String carrying;
+	private Item carrying;
 
 	public Player(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {
@@ -63,7 +63,8 @@ public class Player extends Character {
 			@Override
 			public void run(Map<String, String> args) {
 				String itemName = args.get("itemName");
-				Item item = new Item(Player.this.world, null, itemName);
+				Item item = new Item(Player.this.world, null, itemName,
+						new HashMap<String, String>());
 				getItem(item);
 			}
 		});
@@ -118,13 +119,13 @@ public class Player extends Character {
 						posLeft, framesAttacking, timeToMoveAttacking));
 
 		this.inventory = new HashSet<Item>();
-		this.carrying = "";
+		this.carrying = null;
 
-		inputs.put("doCarryItem", new Input() {
+		inputs.put("doDropItem", new Input() {
 
 			@Override
 			public void run(Map<String, String> args) {
-				carrying = args.get("gameItemName");
+				carrying = null;
 			}
 		});
 	}
@@ -173,7 +174,7 @@ public class Player extends Character {
 	}
 
 	public Attack attack() {
-		if (damageTime < DAMAGE_DELAY) {
+		if (carrying != null || damageTime < DAMAGE_DELAY) {
 			currentAttack = null;
 			return currentAttack;
 		}
@@ -220,14 +221,14 @@ public class Player extends Character {
 				Color.BLUE, actionDimensions);
 		String actionName = name + "Action";
 
-		if (!carrying.equals("")) {
+		if (carrying != null) {
 			Map<String, String> dropActionProperties = new HashMap<String, String>();
 			dropActionProperties.put("categoryMask", actionCategory);
 			dropActionProperties.put("collisionMask", actionCollision);
 
 			DropAction action = new DropAction(world, actionShape, actionName,
 					dropActionProperties, this, inventory, carrying);
-			carrying = "";
+			carrying = null;
 			return action;
 		} else {
 			Map<String, String> actionProperties = new HashMap<String, String>();
@@ -279,6 +280,14 @@ public class Player extends Character {
 		inventory.add(item);
 	}
 
+	public void removeItem(Item item) {
+		inventory.remove(item);
+	}
+
+	public void carryItem(Item item) {
+		carrying = item;
+	}
+
 	public boolean hasItem(Item item) {
 		return inventory.contains(item);
 	}
@@ -298,7 +307,7 @@ public class Player extends Character {
 		shape.moveTo(shape.getPosition().plus(
 				mtv.normalized().pmult(shape.getDimensions().sdiv(1.5f))));
 	}
-	
+
 	@Override
 	public void push(Vec2f mtv) {
 		super.push(mtv);
@@ -308,10 +317,15 @@ public class Player extends Character {
 	@Override
 	public String toString() {
 		String playerString = "";
-//		playerString += lives + "\n";
+		// playerString += lives + "\n";
 		playerString += inventory.size() + "\n";
 		for (Item item : inventory) {
 			playerString += item.toString() + "\n";
+		}
+		if (carrying != null) {
+			playerString += carrying.getName();
+		} else {
+			playerString += "null";
 		}
 		return playerString;
 	}
@@ -326,9 +340,10 @@ public class Player extends Character {
 
 	public void copy(Player oldPlayer) {
 		this.lives = oldPlayer.lives;
-		this.inventory = oldPlayer.inventory;
+		this.inventory.addAll(oldPlayer.inventory);
 		this.direction = oldPlayer.direction;
 		this.velocity = oldPlayer.velocity;
+		this.carrying = oldPlayer.carrying;
 	}
 
 }

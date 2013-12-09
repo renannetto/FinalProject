@@ -7,11 +7,13 @@ import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.io.Output;
+import ro7.game.world.FinalWorld;
 
-public class StateItem extends GameItem {
+public class StateItem extends Item {
 
 	private int states;
 	private int currentState;
+	private String level;
 
 	public StateItem(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {
@@ -29,6 +31,8 @@ public class StateItem extends GameItem {
 		} else {
 			this.states = 2;
 		}
+		
+		level = properties.get("level");
 
 		for (int i = 0; i < states; i++) {
 			outputs.put("onState" + i, new Output());
@@ -38,7 +42,9 @@ public class StateItem extends GameItem {
 	@Override
 	public void receiveAction(Collision collision, Set<Item> inventory) {
 		super.receiveAction(collision, inventory);
-		outputs.get("onState" + currentState).run();
+		if (((FinalWorld)world).currentLevel(level)) {
+			outputs.get("onState" + currentState).run();
+		}
 
 		currentState = (currentState + 1) % states;
 	}

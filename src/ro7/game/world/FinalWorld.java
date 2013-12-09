@@ -18,7 +18,6 @@ import ro7.game.world.enemies.spawners.PrisonArcherSpawner;
 import ro7.game.world.enemies.spawners.PrisonGuardSpawner;
 import ro7.game.world.enemies.spawners.SorcererSpawner;
 import ro7.game.world.entities.FinalOneTimeSensor;
-import ro7.game.world.items.GameItem;
 import ro7.game.world.items.Item;
 import ro7.game.world.items.ItemSensor;
 import ro7.game.world.items.StateItem;
@@ -84,7 +83,7 @@ public class FinalWorld extends GameWorld {
 		classes.put("LockedDoor", LockedDoor.class);
 		classes.put("NPC", NPC.class);
 		classes.put("SaveNPC", SaveNPC.class);
-		classes.put("GameItem", GameItem.class);
+		classes.put("GameItem", Item.class);
 		classes.put("StateItem", StateItem.class);
 		classes.put("FallingArea", FallingArea.class);
 		classes.put("OneTimeSensor", FinalOneTimeSensor.class);
@@ -339,5 +338,15 @@ public class FinalWorld extends GameWorld {
 	public void getItem(Item item) {
 		player.getItem(item);
 	}
+
+	public boolean currentLevel(String level) {
+		return currentLevel.equals(level);
+	}
+
+	public void removeItem(Item item) {
+		player.removeItem(item);
+	}
+	
+	
 
 }

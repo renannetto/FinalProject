@@ -51,6 +51,10 @@ public abstract class Entity {
 		outputs.get(output).connect(connection);
 	}
 	
+	public void disconnect(String output) {
+		outputs.remove(output);
+	}
+	
 	public abstract void add();
 	
 	public abstract void remove();
@@ -72,8 +76,6 @@ public abstract class Entity {
 		if (this == obj)
 			return true;
 		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
 			return false;
 		Entity other = (Entity) obj;
 		if (name == null) {

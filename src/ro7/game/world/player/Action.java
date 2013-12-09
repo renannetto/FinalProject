@@ -15,7 +15,7 @@ public class Action extends FinalCollidableEntity implements FinalEntity {
 	
 	private final float ACTION_TIME = 0.05f;
 	
-	private Player player;
+	protected Player player;
 	private Set<Item> inventory;
 	
 	private float elapsedTime;
@@ -65,6 +65,7 @@ public class Action extends FinalCollidableEntity implements FinalEntity {
 	@Override
 	public void getItem(Item item) {
 		player.getItem(item);
+		player.carryItem(item);
 	}
 
 }

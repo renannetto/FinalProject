@@ -1,5 +1,6 @@
 package ro7.game.world.items;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import ro7.engine.sprites.shapes.CollidingShape;
@@ -17,7 +18,7 @@ public class ItemSensor extends FinalOneTimeSensor {
 		super(world, shape, name, properties);
 
 		String itemName = properties.get("itemName");
-		item = new Item(world, null, itemName);
+		item = new Item(world, null, itemName, new HashMap<String, String>());
 	}
 
 	@Override

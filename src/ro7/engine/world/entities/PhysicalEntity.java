@@ -38,9 +38,11 @@ public abstract class PhysicalEntity extends CollidableEntity {
 			this.restitution = 0.0f;
 		}
 
-		world.addPhysicalEntity(this);
+		if (shape != null) {
+			world.addPhysicalEntity(this);
+		}
 	}
-	
+
 	@Override
 	public void add() {
 		super.add();

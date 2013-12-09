@@ -1,5 +1,6 @@
 package ro7.game.world.scenario;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -29,7 +30,7 @@ public class LockedDoor extends Door {
 			String key = entry.getKey();
 			if (key.contains("lock")) {
 				String value = entry.getValue();
-				Item item = new Item(world, null, value);
+				Item item = new Item(world, null, value, new HashMap<String, String>());
 				locks.add(item);
 			}
 		}

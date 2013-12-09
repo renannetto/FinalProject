@@ -18,7 +18,7 @@ public class FallingArea extends FinalStaticEntity implements FinalEntity {
 		if (properties.containsKey("remove")) {
 			boolean remove = Boolean.parseBoolean(properties.get("remove"));
 			if (remove) {
-				world.removeEntity(name);
+				remove();
 			}
 		}
 	}

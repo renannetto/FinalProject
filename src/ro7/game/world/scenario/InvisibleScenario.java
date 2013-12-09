@@ -1,6 +1,7 @@
 package ro7.game.world.scenario;
 
 import java.awt.Graphics2D;
+import java.util.HashMap;
 import java.util.Map;
 
 import ro7.engine.sprites.shapes.CollidingShape;
@@ -18,7 +19,7 @@ public class InvisibleScenario extends Scenario {
 		super(world, shape, name, properties);
 		
 		String keyName = properties.get("itemName");
-		key = new Item(world, shape, keyName);
+		key = new Item(world, shape, keyName, new HashMap<String, String>());
 
 		if (properties.containsKey("visible")) {
 			this.visible = Boolean.parseBoolean(properties.get("visible"));

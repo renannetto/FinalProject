@@ -1,6 +1,7 @@
 package ro7.game.world.enemies.spawners;
 
 import java.awt.Graphics2D;
+import java.util.HashMap;
 import java.util.Map;
 
 import ro7.engine.sprites.shapes.CollidingShape;
@@ -32,7 +33,7 @@ public abstract class EnemySpawner extends FinalEntityImp implements
 		this.elapsedTime = 0.0f;
 		
 		if (properties.containsKey("trigger")) {
-			this.trigger = new Item(world, null, properties.get("trigger"));
+			this.trigger = new Item(world, null, properties.get("trigger"), new HashMap<String, String>());
 		} else {
 			this.trigger = null;
 		}
