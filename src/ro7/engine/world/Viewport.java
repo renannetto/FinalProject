@@ -11,14 +11,14 @@ public class Viewport {
 
 	private Vec2f position;
 	private Vec2f dimensions;
-	private GameWorld gameSpace;
+	private GameWorld gameWorld;
 	private Vec2f scale;
 	private Vec2f gamePosition;
 
 	public Viewport(Vec2f position, Vec2f dimensions, GameWorld gameSpace) {
 		this.position = position;
 		this.dimensions = dimensions;
-		this.gameSpace = gameSpace;
+		this.gameWorld = gameSpace;
 		this.scale = dimensions.pdiv(gameSpace.getDimensions());
 		this.gamePosition = new Vec2f(0.0f, 0.0f);
 	}
@@ -27,7 +27,7 @@ public class Viewport {
 			Vec2f scale, Vec2f gamePosition) {
 		this.position = position;
 		this.dimensions = dimensions;
-		this.gameSpace = gameSpace;
+		this.gameWorld = gameSpace;
 		this.scale = scale;
 		this.gamePosition = gamePosition;
 	}
@@ -131,7 +131,7 @@ public class Viewport {
 		g.setClip(viewport.getShape());
 		doTransform(g);
 
-		gameSpace.draw(g, this);
+		gameWorld.draw(g, this);
 		undoTransform(g);
 		g.setClip(clip);
 	}
@@ -150,6 +150,10 @@ public class Viewport {
 
 	public Vec2f getDimensions() {
 		return dimensions;
+	}
+
+	public void setWorld(GameWorld world) {
+		this.gameWorld = world;
 	}
 
 }

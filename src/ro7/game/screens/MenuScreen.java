@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.io.File;
 
 import ro7.engine.Application;
 import ro7.engine.Screen;
@@ -58,6 +59,8 @@ public class MenuScreen extends Screen {
 			switch (world.menu.getSelectedIndex()) {
 			case 0: {
 				Vec2f worldDimensions = new Vec2f(windowSize.x, windowSize.y);
+				File file = new File(DEFAULT_SAVE_FILE);
+				file.delete();
 				FinalSaveFile saveFile = new FinalSaveFile(DEFAULT_SAVE_FILE);
 				FinalWorld gameWorld = new FinalWorld(worldDimensions, saveFile);
 				gameWorld.initLevel(FIRST_LEVEL);
@@ -65,13 +68,7 @@ public class MenuScreen extends Screen {
 			}
 				break;
 			case 1: {
-				FinalSaveFile saveFile = new FinalSaveFile(DEFAULT_SAVE_FILE);
-				Vec2f worldDimensions = new Vec2f(windowSize.x, windowSize.y);
-				FinalWorld gameWorld = (FinalWorld) saveFile
-						.load(worldDimensions);
-				if (gameWorld != null) {
-					app.pushScreen(new GameScreen(app, gameWorld));
-				}
+				
 				break;
 			}
 			case 2: {

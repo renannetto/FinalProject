@@ -12,12 +12,14 @@ import ro7.engine.Screen;
 import ro7.engine.audio.AudioManager;
 import ro7.engine.screens.SlideShowScreen;
 import ro7.engine.world.Viewport;
+import ro7.game.world.FinalSaveFile;
 import ro7.game.world.FinalWorld;
 import cs195n.Vec2f;
 import cs195n.Vec2i;
 
 public class GameScreen extends Screen {
 
+	private final String DEFAULT_SAVE_FILE = "resources/saves/save1";
 	private final String BACKGROUND_MUSIC = "resources/musics/background.ogg";
 
 	private Viewport viewport;
@@ -48,8 +50,17 @@ public class GameScreen extends Screen {
 			} else {
 				world.update(nanosSincePreviousTick);
 				if (world.lost()) {
-					AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
-					app.popScreen();
+					FinalSaveFile saveFile = new FinalSaveFile(DEFAULT_SAVE_FILE);
+					Vec2f worldDimensions = new Vec2f(windowSize.x, windowSize.y);
+					FinalWorld gameWorld = (FinalWorld) saveFile
+							.load(worldDimensions);
+					if (gameWorld != null) {
+						world = gameWorld;
+						viewport.setWorld(world);
+					} else {
+						AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
+						app.popScreen();
+					}
 				} else if (world.won()) {
 					AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
 					app.popScreen();
