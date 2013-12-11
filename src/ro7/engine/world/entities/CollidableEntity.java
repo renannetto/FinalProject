@@ -33,6 +33,13 @@ public abstract class CollidableEntity extends Entity {
 		if (shape != null) {
 			world.addCollidableEntity(this);
 		}
+		
+		if (properties.containsKey("remove")) {
+			boolean remove = Boolean.parseBoolean(properties.get("remove"));
+			if (remove) {
+				remove();
+			}
+		}
 	}
 
 	protected CollidableEntity(GameWorld world, int categoryMask,

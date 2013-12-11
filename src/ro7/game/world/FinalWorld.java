@@ -115,7 +115,16 @@ public class FinalWorld extends GameWorld {
 				"resources/sprites/prison/room_001_top.png",
 				new Vec2i(640, 480), new Vec2i(0, 0)));
 		spriteSheets.put("room_002", new SpriteSheet(
-				"resources/sprites/prison/room_002.jpg", new Vec2i(640, 480),
+				"resources/sprites/prison/room_002.png", new Vec2i(640, 480),
+				new Vec2i(0, 0)));
+		spriteSheets.put("room_002_left_eye", new SpriteSheet(
+				"resources/sprites/prison/room_002_left_eye.png", new Vec2i(640, 480),
+				new Vec2i(0, 0)));
+		spriteSheets.put("room_002_right_eye", new SpriteSheet(
+				"resources/sprites/prison/room_002_right_eye.png", new Vec2i(640, 480),
+				new Vec2i(0, 0)));
+		spriteSheets.put("room_002_door", new SpriteSheet(
+				"resources/sprites/prison/room_002_door.png", new Vec2i(56, 53),
 				new Vec2i(0, 0)));
 		spriteSheets.put("room_002_top", new SpriteSheet(
 				"resources/sprites/prison/room_002_top.png",
@@ -156,6 +165,15 @@ public class FinalWorld extends GameWorld {
 		spriteSheets.put("room_006_puzzle_blue", new SpriteSheet(
 				"resources/sprites/prison/room_006_puzzle_blue.png",
 				new Vec2i(640, 480), new Vec2i(0, 0)));
+		spriteSheets.put("room_007", new SpriteSheet(
+				"resources/sprites/prison/room_007.png", new Vec2i(640, 480),
+				new Vec2i(0, 0)));
+		spriteSheets.put("room_007_door_up", new SpriteSheet(
+				"resources/sprites/prison/room_007_door_up.png", new Vec2i(60, 52),
+				new Vec2i(0, 0)));
+		spriteSheets.put("room_007_door_down", new SpriteSheet(
+				"resources/sprites/prison/room_007_door_down.png", new Vec2i(60, 52),
+				new Vec2i(0, 0)));
 
 		spriteSheets.put("hero_walk_sheet", new SpriteSheet(
 				"resources/sprites/char/hero_walk_sheet.png",
@@ -168,6 +186,9 @@ public class FinalWorld extends GameWorld {
 				new Vec2i(0, 0)));
 		spriteSheets.put("enemy_002", new SpriteSheet(
 				"resources/sprites/enemies/enemy_002.png", new Vec2i(32, 32),
+				new Vec2i(0, 0)));
+		spriteSheets.put("boss_001", new SpriteSheet(
+				"resources/sprites/enemies/boss_001.png", new Vec2i(96, 96),
 				new Vec2i(0, 0)));
 		spriteSheets.put("bluefire", new SpriteSheet(
 				"resources/sprites/enemies/bluefire.png", new Vec2i(32, 32),

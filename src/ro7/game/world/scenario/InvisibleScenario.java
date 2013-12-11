@@ -19,7 +19,7 @@ public class InvisibleScenario extends Scenario {
 		super(world, shape, name, properties);
 		
 		String keyName = properties.get("itemName");
-		key = new Item(world, shape, keyName, new HashMap<String, String>());
+		key = new Item(world, null, keyName, new HashMap<String, String>());
 
 		if (properties.containsKey("visible")) {
 			this.visible = Boolean.parseBoolean(properties.get("visible"));

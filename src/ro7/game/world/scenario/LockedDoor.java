@@ -10,9 +10,10 @@ import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.io.Output;
 import ro7.game.screens.GameScreen;
+import ro7.game.world.entities.FinalStaticEntity;
 import ro7.game.world.items.Item;
 
-public class LockedDoor extends Door {
+public class LockedDoor extends FinalStaticEntity {
 
 	private Set<Item> locks;
 	private Set<Item> unlocked;
@@ -35,8 +36,8 @@ public class LockedDoor extends Door {
 			}
 		}
 		
-		if (properties.containsKey("lockedCutscene")) {
-			lockedCutscene = properties.get("lockedCutscene");
+		if (properties.containsKey("cutscene")) {
+			lockedCutscene = properties.get("cutscene");
 		} else {
 			lockedCutscene = "";
 		}
@@ -45,20 +46,16 @@ public class LockedDoor extends Door {
 	}
 
 	@Override
-	public void onCollision(Collision collision) {
-
-	}
-
-	@Override
 	public void receiveAction(Collision collision, Set<Item> inventory) {
 		for (Item item : locks) {
 			if (inventory.contains(item)) {
 				unlocked.add(item);
-				outputs.get("onUnlock").run();
 			}
 		}
 		if (unlocked.size() != locks.size() && !lockedCutscene.equals("")) {
 			GameScreen.playCutscene(lockedCutscene);
+		} else {
+			outputs.get("onUnlock").run();
 		}
 	}
 

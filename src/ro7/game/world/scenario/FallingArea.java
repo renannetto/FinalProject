@@ -14,13 +14,6 @@ public class FallingArea extends FinalStaticEntity implements FinalEntity {
 	public FallingArea(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {
 		super(world, shape, name, properties);
-		
-		if (properties.containsKey("remove")) {
-			boolean remove = Boolean.parseBoolean(properties.get("remove"));
-			if (remove) {
-				remove();
-			}
-		}
 	}
 
 	@Override

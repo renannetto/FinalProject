@@ -2,10 +2,7 @@ Final 3 README
 
 Using engine features:
  - There is a main menu at the beginning and the UI API is used to show the player life bar
- - A background music is been played using the audio API
+ - A background music is being played using the audio API
  - A text cutscene runs when you talk with the NPC or try to open a locked door without the keys
- - A slideshow shows at the end of the game
-
-Known bugs: the ranged enemy IA doesn't work right sometimes
 
 Approximate hours: 20 hours

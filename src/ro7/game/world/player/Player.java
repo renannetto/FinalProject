@@ -265,14 +265,16 @@ public class Player extends Character {
 
 	@Override
 	public void touchEnemy(Collision collision) {
-		receiveDamage(1);
-		Vec2f mtv = collision.mtv;
-		Vec2f centerDistance = collision.thisShape.center().minus(
-				collision.otherShape.center());
-		if (mtv.dot(centerDistance) < 0) {
-			mtv = mtv.smult(-1.0f);
+		if (damageTime >= DAMAGE_DELAY) {
+			receiveDamage(1);
+			Vec2f mtv = collision.mtv;
+			Vec2f centerDistance = collision.thisShape.center().minus(
+					collision.otherShape.center());
+			if (mtv.dot(centerDistance) < 0) {
+				mtv = mtv.smult(-1.0f);
+			}
+			push(mtv);
 		}
-		push(mtv);
 	}
 
 	@Override

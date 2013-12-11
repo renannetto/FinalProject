@@ -21,7 +21,7 @@ public class MenuWorld extends GameWorld{
 		background = new ImageSprite(new Vec2f(320f, 240f), spriteSheets.get("menuBackground"), new Vec2i(0, 0), new Vec2f(640, 480));
 		menu = new Menu(new Vec2f(320, 300f), 50f);
 		menu.addElement(new MenuElement(spriteSheets.get("menuOptStart"), new Vec2i(0,0), new Vec2f(240f, 60f), 1, 1));
-		menu.addElement(new MenuElement(spriteSheets.get("menuOptOptions"), new Vec2i(0,0), new Vec2f(240f, 60f), 1, 1));
+		//menu.addElement(new MenuElement(spriteSheets.get("menuOptOptions"), new Vec2i(0,0), new Vec2f(240f, 60f), 1, 1));
 		menu.addElement(new MenuElement(spriteSheets.get("menuOptExit"), new Vec2i(0,0), new Vec2f(240f, 60f), 1, 1));
 	}
 

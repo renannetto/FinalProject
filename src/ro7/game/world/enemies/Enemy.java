@@ -33,7 +33,7 @@ public abstract class Enemy extends Character {
 	protected List<Vec2f> path;
 	protected Composite root;
 
-	private Map<Vec2f, AnimatedSprite> dying;
+	protected Map<Vec2f, AnimatedSprite> dying;
 
 	protected Enemy(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {

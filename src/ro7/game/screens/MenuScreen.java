@@ -67,11 +67,17 @@ public class MenuScreen extends Screen {
 				app.pushScreen(new GameScreen(app, gameWorld));
 			}
 				break;
-			case 1: {
-				
+			case 2: {
+//				FinalSaveFile saveFile = new FinalSaveFile(DEFAULT_SAVE_FILE);
+//				Vec2f worldDimensions = new Vec2f(windowSize.x, windowSize.y);
+//				FinalWorld gameWorld = (FinalWorld) saveFile
+//						.load(worldDimensions);
+//				if (gameWorld != null) {
+//					app.pushScreen(new GameScreen(app, gameWorld));
+//				}
 				break;
 			}
-			case 2: {
+			case 1: {
 				System.exit(0);
 			}
 				break;

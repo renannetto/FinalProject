@@ -10,7 +10,6 @@ import java.util.Set;
 import ro7.engine.Application;
 import ro7.engine.Screen;
 import ro7.engine.audio.AudioManager;
-import ro7.engine.screens.SlideShowScreen;
 import ro7.engine.world.Viewport;
 import ro7.game.world.FinalSaveFile;
 import ro7.game.world.FinalWorld;
@@ -64,8 +63,8 @@ public class GameScreen extends Screen {
 				} else if (world.won()) {
 					AudioManager.getInstance().stopMusic(BACKGROUND_MUSIC);
 					app.popScreen();
-					app.pushScreen(new SlideShowScreen(app,
-							"resources/slideshows/continue.txt"));
+//					app.pushScreen(new SlideShowScreen(app,
+//							"resources/slideshows/continue.txt"));
 				}
 			}
 		} catch (Exception e) {

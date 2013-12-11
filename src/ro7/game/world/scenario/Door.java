@@ -6,6 +6,7 @@ import java.util.Map;
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collision;
 import ro7.engine.world.GameWorld;
+import ro7.engine.world.io.Output;
 import ro7.game.world.FinalWorld;
 import ro7.game.world.entities.FinalCollidableEntity;
 import ro7.game.world.entities.FinalEntity;
@@ -27,10 +28,13 @@ public class Door extends FinalCollidableEntity implements FinalEntity {
 		} else {
 			nextPosition = null;
 		}
+		
+		outputs.put("onCollision", new Output());
 	}
 	
 	@Override
 	public void onCollision(Collision collision) {
+		outputs.get("onCollision").run();
 		enter();
 	}
 

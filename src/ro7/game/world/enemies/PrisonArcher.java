@@ -146,7 +146,7 @@ public class PrisonArcher extends Enemy {
 
 		protected float shootDelay = 3.0f;
 
-		private float elapsedTime = 0.0f;
+		protected float elapsedTime = 0.0f;
 
 		@Override
 		public void reset() {
