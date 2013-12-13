@@ -102,7 +102,6 @@ public abstract class Character extends FinalMovingEntity implements
 			damageTime += nanoseconds / 1000000000.0f;
 		}
 		super.update(nanoseconds);
-		shape.update(nanoseconds);
 	}
 
 	protected void updateSprite(long nanoseconds) {
@@ -130,6 +129,8 @@ public abstract class Character extends FinalMovingEntity implements
 				}
 			}
 		}
+		
+		shape.update(nanoseconds);
 	}
 
 	@Override

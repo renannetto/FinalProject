@@ -1,6 +1,7 @@
 package ro7.game.world.items;
 
 import java.awt.Graphics2D;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,6 +29,13 @@ public class Item extends FinalStaticEntity implements FinalEntity {
 		}
 		
 		outputs.put("onReceiveAction", new Output());
+	}
+	
+	public Item(Item other) {
+		super(other.world, other.shape, other.name + "Copy", new HashMap<String, String>());
+		collisionMask=0;
+		categoryMask=0;
+		visible = true;
 	}
 
 	@Override
@@ -66,8 +74,7 @@ public class Item extends FinalStaticEntity implements FinalEntity {
 
 		shape.move(mtv);
 
-	}
-	
+	}	
 	
 
 }

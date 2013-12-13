@@ -178,6 +178,12 @@ public class FinalWorld extends GameWorld {
 		spriteSheets.put("hero_walk_sheet", new SpriteSheet(
 				"resources/sprites/char/hero_walk_sheet.png",
 				new Vec2i(96, 96), new Vec2i(0, 0)));
+		spriteSheets.put("hero_carrying_sheet", new SpriteSheet(
+				"resources/sprites/char/hero_carrying_sheet.png",
+				new Vec2i(96, 96), new Vec2i(0, 0)));
+		spriteSheets.put("hero_falling_sheet", new SpriteSheet(
+				"resources/sprites/char/hero_falling_sheet.png",
+				new Vec2i(32, 32), new Vec2i(0, 0)));
 		spriteSheets.put("hero_attack_sheet", new SpriteSheet(
 				"resources/sprites/char/hero_attack_sheet.png", new Vec2i(96,
 						96), new Vec2i(0, 0)));

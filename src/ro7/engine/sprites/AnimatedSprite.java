@@ -23,7 +23,7 @@ public class AnimatedSprite extends ImageSprite {
 		this.elapsed = 0;
 		this.TIME_TO_MOVE = timeToMove;
 	}
-	
+
 	public AnimatedSprite(Vec2f position, SpriteSheet sheet,
 			Vec2i sheetPosition, int frames, float timeToMove) {
 		super(position, sheet, sheetPosition);
@@ -34,11 +34,12 @@ public class AnimatedSprite extends ImageSprite {
 		this.TIME_TO_MOVE = timeToMove;
 	}
 
-	/* (non-Javadoc)
-	 * @see ro7.engine.sprites.Sprite#update(long)
-	 * If the elapsed time is bigger than TIME_TO_MOVE, update the frame
-	 * of the animation. The next frame has to be on the right in the
-	 * sprite sheet.
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ro7.engine.sprites.Sprite#update(long) If the elapsed time is bigger
+	 * than TIME_TO_MOVE, update the frame of the animation. The next frame has
+	 * to be on the right in the sprite sheet.
 	 */
 	@Override
 	public void update(long nanoseconds) {
@@ -54,7 +55,7 @@ public class AnimatedSprite extends ImageSprite {
 	public void draw(Graphics2D g) {
 		super.draw(g);
 	}
-	
+
 	@Override
 	public void reset() {
 		currentFrame = 0;

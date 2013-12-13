@@ -1,6 +1,7 @@
 package ro7.game.world.player;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -23,6 +24,10 @@ import cs195n.Vec2i;
 
 public class Player extends Character {
 
+	private final String CARRYING_SHEET_FILE = "hero_carrying_sheet";
+	private final String FALLING_SHEET_FILE = "hero_falling_sheet";
+	private final float FALLING_TIME = 0.7f;
+
 	private String attackCategory;
 	private String attackCollision;
 	private Attack currentAttack;
@@ -31,9 +36,15 @@ public class Player extends Character {
 	private String actionCollision;
 
 	private Map<Vec2f, AnimatedSprite> attacking;
+	private Map<Vec2f, AnimatedSprite> carrying;
+
+	private AnimatedSprite falling;
+
+	private float animationTime;
+	private Vec2f nextPosition;
 
 	private Set<Item> inventory;
-	private Item carrying;
+	private Item carryingItem;
 
 	public Player(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {
@@ -118,16 +129,50 @@ public class Player extends Character {
 				new AnimatedSprite(shape.getPosition(), attackingSheet,
 						posLeft, framesAttacking, timeToMoveAttacking));
 
+		SpriteSheet carryingSheet = world.getSpriteSheet(CARRYING_SHEET_FILE);
+		int framesCarrying = Integer.parseInt(properties.get("framesWalking"));
+		float timeToMoveCarrying = Float.parseFloat(properties
+				.get("timeToMoveWalking"));
+		carrying = new HashMap<Vec2f, AnimatedSprite>();
+		carrying.put(new Vec2f(0.0f, 1.0f),
+				new AnimatedSprite(shape.getPosition(), carryingSheet, posDown,
+						framesCarrying, timeToMoveCarrying));
+		carrying.put(new Vec2f(0.0f, -1.0f),
+				new AnimatedSprite(shape.getPosition(), carryingSheet, posUp,
+						framesCarrying, timeToMoveCarrying));
+		carrying.put(new Vec2f(1.0f, 0.0f),
+				new AnimatedSprite(shape.getPosition(), carryingSheet,
+						posRight, framesCarrying, timeToMoveCarrying));
+		carrying.put(new Vec2f(-1.0f, 0.0f),
+				new AnimatedSprite(shape.getPosition(), carryingSheet, posLeft,
+						framesCarrying, timeToMoveCarrying));
+
+		SpriteSheet fallingSheet = world.getSpriteSheet(FALLING_SHEET_FILE);
+		falling = new AnimatedSprite(shape.getPosition(), fallingSheet,
+				posDown, 4, 0.25f);
+
+		animationTime = FALLING_TIME;
+		nextPosition = null;
+
 		this.inventory = new HashSet<Item>();
-		this.carrying = null;
+		this.carryingItem = null;
 
 		inputs.put("doDropItem", new Input() {
 
 			@Override
 			public void run(Map<String, String> args) {
-				carrying = null;
+				carryingItem = null;
 			}
 		});
+	}
+
+	@Override
+	public void draw(Graphics2D g) {
+		super.draw(g);
+		if (carryingItem != null) {
+			Item item = new Item(carryingItem);
+			item.draw(g);
+		}
 	}
 
 	@Override
@@ -137,11 +182,45 @@ public class Player extends Character {
 		} else {
 			updateSprite(nanoseconds);
 		}
+		
+		if (animationTime >= FALLING_TIME && nextPosition != null) {
+			shape.moveTo(nextPosition);
+			nextPosition=null;
+		}
 	}
 
 	@Override
 	protected void updateSprite(long nanoseconds) {
-		if (currentAttack == null) {
+		if (animationTime < FALLING_TIME) {
+			animationTime += nanoseconds / 1000000000.0f;
+			((CollidingSprite) shape).updateSprite(falling);
+			this.shape.update(nanoseconds);
+		} else if (carryingItem != null) {
+			if (Math.abs(direction.y) >= Math.abs(direction.x)) {
+				if (direction.y > 0) {
+					((CollidingSprite) shape).updateSprite(carrying
+							.get(new Vec2f(0.0f, 1.0f)));
+				} else {
+					((CollidingSprite) shape).updateSprite(carrying
+							.get(new Vec2f(0.0f, -1.0f)));
+				}
+			} else {
+				if (direction.x > 0) {
+					((CollidingSprite) shape).updateSprite(carrying
+							.get(new Vec2f(1.0f, 0.0f)));
+				} else {
+					((CollidingSprite) shape).updateSprite(carrying
+							.get(new Vec2f(-1.0f, 0.0f)));
+				}
+			}
+
+			carryingItem.moveTo(shape.getPosition().plus(
+					shape.getDimensions().pmult(0.0f, -1.0f)));
+
+			if (velocity.mag2() != 0) {
+				this.shape.update(nanoseconds);
+			}
+		} else if (currentAttack == null) {
 			super.updateSprite(nanoseconds);
 		} else {
 			if (Math.abs(direction.y) >= Math.abs(direction.x)) {
@@ -174,7 +253,7 @@ public class Player extends Character {
 	}
 
 	public Attack attack() {
-		if (carrying != null || damageTime < DAMAGE_DELAY) {
+		if (carryingItem != null || damageTime < DAMAGE_DELAY) {
 			currentAttack = null;
 			return currentAttack;
 		}
@@ -221,14 +300,14 @@ public class Player extends Character {
 				Color.BLUE, actionDimensions);
 		String actionName = name + "Action";
 
-		if (carrying != null) {
+		if (carryingItem != null) {
 			Map<String, String> dropActionProperties = new HashMap<String, String>();
 			dropActionProperties.put("categoryMask", actionCategory);
 			dropActionProperties.put("collisionMask", actionCollision);
 
 			DropAction action = new DropAction(world, actionShape, actionName,
-					dropActionProperties, this, inventory, carrying);
-			carrying = null;
+					dropActionProperties, this, inventory, carryingItem);
+			carryingItem = null;
 			return action;
 		} else {
 			Map<String, String> actionProperties = new HashMap<String, String>();
@@ -287,7 +366,7 @@ public class Player extends Character {
 	}
 
 	public void carryItem(Item item) {
-		carrying = item;
+		carryingItem = item;
 	}
 
 	public boolean hasItem(Item item) {
@@ -306,8 +385,11 @@ public class Player extends Character {
 			mtv = mtv.smult(-1.0f);
 		}
 
-		shape.moveTo(shape.getPosition().plus(
-				mtv.normalized().pmult(shape.getDimensions().sdiv(1.5f))));
+		nextPosition = shape.getPosition().plus(
+				mtv.normalized().pmult(shape.getDimensions().sdiv(1.5f)));
+
+		animationTime = 0.0f;
+		falling.reset();
 	}
 
 	@Override
@@ -324,8 +406,8 @@ public class Player extends Character {
 		for (Item item : inventory) {
 			playerString += item.toString() + "\n";
 		}
-		if (carrying != null) {
-			playerString += carrying.getName();
+		if (carryingItem != null) {
+			playerString += carryingItem.getName();
 		} else {
 			playerString += "null";
 		}
@@ -345,7 +427,7 @@ public class Player extends Character {
 		this.inventory.addAll(oldPlayer.inventory);
 		this.direction = oldPlayer.direction;
 		this.velocity = oldPlayer.velocity;
-		this.carrying = oldPlayer.carrying;
+		this.carryingItem = oldPlayer.carryingItem;
 	}
 
 }
