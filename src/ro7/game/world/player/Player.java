@@ -26,7 +26,9 @@ public class Player extends Character {
 
 	private final String CARRYING_SHEET_FILE = "hero_carrying_sheet";
 	private final String FALLING_SHEET_FILE = "hero_falling_sheet";
+	private final String GRAB_SHEET_FILE = "hero_grab_sheet";
 	private final float FALLING_TIME = 0.7f;
+	private final float GRAB_TIME = 0.6f;
 
 	private String attackCategory;
 	private String attackCollision;
@@ -37,6 +39,7 @@ public class Player extends Character {
 
 	private Map<Vec2f, AnimatedSprite> attacking;
 	private Map<Vec2f, AnimatedSprite> carrying;
+	private Map<Vec2f, AnimatedSprite> grabbing;
 
 	private AnimatedSprite falling;
 
@@ -45,6 +48,7 @@ public class Player extends Character {
 
 	private Set<Item> inventory;
 	private Item carryingItem;
+	private boolean grab;
 
 	public Player(GameWorld world, CollidingShape shape, String name,
 			Map<String, String> properties) {
@@ -147,6 +151,23 @@ public class Player extends Character {
 				new AnimatedSprite(shape.getPosition(), carryingSheet, posLeft,
 						framesCarrying, timeToMoveCarrying));
 
+		SpriteSheet grabbingSheet = world.getSpriteSheet(GRAB_SHEET_FILE);
+		int grabbingCarrying = 8;
+		float timeToMoveGrabbing = 0.1f;
+		grabbing = new HashMap<Vec2f, AnimatedSprite>();
+		grabbing.put(new Vec2f(0.0f, 1.0f),
+				new AnimatedSprite(shape.getPosition(), grabbingSheet, posDown,
+						grabbingCarrying, timeToMoveGrabbing));
+		grabbing.put(new Vec2f(0.0f, -1.0f),
+				new AnimatedSprite(shape.getPosition(), grabbingSheet, posUp,
+						grabbingCarrying, timeToMoveGrabbing));
+		grabbing.put(new Vec2f(1.0f, 0.0f),
+				new AnimatedSprite(shape.getPosition(), grabbingSheet,
+						posRight, grabbingCarrying, timeToMoveGrabbing));
+		grabbing.put(new Vec2f(-1.0f, 0.0f),
+				new AnimatedSprite(shape.getPosition(), grabbingSheet, posLeft,
+						grabbingCarrying, timeToMoveGrabbing));
+
 		SpriteSheet fallingSheet = world.getSpriteSheet(FALLING_SHEET_FILE);
 		falling = new AnimatedSprite(shape.getPosition(), fallingSheet,
 				posDown, 4, 0.25f);
@@ -156,6 +177,7 @@ public class Player extends Character {
 
 		this.inventory = new HashSet<Item>();
 		this.carryingItem = null;
+		this.grab = false;
 
 		inputs.put("doDropItem", new Input() {
 
@@ -177,77 +199,100 @@ public class Player extends Character {
 
 	@Override
 	public void update(long nanoseconds) {
-		if (currentAttack == null) {
+		if (currentAttack == null && !grab) {
 			super.update(nanoseconds);
 		} else {
 			updateSprite(nanoseconds);
 		}
-		
+
 		if (animationTime >= FALLING_TIME && nextPosition != null) {
 			shape.moveTo(nextPosition);
-			nextPosition=null;
+			nextPosition = null;
 		}
 	}
 
 	@Override
 	protected void updateSprite(long nanoseconds) {
-		if (animationTime < FALLING_TIME) {
+		if (animationTime < FALLING_TIME || animationTime < GRAB_TIME) {
 			animationTime += nanoseconds / 1000000000.0f;
-			((CollidingSprite) shape).updateSprite(falling);
-			this.shape.update(nanoseconds);
-		} else if (carryingItem != null) {
-			if (Math.abs(direction.y) >= Math.abs(direction.x)) {
-				if (direction.y > 0) {
-					((CollidingSprite) shape).updateSprite(carrying
-							.get(new Vec2f(0.0f, 1.0f)));
+			if (grab) {
+				if (Math.abs(direction.y) >= Math.abs(direction.x)) {
+					if (direction.y > 0) {
+						((CollidingSprite) shape).updateSprite(grabbing
+								.get(new Vec2f(0.0f, 1.0f)));
+					} else {
+						((CollidingSprite) shape).updateSprite(grabbing
+								.get(new Vec2f(0.0f, -1.0f)));
+					}
 				} else {
-					((CollidingSprite) shape).updateSprite(carrying
-							.get(new Vec2f(0.0f, -1.0f)));
+					if (direction.x > 0) {
+						((CollidingSprite) shape).updateSprite(grabbing
+								.get(new Vec2f(1.0f, 0.0f)));
+					} else {
+						((CollidingSprite) shape).updateSprite(grabbing
+								.get(new Vec2f(-1.0f, 0.0f)));
+					}
 				}
 			} else {
-				if (direction.x > 0) {
-					((CollidingSprite) shape).updateSprite(carrying
-							.get(new Vec2f(1.0f, 0.0f)));
-				} else {
-					((CollidingSprite) shape).updateSprite(carrying
-							.get(new Vec2f(-1.0f, 0.0f)));
-				}
+				((CollidingSprite) shape).updateSprite(falling);
 			}
+			this.shape.update(nanoseconds);
+		} else {
+			grab = false;
+			if (carryingItem != null) {
+				if (Math.abs(direction.y) >= Math.abs(direction.x)) {
+					if (direction.y > 0) {
+						((CollidingSprite) shape).updateSprite(carrying
+								.get(new Vec2f(0.0f, 1.0f)));
+					} else {
+						((CollidingSprite) shape).updateSprite(carrying
+								.get(new Vec2f(0.0f, -1.0f)));
+					}
+				} else {
+					if (direction.x > 0) {
+						((CollidingSprite) shape).updateSprite(carrying
+								.get(new Vec2f(1.0f, 0.0f)));
+					} else {
+						((CollidingSprite) shape).updateSprite(carrying
+								.get(new Vec2f(-1.0f, 0.0f)));
+					}
+				}
 
-			carryingItem.moveTo(shape.getPosition().plus(
-					shape.getDimensions().pmult(0.0f, -1.0f)));
+				carryingItem.moveTo(shape.getPosition().plus(
+						shape.getDimensions().pmult(0.0f, -1.0f)));
 
-			if (velocity.mag2() != 0) {
+				if (velocity.mag2() != 0) {
+					this.shape.update(nanoseconds);
+				}
+			} else if (currentAttack == null) {
+				super.updateSprite(nanoseconds);
+			} else {
+				if (Math.abs(direction.y) >= Math.abs(direction.x)) {
+					if (direction.y > 0) {
+						((CollidingSprite) shape).updateSprite(attacking
+								.get(new Vec2f(0.0f, 1.0f)));
+					} else {
+						((CollidingSprite) shape).updateSprite(attacking
+								.get(new Vec2f(0.0f, -1.0f)));
+					}
+				} else {
+					if (direction.x > 0) {
+						((CollidingSprite) shape).updateSprite(attacking
+								.get(new Vec2f(1.0f, 0.0f)));
+					} else {
+						((CollidingSprite) shape).updateSprite(attacking
+								.get(new Vec2f(-1.0f, 0.0f)));
+					}
+				}
+
 				this.shape.update(nanoseconds);
 			}
-		} else if (currentAttack == null) {
-			super.updateSprite(nanoseconds);
-		} else {
-			if (Math.abs(direction.y) >= Math.abs(direction.x)) {
-				if (direction.y > 0) {
-					((CollidingSprite) shape).updateSprite(attacking
-							.get(new Vec2f(0.0f, 1.0f)));
-				} else {
-					((CollidingSprite) shape).updateSprite(attacking
-							.get(new Vec2f(0.0f, -1.0f)));
-				}
-			} else {
-				if (direction.x > 0) {
-					((CollidingSprite) shape).updateSprite(attacking
-							.get(new Vec2f(1.0f, 0.0f)));
-				} else {
-					((CollidingSprite) shape).updateSprite(attacking
-							.get(new Vec2f(-1.0f, 0.0f)));
-				}
-			}
-
-			this.shape.update(nanoseconds);
 		}
 	}
 
 	@Override
 	public void move(Vec2f direction) {
-		if (currentAttack == null && damageTime >= DAMAGE_DELAY) {
+		if (currentAttack == null && damageTime >= DAMAGE_DELAY && !grab) {
 			super.move(direction);
 		}
 	}
@@ -268,7 +313,7 @@ public class Player extends Character {
 
 		Vec2f attackDirection = getAttackDirection();
 		Vec2f attackPosition = shape.getPosition().plus(
-				shape.getDimensions().sdiv(2.0f).pmult(attackDirection));
+				shape.getDimensions().sdiv(1.5f).pmult(attackDirection));
 		Vec2f attackDimensions = shape.getDimensions().pdiv(
 				Math.abs(attackDirection.x) + 1,
 				Math.abs(attackDirection.y) + 1);
@@ -307,7 +352,6 @@ public class Player extends Character {
 
 			DropAction action = new DropAction(world, actionShape, actionName,
 					dropActionProperties, this, inventory, carryingItem);
-			carryingItem = null;
 			return action;
 		} else {
 			Map<String, String> actionProperties = new HashMap<String, String>();
@@ -367,6 +411,12 @@ public class Player extends Character {
 
 	public void carryItem(Item item) {
 		carryingItem = item;
+		grab = true;
+		animationTime = 0.0f;
+	}
+	
+	public void dropItem(Item item) {
+		carryingItem = null;
 	}
 
 	public boolean hasItem(Item item) {

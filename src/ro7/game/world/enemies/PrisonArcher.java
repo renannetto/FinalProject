@@ -50,11 +50,6 @@ public class PrisonArcher extends Enemy {
 	}
 
 	@Override
-	public void update(long nanoseconds) {
-		super.update(nanoseconds);
-	}
-
-	@Override
 	protected void buildBehaviorTree() {
 		root = new Selector();
 		Composite defense = new Sequence();

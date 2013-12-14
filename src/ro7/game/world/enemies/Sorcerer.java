@@ -48,12 +48,6 @@ public class Sorcerer extends PrisonArcher {
 	}
 	
 	@Override
-	public void update(long nanoseconds) {
-		// TODO Auto-generated method stub
-		super.update(nanoseconds);
-	}
-	
-	@Override
 	public void receiveDamage(int damage) {
 		// TODO Auto-generated method stub
 		super.receiveDamage(damage);

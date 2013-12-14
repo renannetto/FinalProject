@@ -48,8 +48,7 @@ public class DropAction extends Action {
 			world.addEntity(item);
 			item.moveTo(shape.getPosition());
 			inventory.remove(item);
-		} else {
-			player.carryItem(item);
+			player.dropItem(item);
 		}
 	}
 
