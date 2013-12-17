@@ -8,7 +8,7 @@ import cs195n.Vec2i;
 public class GameMain {
 	
 	public static void main(String[] args) {
-		Application app = new Application("Final", false, new Vec2i(1280, 720));
+		Application app = new Application("Final", false, new Vec2i(640, 480));
 		app.pushScreen(new MenuScreen(app));
 		app.startup();
 	}
