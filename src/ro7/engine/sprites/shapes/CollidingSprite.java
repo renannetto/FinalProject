@@ -17,11 +17,23 @@ public class CollidingSprite extends CollidingShape {
 
 	private ImageSprite sprite;
 	private CollidingShape shape;
+	private boolean resize;
 
 	public CollidingSprite(ImageSprite sprite, CollidingShape shape) {
 		super(shape.getPosition());
 		this.sprite = sprite;
 		this.shape = shape;
+		this.resize = false;
+
+		this.shape.changeFillColor(null);
+	}
+
+	public CollidingSprite(ImageSprite sprite, CollidingShape shape,
+			boolean resize) {
+		super(shape.getPosition());
+		this.sprite = sprite;
+		this.shape = shape;
+		this.resize = resize;
 
 		this.shape.changeFillColor(null);
 	}
@@ -88,7 +100,7 @@ public class CollidingSprite extends CollidingShape {
 		this.shape.move(translation);
 		this.sprite.move(translation);
 	}
-	
+
 	@Override
 	public void moveTo(Vec2f position) {
 		super.moveTo(position);
@@ -109,7 +121,11 @@ public class CollidingSprite extends CollidingShape {
 	 */
 	@Override
 	public void draw(Graphics2D g) {
-		this.sprite.draw(g);
+		if (!resize) {
+			this.sprite.draw(g);
+		} else {
+			this.sprite.draw(g, shape.getDimensions());
+		}
 	}
 
 	@Override

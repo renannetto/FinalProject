@@ -28,7 +28,7 @@ public class FinalTextCutscene extends TextCutsceneScreen {
 	protected CollidingShape createTextBox(Vec2f position, Vec2f dimensions) {
 		ImageSprite boxSprite = new ImageSprite(position, TEXT_BOX_SHEET, new Vec2i(0, 0));
 		CollidingShape boxShape = new AAB(position, Color.BLACK, Color.BLACK, dimensions);
-		return new CollidingSprite(boxSprite, boxShape);
+		return new CollidingSprite(boxSprite, boxShape, true);
 	}
 
 }

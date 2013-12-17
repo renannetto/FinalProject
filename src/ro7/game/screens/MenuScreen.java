@@ -68,13 +68,15 @@ public class MenuScreen extends Screen {
 			}
 				break;
 			case 2: {
-//				FinalSaveFile saveFile = new FinalSaveFile(DEFAULT_SAVE_FILE);
-//				Vec2f worldDimensions = new Vec2f(windowSize.x, windowSize.y);
-//				FinalWorld gameWorld = (FinalWorld) saveFile
-//						.load(worldDimensions);
-//				if (gameWorld != null) {
-//					app.pushScreen(new GameScreen(app, gameWorld));
-//				}
+				// FinalSaveFile saveFile = new
+				// FinalSaveFile(DEFAULT_SAVE_FILE);
+				// Vec2f worldDimensions = new Vec2f(windowSize.x,
+				// windowSize.y);
+				// FinalWorld gameWorld = (FinalWorld) saveFile
+				// .load(worldDimensions);
+				// if (gameWorld != null) {
+				// app.pushScreen(new GameScreen(app, gameWorld));
+				// }
 				break;
 			}
 			case 1: {
@@ -147,9 +149,11 @@ public class MenuScreen extends Screen {
 				viewport = new Viewport(new Vec2f(0.0f, 0.0f), new Vec2f(
 						newSize.x, newSize.y), world, scale, gamePosition);
 			} else {
-				viewport = new Viewport(new Vec2f(0.0f, 0.0f), new Vec2f(
-						windowSize.x, windowSize.y), world, new Vec2f(1.0f,
-						1.0f), new Vec2f(0.0f, 0.0f));
+				Vec2f initialDimensions = new Vec2f(640.0f, 480.0f);
+				Vec2f viewportDimensions = new Vec2f(windowSize.x, windowSize.y);
+				Vec2f scale = viewportDimensions.pdiv(initialDimensions);
+				viewport = new Viewport(new Vec2f(0.0f, 0.0f),
+						viewportDimensions, world, scale, new Vec2f(0.0f, 0.0f));
 			}
 		} catch (NullPointerException e) {
 			System.out.println("No window size defined");

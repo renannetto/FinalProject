@@ -1,8 +1,5 @@
-Final 3 README
+Final 5 README
 
-Using engine features:
- - There is a main menu at the beginning and the UI API is used to show the player life bar
- - A background music is being played using the audio API
- - A text cutscene runs when you talk with the NPC or try to open a locked door without the keys
+Executable and how to run: go to /contrib/projects/melda and then run "java -jar Final.jar"
 
-Approximate hours: 20 hours
+Gameplay video: https://drive.google.com/file/d/0BwT1KVtcu_3Oa2M2cUxQYkJlbGs/edit?usp=sharing

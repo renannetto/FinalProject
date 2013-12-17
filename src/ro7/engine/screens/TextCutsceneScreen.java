@@ -133,6 +133,8 @@ public class TextCutsceneScreen extends Screen {
 			Vec2f boxDimensions = new Vec2f(newSize.x, newSize.y/5);
 			Vec2f boxPosition = new Vec2f(((float) newSize.x) / 2.0f, newSize.y
 					- (boxDimensions.y / 2.0f));
+			
+			System.out.println("box dimensions: " + boxDimensions);
 
 			textBoxes.clear();
 			for (String text : texts) {
