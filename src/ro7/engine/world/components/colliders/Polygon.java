@@ -1,29 +1,37 @@
-package ro7.engine.sprites.shapes;
+package ro7.engine.world.components.colliders;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ro7.engine.world.entities.Ray;
+import ro7.engine.world.Entity;
+import ro7.engine.world.Ray;
+import ro7.engine.world.components.Collider;
 import cs195n.Vec2f;
 
 public class Polygon extends EdgeShape {
+	
+	private List<Vec2f> points;
 
-	public Polygon(Vec2f position, Color fillColor, Vec2f... points) {
-		super(position, fillColor, fillColor, points);
+	public Polygon(Entity entity, Vec2f... points) {
+		super(entity);
+		this.points = new ArrayList<Vec2f>();
+		for (Vec2f point : points) {
+			this.points.add(point);
+		}
 	}
 	
-	public Polygon(Vec2f position, Color fillColor, List<Vec2f> points) {
-		super(position, fillColor, fillColor, points);
+	public Polygon(Entity entity, List<Vec2f> points) {
+		super(entity);
+		this.points = new ArrayList<Vec2f>();
+		this.points.addAll(points);
 	}
 
 	@Override
-	public Vec2f collides(CollidingShape shape) {
-		return shape.collidesPolygon(this);
+	public Vec2f collisionMtv(Collider shape) {
+		Vec2f mtv = shape.collidesPolygon(this);
+		return mtv;
 	}
 
 	@Override
@@ -33,28 +41,16 @@ public class Polygon extends EdgeShape {
 		
 		thisAxes.addAll(thatAxes);
 		Vec2f shapeMtv = mtv(thisAxes, circle);
-		if (shapeMtv != null) {	
-			Vec2f centerDistance = circle.center().minus(this.center());
-			if (shapeMtv.dot(centerDistance) < 0) {
-				shapeMtv = shapeMtv.smult(-1.0f);
-			}
-		}
 		return shapeMtv;
 	}
 
 	@Override
-	public Vec2f collidesAAB(AAB aab) {
+	public Vec2f collidesBox(Box aab) {
 		Set<SeparatingAxis> thisAxes = this.getAxes();
 		Set<SeparatingAxis> thatAxes = aab.getAxes();
 		
 		thisAxes.addAll(thatAxes);
 		Vec2f shapeMtv = mtv(thisAxes, aab);
-		if (shapeMtv != null) {	
-			Vec2f centerDistance = aab.center().minus(this.center());
-			if (shapeMtv.dot(centerDistance) < 0) {
-				shapeMtv = shapeMtv.smult(-1.0f);
-			}
-		}
 		return shapeMtv;
 	}
 	
@@ -65,12 +61,6 @@ public class Polygon extends EdgeShape {
 		
 		thisAxes.addAll(thatAxes);
 		Vec2f shapeMtv = mtv(thisAxes, polygon);
-		if (shapeMtv != null) {	
-			Vec2f centerDistance = polygon.center().minus(this.center());
-			if (shapeMtv.dot(centerDistance) < 0) {
-				shapeMtv = shapeMtv.smult(-1.0f);
-			}
-		}
 		return shapeMtv;
 	}
 	
@@ -98,30 +88,19 @@ public class Polygon extends EdgeShape {
 
 	@Override
 	public Vec2f collidesCompoundShape(CompoundShape compound) {
-		List<CollidingShape> shapes = compound.getShapes();
-		for (CollidingShape shape : shapes) {
+		List<Collider> shapes = compound.getShapes();
+		for (Collider shape : shapes) {
 			Vec2f mtv = shape.collidesPolygon(this);
-			if (mtv != null) {
+			if (mtv.mag2()!=0) {
 				return mtv;
 			}
 		}
-		return null;
+		return new Vec2f(0.0f, 0.0f);
 	}
 	
 	@Override
 	public Vec2f collidesRay(Ray ray) {
 		return ray.collidesPolygon(this);
-	}
-
-	@Override
-	public void draw(Graphics2D g) {
-		g.setColor(fillColor);
-		Path2D path = new Path2D.Float();
-		path.moveTo(points.get(0).x, points.get(0).y);
-		for (Vec2f point : points) {
-			path.lineTo(point.x, point.y);
-		}
-		g.fill(path);
 	}
 
 	@Override
@@ -134,15 +113,6 @@ public class Polygon extends EdgeShape {
 			yCenter += point.y;
 		}
 		return new Vec2f(xCenter/npoints, yCenter/npoints);
-	}
-
-	@Override
-	public void updatePoints(Vec2f translation) {
-		List<Vec2f> newPoints = new ArrayList<Vec2f>();
-		for (Vec2f point : points) {
-			newPoints.add(point.plus(translation));
-		}
-		points = newPoints;
 	}
 	
 	@Override
@@ -167,6 +137,16 @@ public class Polygon extends EdgeShape {
 			}
 		}
 		return new Vec2f(maxX-minX, maxY-minY);
+	}
+
+	@Override
+	public List<Vec2f> getPoints() {
+		Vec2f position = entity.transform.position;
+		List<Vec2f> translatedPoints = new ArrayList<Vec2f>();
+		for (Vec2f point : points) {
+			translatedPoints.add(point.plus(position));
+		}
+		return translatedPoints;
 	}
 
 }

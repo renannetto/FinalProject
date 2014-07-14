@@ -2,7 +2,7 @@ package ro7.engine.sprites;
 
 import java.awt.Graphics2D;
 
-import cs195n.Vec2f;
+import ro7.engine.world.Entity;
 import cs195n.Vec2i;
 
 /**
@@ -13,37 +13,20 @@ public class ImageSprite extends Sprite {
 	
 	protected SpriteSheet sheet;
 	protected Vec2i sheetPosition; 
-	protected Vec2f dimensions;
 
-	public ImageSprite(Vec2f position, SpriteSheet sheet, Vec2i sheetPosition, Vec2f dimensions) {
-		super(position);
+	public ImageSprite(Entity entity, SpriteSheet sheet, Vec2i sheetPosition) {
+		super(entity);
 		this.sheet = sheet;
 		this.sheetPosition = sheetPosition;
-		this.dimensions = dimensions;
-	}
-	
-	public ImageSprite(Vec2f position, SpriteSheet sheet, Vec2i sheetPosition) {
-		super(position);
-		this.sheet = sheet;
-		this.sheetPosition = sheetPosition;
-		this.dimensions = sheet.getFrameDimensions();
 	}
 
 	@Override
-	public void draw(Graphics2D g) {
-		sheet.draw(g, sheetPosition, position, dimensions);
+	public void drawSprite(Graphics2D g) {
+		sheet.draw(g, sheetPosition);
 	}
-	
-	public void draw(Graphics2D g, Vec2f dimensions) {
-		sheet.draw(g, sheetPosition, position, dimensions);
-	}
-	
-	public void reset() {
-		
-	}
-	
-	public Vec2f getDimensions() {
-		return dimensions;
+
+	public void changePosition(Vec2i sheetPosition) {
+		this.sheetPosition = sheetPosition;
 	}
 
 }

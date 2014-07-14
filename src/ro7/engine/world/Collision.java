@@ -1,26 +1,21 @@
 package ro7.engine.world;
 
 import cs195n.Vec2f;
-import ro7.engine.sprites.shapes.CollidingShape;
-import ro7.engine.world.entities.CollidableEntity;
 
 public class Collision {
 	
-	public final CollidableEntity other;
+	public final Entity thisEntity;
+	public final Entity otherEntity;
 	public final Vec2f mtv;
-	public final CollidingShape thisShape;
-	public final CollidingShape otherShape;
 
-	public Collision(CollidableEntity other, Vec2f mtv, CollidingShape thisShape,
-			CollidingShape otherShape) {
-		this.other = other;
+	public Collision(Entity thisEntity, Entity otherEntity, Vec2f mtv) {
+		this.thisEntity = thisEntity;
+		this.otherEntity = otherEntity;
 		this.mtv = mtv;
-		this.thisShape = thisShape;
-		this.otherShape = otherShape;
 	}
 
 	public boolean validCollision() {
-		return mtv != null;
+		return mtv.mag2()!=0.0f;
 	}
 
 }

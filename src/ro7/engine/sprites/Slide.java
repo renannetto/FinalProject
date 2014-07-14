@@ -12,10 +12,11 @@ import javax.imageio.ImageIO;
 import cs195n.Vec2f;
 import cs195n.Vec2i;
 
-public class Slide extends Sprite {
+public class Slide {
 
 	private final int DURATION;
 
+	private Vec2f position;
 	private Vec2i dimensions;
 	private String filename;
 	private BufferedImage image;
@@ -23,7 +24,7 @@ public class Slide extends Sprite {
 	private float elapsedTime;
 
 	public Slide(Vec2f position, Vec2i dimensions, String filename, int duration) {
-		super(position);
+		this.position = position;
 		this.dimensions = dimensions;
 		this.filename = filename;
 		this.image = null;
@@ -31,9 +32,7 @@ public class Slide extends Sprite {
 		this.alpha = 0.5f;
 	}
 
-	@Override
 	public void update(long nanoseconds) {
-		super.update(nanoseconds);
 		elapsedTime += nanoseconds / 1000000000.0f;
 		if (elapsedTime < 1.0f) {
 			alpha = 0.5f + (elapsedTime / 2.0f);
@@ -45,7 +44,6 @@ public class Slide extends Sprite {
 		}
 	}
 
-	@Override
 	public void draw(Graphics2D g) {
 		if (image == null) {
 			try {

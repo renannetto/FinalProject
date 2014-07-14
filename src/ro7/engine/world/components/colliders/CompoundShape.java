@@ -1,88 +1,89 @@
-package ro7.engine.sprites.shapes;
+package ro7.engine.world.components.colliders;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import ro7.engine.world.entities.Ray;
+import ro7.engine.world.Entity;
+import ro7.engine.world.Ray;
+import ro7.engine.world.components.Collider;
 import cs195n.Vec2f;
 
-public class CompoundShape extends CollidingShape {
+public class CompoundShape extends Collider {
 
-	private List<CollidingShape> shapes;
+	private List<Collider> shapes;
 
-	public CompoundShape(Vec2f position, CollidingShape... shapes) {
-		super(position);
+	public CompoundShape(Entity entity, Collider... shapes) {
+		super(entity);
 
-		this.shapes = new ArrayList<CollidingShape>();
-		for (CollidingShape shape : shapes) {
+		this.shapes = new ArrayList<Collider>();
+		for (Collider shape : shapes) {
 			this.shapes.add(shape);
 		}
 	}
 	
-	public CompoundShape(Vec2f position, List<CollidingShape> shapes) {
-		super(position);
+	public CompoundShape(Entity entity, List<Collider> shapes) {
+		super(entity);
 		this.shapes = shapes;
 	}
 
-	public List<CollidingShape> getShapes() {
-		return new ArrayList<CollidingShape>(shapes);
+	public List<Collider> getShapes() {
+		return new ArrayList<Collider>(shapes);
 	}
 
 	@Override
-	public Vec2f collides(CollidingShape shape) {
-		return shape.collidesCompoundShape(this);
+	public Vec2f collisionMtv(Collider shape) {
+		Vec2f mtv = shape.collidesCompoundShape(this);
+		return mtv;
 	}
 
 	@Override
 	public Vec2f collidesCircle(Circle circle) {
-		for (CollidingShape shape : shapes) {
+		for (Collider shape : shapes) {
 			Vec2f mtv = shape.collidesCircle(circle);
-			if (mtv != null) {
+			if (mtv.mag2()!=0) {
 				return mtv;
 			}
 		}
-		return null;
+		return new Vec2f(0.0f, 0.0f);
 	}
 
 	@Override
-	public Vec2f collidesAAB(AAB aab) {
-		for (CollidingShape shape : shapes) {
-			Vec2f mtv = shape.collidesAAB(aab);
-			if (mtv != null) {
+	public Vec2f collidesBox(Box aab) {
+		for (Collider shape : shapes) {
+			Vec2f mtv = shape.collidesBox(aab);
+			if (mtv.mag2()!=0) {
 				return mtv;
 			}
 		}
-		return null;
+		return new Vec2f(0.0f, 0.0f);
 	}
 
 	@Override
 	public Vec2f collidesPolygon(Polygon polygon) {
-		for (CollidingShape shape : shapes) {
+		for (Collider shape : shapes) {
 			Vec2f mtv = shape.collidesPolygon(polygon);
-			if (mtv != null) {
+			if (mtv.mag2()!=0) {
 				return mtv;
 			}
 		}
-		return null;
+		return new Vec2f(0.0f, 0.0f);
 	}
 
 	@Override
 	public Vec2f collidesCompoundShape(CompoundShape compound) {
-		for (CollidingShape shape : shapes) {
+		for (Collider shape : shapes) {
 			Vec2f mtv = shape.collidesCompoundShape(compound);
-			if (mtv != null) {
+			if (mtv.mag2()!=0) {
 				return mtv;
 			}
 		}
-		return null;
+		return new Vec2f(0.0f, 0.0f);
 	}
 
 	@Override
 	public Vec2f collidesRay(Ray ray) {
 		Vec2f closest = null;
-		for (CollidingShape shape : shapes) {
+		for (Collider shape : shapes) {
 			Vec2f point = shape.collidesRay(ray);
 			if (closest == null) {
 				closest = point;
@@ -96,27 +97,6 @@ public class CompoundShape extends CollidingShape {
 			}
 		}
 		return closest;
-	}
-
-	@Override
-	public void draw(Graphics2D g) {
-		for (CollidingShape shape : shapes) {
-			shape.draw(g);
-		}
-	}
-
-	@Override
-	public void changeBorderColor(Color color) {
-		for (CollidingShape shape : shapes) {
-			shape.changeBorderColor(color);
-		}
-	}
-
-	@Override
-	public void changeFillColor(Color color) {
-		for (CollidingShape shape : shapes) {
-			shape.changeFillColor(color);
-		}
 	}
 
 	@Override
@@ -135,17 +115,10 @@ public class CompoundShape extends CollidingShape {
 	@Override
 	public List<Vec2f> getPoints() {
 		List<Vec2f> points = new ArrayList<Vec2f>();
-		for (CollidingShape shape : shapes) {
+		for (Collider shape : shapes) {
 			points.addAll(shape.getPoints());
 		}
 		return points;
-	}
-
-	@Override
-	public void updatePoints(Vec2f translation) {
-		for (CollidingShape shape : shapes) {
-			shape.updatePoints(translation);
-		}
 	}
 	
 	@Override

@@ -1,7 +1,8 @@
-package ro7.engine.sprites.shapes;
+package ro7.engine.world.components.colliders;
 
 import java.util.List;
 
+import ro7.engine.world.components.Collider;
 import cs195n.Vec2f;
 
 public class SeparatingAxis {
@@ -18,7 +19,7 @@ public class SeparatingAxis {
 	 * and getting the min and the max projection.
 	 * @return
 	 */
-	public Range project(CollidingShape shape) {
+	public Range project(Collider shape) {
 		float min = Float.MAX_VALUE;
 		float max = -Float.MAX_VALUE;
 		List<Vec2f> points = shape.getPoints();

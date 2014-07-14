@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import ro7.engine.world.Entity;
 import cs195n.Vec2f;
 
 /**
@@ -15,8 +16,8 @@ public class Menu extends Sprite {
 	private Vec2f space;
 	List<Message> options;
 
-	public Menu(Vec2f position, Vec2f space) {
-		super(position);
+	public Menu(Entity entity, Vec2f space) {
+		super(entity);
 		this.space = space;
 		this.options = new ArrayList<Message>();
 	}
@@ -31,8 +32,7 @@ public class Menu extends Sprite {
 	 * respective number.
 	 */
 	@Override
-	public void draw(Graphics2D g) {
-		g.translate(position.x, position.y);
+	public void drawSprite(Graphics2D g) {
 		for (Message message : options) {
 			Message number = new Message(options.indexOf(message) + 1 + "", message);
 			number.draw(g);
@@ -41,7 +41,7 @@ public class Menu extends Sprite {
 			g.translate(0.0f, space.y);
 			g.translate(-space.x, 0.0f);
 		}
-		g.translate(-position.x, -(position.y + (options.size() - 1)
+		g.translate(0, -((options.size() - 1)
 				* space.y));
 	}
 

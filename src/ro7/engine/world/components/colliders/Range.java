@@ -1,4 +1,4 @@
-package ro7.engine.sprites.shapes;
+package ro7.engine.world.components.colliders;
 
 
 public class Range {

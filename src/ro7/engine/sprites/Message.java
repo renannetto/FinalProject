@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 
+import ro7.engine.world.Entity;
 import cs195n.Vec2f;
 
 /**
@@ -19,15 +20,15 @@ public class Message extends Sprite {
 	private float fontSize;
 	private Color fontColor;
 
-	public Message(String text, float fontSize, Color fontColor, Vec2f position) {
-		super(position);
+	public Message(Entity entity, String text, float fontSize, Color fontColor) {
+		super(entity);
 		this.text = text;
 		this.fontSize = fontSize;
 		this.fontColor = fontColor;
 	}
 
 	public Message(String text, Message message) {
-		super(message.position);
+		super(message.entity);
 		this.text = text;
 		this.fontSize = message.fontSize;
 		this.fontColor = message.fontColor;
@@ -38,10 +39,10 @@ public class Message extends Sprite {
 	 * Draw a text message on the screen.
 	 */
 	@Override
-	public void draw(Graphics2D g) {
+	public void drawSprite(Graphics2D g) {
 		g.setFont(new Font("Arial", Font.PLAIN, (int)fontSize));
 		g.setColor(fontColor);
-		g.drawString(text, position.x, position.y+g.getFontMetrics().getHeight());
+		g.drawString(text, 0, g.getFontMetrics().getHeight());
 	}
 	
 	public void draw(Graphics2D g, Vec2f dimensions) {
@@ -71,7 +72,7 @@ public class Message extends Sprite {
 				width = metrics.stringWidth(t);
 			}
 			
-			g.drawString(t, position.x, position.y+(height*(i+1)));
+			g.drawString(t, 0, height*(i+1));
 		}
 	}
 

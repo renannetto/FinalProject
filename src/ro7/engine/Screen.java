@@ -5,15 +5,18 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
+import ro7.engine.world.PlayerInput;
 import cs195n.Vec2i;
 
 public abstract class Screen {
 	
 	protected Application app;
 	protected Vec2i windowSize;
+	protected PlayerInput playerInput;
 	
 	protected Screen(Application app) {
 		this.app = app;
+		this.playerInput = new PlayerInput();
 	}
 	
 	public abstract void onTick(long nanosSincePreviousTick);
@@ -22,22 +25,34 @@ public abstract class Screen {
 	public abstract void onDraw(Graphics2D g);
 
 	
-	public abstract void onKeyTyped(KeyEvent e);
+	public void onKeyTyped(KeyEvent e) {
+		
+	}
 
 	
-	public abstract void onKeyPressed(KeyEvent e);
+	public void onKeyPressed(KeyEvent e) {
+		playerInput.press(e.getKeyCode(), e);
+	}
 
 	
-	public abstract void onKeyReleased(KeyEvent e);
+	public void onKeyReleased(KeyEvent e) {
+		playerInput.release(e.getKeyCode());
+	}
 
 	
-	public abstract void onMouseClicked(MouseEvent e);
+	public void onMouseClicked(MouseEvent e) {
+		
+	}
 
 	
-	public abstract void onMousePressed(MouseEvent e);
+	public void onMousePressed(MouseEvent e) {
+		playerInput.press(e.getButton(), e);
+	}
 
 	
-	public abstract void onMouseReleased(MouseEvent e);
+	public void onMouseReleased(MouseEvent e) {
+		playerInput.release(e.getButton());
+	}
 
 	
 	public abstract void onMouseDragged(MouseEvent e);

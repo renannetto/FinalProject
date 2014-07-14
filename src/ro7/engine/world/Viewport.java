@@ -4,32 +4,23 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 
-import ro7.engine.sprites.shapes.AAB;
+import ro7.engine.sprites.BoxSprite;
+import ro7.engine.world.components.Transform;
 import cs195n.Vec2f;
 
-public class Viewport {
+public class Viewport extends Entity {
 
-	private Vec2f position;
 	private Vec2f dimensions;
-	private GameWorld gameWorld;
 	private Vec2f scale;
 	private Vec2f gamePosition;
 
-	public Viewport(Vec2f position, Vec2f dimensions, GameWorld gameSpace) {
-		this.position = position;
+	public Viewport(GameWorld world, PlayerInput playerInput, Transform transform, Vec2f dimensions, Vec2f scale, Vec2f gamePosition) {
+		super(world, playerInput, transform);
 		this.dimensions = dimensions;
-		this.gameWorld = gameSpace;
-		this.scale = dimensions.pdiv(gameSpace.getDimensions());
-		this.gamePosition = new Vec2f(0.0f, 0.0f);
-	}
-
-	public Viewport(Vec2f position, Vec2f dimensions, GameWorld gameSpace,
-			Vec2f scale, Vec2f gamePosition) {
-		this.position = position;
-		this.dimensions = dimensions;
-		this.gameWorld = gameSpace;
 		this.scale = scale;
 		this.gamePosition = gamePosition;
+		
+		this.sprite = new BoxSprite(this, Color.BLACK, null, dimensions);
 	}
 
 	/**
@@ -37,7 +28,7 @@ public class Viewport {
 	 * @param g Graphics object used to draw
 	 */
 	public void doTransform(Graphics2D g) {
-		g.translate(position.x, position.y);
+		g.translate(transform.position.x, transform.position.y);
 		g.scale(scale.x, scale.y);
 		g.translate(-gamePosition.x, -gamePosition.y);
 	}
@@ -49,7 +40,7 @@ public class Viewport {
 	public void undoTransform(Graphics2D g) {
 		g.translate(gamePosition.x, gamePosition.y);
 		g.scale(1.0f / scale.x, 1.0f / scale.y);
-		g.translate(-position.x, -position.y);
+		g.translate(-transform.position.x, -transform.position.y);
 	}
 
 	/**
@@ -58,7 +49,7 @@ public class Viewport {
 	 * @return game coordinates of the point
 	 */
 	public Vec2f screenToGame(Vec2f point) {
-		return point.minus(position).pdiv(scale).plus(gamePosition);
+		return point.minus(transform.position).pdiv(scale).plus(gamePosition);
 	}
 	
 	/**
@@ -67,7 +58,7 @@ public class Viewport {
 	 * @return screen coordinates of the point
 	 */
 	public Vec2f gameToScreen(Vec2f point) {
-		return point.minus(gamePosition).pmult(scale).plus(position);
+		return point.minus(gamePosition).pmult(scale).plus(transform.position);
 	}
 
 	/**
@@ -102,7 +93,7 @@ public class Viewport {
 	 * @return viewport dimensions on game coordinates
 	 */
 	private Vec2f getGameDimensions() {
-		Vec2f min = screenToGame(position);
+		Vec2f min = screenToGame(transform.position);
 		Vec2f max = screenToGame(dimensions);
 		
 		return max.minus(min);
@@ -123,15 +114,13 @@ public class Viewport {
 	 * @param g Graphics object used to draw
 	 */
 	public void draw(Graphics2D g) {
-		AAB viewport = new AAB(position.plus(dimensions.x/2, dimensions.y/2),
-				Color.BLACK, null, dimensions);
-		viewport.draw(g);
+		super.draw(g);
 
 		Shape clip = g.getClip();
-		g.setClip(viewport.getShape());
+		g.setClip(((BoxSprite)sprite).getShape());
 		doTransform(g);
 
-		gameWorld.draw(g, this);
+		world.draw(g);
 		undoTransform(g);
 		g.setClip(clip);
 	}
@@ -150,10 +139,6 @@ public class Viewport {
 
 	public Vec2f getDimensions() {
 		return dimensions;
-	}
-
-	public void setWorld(GameWorld world) {
-		this.gameWorld = world;
 	}
 
 }

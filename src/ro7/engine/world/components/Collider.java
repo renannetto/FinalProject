@@ -1,24 +1,37 @@
-package ro7.engine.sprites.shapes;
+package ro7.engine.world.components;
 
-import java.awt.Color;
 import java.util.List;
 import java.util.Set;
 
-import ro7.engine.sprites.Sprite;
-import ro7.engine.world.entities.Ray;
+import ro7.engine.world.Collision;
+import ro7.engine.world.Entity;
+import ro7.engine.world.Ray;
+import ro7.engine.world.components.colliders.Box;
+import ro7.engine.world.components.colliders.Circle;
+import ro7.engine.world.components.colliders.CompoundShape;
+import ro7.engine.world.components.colliders.Polygon;
+import ro7.engine.world.components.colliders.Range;
+import ro7.engine.world.components.colliders.SeparatingAxis;
 import cs195n.Vec2f;
 
-public abstract class CollidingShape extends Sprite {
+public abstract class Collider extends Component {
 
-	protected CollidingShape(Vec2f position) {
-		super(position);
+	protected Collider(Entity entity) {
+		super(entity);
+		
+		entity.world.addCollider(this);
 	}
 
-	public abstract Vec2f collides(CollidingShape shape);
+	public Collision collides(Collider shape) {
+		Vec2f mtv = collisionMtv(shape);
+		return new Collision(entity, shape.entity, mtv);
+	}
+	
+	public abstract Vec2f collisionMtv(Collider shape);
 
 	public abstract Vec2f collidesCircle(Circle circle);
 
-	public abstract Vec2f collidesAAB(AAB aab);
+	public abstract Vec2f collidesBox(Box aab);
 
 	public abstract Vec2f collidesPolygon(Polygon polygon);
 
@@ -27,12 +40,8 @@ public abstract class CollidingShape extends Sprite {
 	public abstract Vec2f collidesRay(Ray ray);
 
 	public Vec2f getPosition() {
-		return position;
+		return entity.transform.position;
 	}
-
-	public abstract void changeBorderColor(Color color);
-
-	public abstract void changeFillColor(Color color);
 
 	/**
 	 * @param axes
@@ -41,19 +50,19 @@ public abstract class CollidingShape extends Sprite {
 	 * @return a vector representing the mtv, or null if there is no
 	 * collision
 	 */
-	public Vec2f mtv(Set<SeparatingAxis> axes, CollidingShape shape) {
+	public Vec2f mtv(Set<SeparatingAxis> axes, Collider shape) {
 		float minMagnitude = Float.MAX_VALUE;
-		Vec2f mtv = null;
+		Vec2f mtv = new Vec2f(0.0f, 0.0f);
 		for (SeparatingAxis axis : axes) {
 			axis = axis.normalized();
 			Range range1 = axis.project(this);
 			Range range2 = axis.project(shape);
 			if (!range1.overlaps(range2)) {
-				return null;
+				return new Vec2f(0.0f, 0.0f);
 			} else {
 				float mtv1d = range1.mtv(range2);
 				if (mtv1d==0) {
-					return null;
+					return new Vec2f(0.0f, 0.0f);
 				}
 				if (Math.abs(mtv1d) < minMagnitude) {
 					minMagnitude = Math.abs(mtv1d);
@@ -67,24 +76,11 @@ public abstract class CollidingShape extends Sprite {
 	public abstract Vec2f center();
 
 	public abstract List<Vec2f> getPoints();
-
-	/* (non-Javadoc)
-	 * @see ro7.engine.sprites.Sprite#move(cs195n.Vec2f)
-	 * Move the collidingShape and update its points. 
-	 */
-	@Override
-	public void move(Vec2f translation) {
-		super.move(translation);
-		updatePoints(translation);
-	}
 	
 	@Override
-	public void moveTo(Vec2f position) {
-		Vec2f translation = position.minus(this.position);
-		this.move(translation);
+	public void update(long nanoseconds) {
+		
 	}
-
-	public abstract void updatePoints(Vec2f translation);
 	
 	public abstract Vec2f getDimensions();
 

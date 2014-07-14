@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 
+import ro7.engine.world.Entity;
 import cs195n.Vec2f;
 
 public class Line extends Sprite {
@@ -11,15 +12,15 @@ public class Line extends Sprite {
 	private Vec2f end;
 	private Color color;
 
-	public Line(Vec2f start, Vec2f end, Color color) {
-		super(start);
+	public Line(Entity entity, Vec2f end, Color color) {
+		super(entity);
 		this.end = end;
 		this.color = color;
 	}
 
 	@Override
-	public void draw(Graphics2D g) {
-		Line2D line = new Line2D.Float(position.x, position.y, end.x, end.y);
+	public void drawSprite(Graphics2D g) {
+		Line2D line = new Line2D.Float(0, 0, end.x, end.y);
 		g.setColor(color);
 		g.draw(line);
 	}
